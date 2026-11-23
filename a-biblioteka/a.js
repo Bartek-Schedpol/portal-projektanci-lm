@@ -132,7 +132,7 @@
     return p.brand + '_' + ser + (dim ? '_' + dim : '') + ver;
   }
   /* karta produktu PDF: prawdziwe pliki z _narzedzia/7_karty_pdf.py (szablon ../karta/index.html) */
-  const KARTY_V = '20261123b';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
+  const KARTY_V = '20261123c';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
   function kartaPdf(p) { return '../assets/karty/Karta-produktu_LM' + p.ref + '.pdf?v=' + KARTY_V; }
   function kartaView(p) { return '../karta/index.html?ref=' + encodeURIComponent(p.ref); }
   /* karty gwarancyjne i instrukcje montażu przypisane do indeksu (assets/dokumenty.js) */
@@ -809,7 +809,7 @@
   const COLORS = (function () {
     const m = {};
     SP.products.forEach(function (p) { if (p.c) { m[p.c] = m[p.c] || { v: p.c, l: p.c, hx: p.hx, n: 0 }; m[p.c].n++; } });
-    return Object.keys(m).map(function (k) { return m[k]; }).sort(function (a, b) { return b.n - a.n; });
+    return Object.keys(m).map(function (k) { return m[k]; }).sort(function (a, b) { return a.l.localeCompare(b.l, 'pl'); });   // alfabetycznie
   })();
   /* rozmiar: długość × szerokość (większy wymiar pierwszy), np. „100 × 80 cm”; odpływy — sama długość */
   function sizeKey(p) {
@@ -830,12 +830,12 @@
   })();
   const GAMY = ['A', 'B', 'C', 'L', 'X', 'brak'];   // wg eksportu referencji LM z 26.03.2026 (assets/lm.js)
   const FACETS = [
+    { id: 'brand', label: 'Marka', get: function (p) { return p.brand; }, opts: [{ v: 'Schedpol', l: 'Schedpol' }, { v: 'Sensea', l: 'Sensea' }] },
     { id: 'cat', label: 'Kategoria', get: function (p) { return p.cat; }, opts: SP.cats.map(function (c) { return { v: c.id, l: c.label }; }) },
     { id: 'fam', label: 'Seria', get: function (p) { return p.fam; }, opts: SP.series.map(function (s) { return { v: s.fam, l: s.fam }; }), collapse: 8 },
     { id: 'shape', label: 'Kształt', get: function (p) { return p.shape; }, opts: ['kwadratowy', 'prostokątny', 'półokrągły', 'pięciokątny'].map(function (v) { return { v: v, l: cap(v) }; }) },
     { id: 'size', label: 'Rozmiar (długość × szerokość)', get: function (p) { return sizeKey(p); }, opts: SIZES, collapse: 10, mono: true, hideZero: true },
     { id: 'color', label: 'Kolor', get: function (p) { return p.c; }, opts: COLORS, collapse: 7 },
-    { id: 'brand', label: 'Marka', get: function (p) { return p.brand; }, opts: [{ v: 'Schedpol', l: 'Schedpol' }, { v: 'Sensea', l: 'Sensea' }] },
     { id: 'gama', label: 'Gama LM', get: function (p) { return p.g || 'brak'; }, opts: GAMY.map(function (g) { return { v: g, l: g === 'brak' ? 'nie podano' : g, mono: g !== 'brak' }; }),
       hint: 'Gama wg eksportu referencji LM z 26.03.2026.' }
   ];
@@ -987,7 +987,7 @@
         <div>
           <span class="eyebrow">Katalog · oferta w Leroy Merlin</span>
           <h1 class="page-title" style="margin-top:18px">Katalog produktów</h1>
-          <p class="page-sub">${SP.products.length} produktów w ${SP.series.length} seriach. Każda pozycja ma numer ref. LM, wymiary i komplet plików do projektu.</p>
+          <p class="page-sub">${SP.products.length} produktów w ${SP.series.length} seriach. Każda pozycja ma numer ref. LM, wymiary i komplet plików do projektu. Gama wg eksportu referencji LM z 26.03.2026.</p>
         </div>
         <label class="cat-search">${ic('search', 18)}<span class="sr">Filtruj katalog</span>
           <input id="catQ" type="search" placeholder="Filtruj: nr ref., seria, wymiar, kolor…" value="${esc(C.q)}" autocomplete="off" spellcheck="false"><kbd>/</kbd>

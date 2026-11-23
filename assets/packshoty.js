@@ -12,5 +12,6 @@
     if (IM[p.ref]) p.im = IM[p.ref];
     var f = FIX[p.ref];
     if (f) { if (f.shape) p.shape = f.shape; if (f.c) { p.c = f.c; var su = SURF[f.c]; if (su) { p.hx = su.hx; p.ral = su.ral; p.ce = su.n; } } }
+    if (p.cat === 'brodzik' && p.c === 'biały') p.c = 'biały gładki';   // brodziki: „biały” = Smooth White RAL 9003 = „biały gładki” (jeden kolor w filtrach i kartach)
   });
 })(window.SP);
