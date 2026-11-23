@@ -132,7 +132,7 @@
     return p.brand + '_' + ser + (dim ? '_' + dim : '') + ver;
   }
   /* karta produktu PDF: prawdziwe pliki z _narzedzia/7_karty_pdf.py (szablon ../karta/index.html) */
-  const KARTY_V = '20261123c';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
+  const KARTY_V = '20261123d';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
   function kartaPdf(p) { return '../assets/karty/Karta-produktu_LM' + p.ref + '.pdf?v=' + KARTY_V; }
   function kartaView(p) { return '../karta/index.html?ref=' + encodeURIComponent(p.ref); }
   /* karty gwarancyjne i instrukcje montażu przypisane do indeksu (assets/dokumenty.js) */
@@ -847,7 +847,7 @@
     Object.keys(PARAM).forEach(function (k) {
       C.f[k] = params[PARAM[k]] ? String(params[PARAM[k]]).split('|').filter(Boolean) : [];
     });
-    C.sort = params.sort || 'seria';
+    C.sort = ['seria-za', 'nowe'].indexOf(params.sort) !== -1 ? params.sort : 'seria';
     C.view = params.widok === 'tabela' ? 'table' : 'grid';
     C.limit = 24;
   }
@@ -878,13 +878,12 @@
     const idx = {};
     SP.series.forEach(function (s, i) { idx[s.fam] = i; });
     const l = list.slice();
-    if (C.sort === 'wymiar') {
-      l.sort(function (x, y) { return area(x) - area(y) || String(x.s).localeCompare(String(y.s), 'pl'); });
-    } else if (C.sort === 'nowe') {
+    if (C.sort === 'nowe') {
       l.sort(function (x, y) { return (y.new ? 1 : 0) - (x.new ? 1 : 0) || idx[x.fam] - idx[y.fam] || area(x) - area(y); });
     } else {
+      const dir = C.sort === 'seria-za' ? -1 : 1;     // Seria Z–A: odwrotna kolejność serii, w serii bez zmian
       l.sort(function (x, y) {
-        return String(x.fam).localeCompare(String(y.fam), 'pl') || String(x.s).localeCompare(String(y.s), 'pl') ||
+        return dir * String(x.fam).localeCompare(String(y.fam), 'pl') || String(x.s).localeCompare(String(y.s), 'pl') ||
           String(x.c).localeCompare(String(y.c), 'pl') || area(x) - area(y);
       });
     }
@@ -936,8 +935,8 @@
         <label class="select"><span class="sr">Sortowanie</span>
           <select id="sortSel" aria-label="Sortowanie">
             <option value="seria"${C.sort === 'seria' ? ' selected' : ''}>Seria A–Z</option>
-            <option value="wymiar"${C.sort === 'wymiar' ? ' selected' : ''}>Wymiar rosnąco</option>
-            <option value="nowe"${C.sort === 'nowe' ? ' selected' : ''}>Nowości</option>
+            <option value="seria-za"${C.sort === 'seria-za' ? ' selected' : ''}>Seria Z–A</option>
+            <option value="nowe"${C.sort === 'nowe' ? ' selected' : ''}>Nowość</option>
           </select>${ic('chevron-down', 16)}
         </label>
         <div class="seg" role="group" aria-label="Widok wyników">

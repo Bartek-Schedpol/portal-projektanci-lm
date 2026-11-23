@@ -4,6 +4,7 @@
   SP.lmDate = '26.03.2026';
   SP.lmOnly = {"92529792": "BRODZIK IPSILON SENSEA PR 160X90X5/3 BS"};
   var SHAPE = {"45256512": "pięciokątny", "88758947": "pięciokątny", "82763748": "pięciokątny", "88758948": "pięciokątny", "82763752": "pięciokątny", "86448669": "prostokątny"};  /* kształt wg nazwy w systemie LM (arkusz tytułów był błędny) */
-  SP.products.forEach(function (p) { var x = L[p.ref]; if (x) { p.g = x.g; p.ean = x.ean; p.sup = x.sup; } else { p.g = ''; p.lmMissing = true; }
+  var GAMA = {"83648377": "X"};  /* gama ustalona ręcznie — indeksy spoza eksportu LM */
+  SP.products.forEach(function (p) { var x = L[p.ref]; if (x) { p.g = x.g; p.ean = x.ean; p.sup = x.sup; } else { p.g = GAMA[p.ref] || ''; p.lmMissing = true; }
     if (SHAPE[p.ref]) p.shape = SHAPE[p.ref]; });
 })(window.SP);
