@@ -1060,6 +1060,8 @@
     } else if (p.fam === 'Balans') {
       docs.push({ k: p.shape === 'prostokątny' ? 'draw-balans-rect' : 'draw-balans-sq', kind: 'doc', cap: 'Rysunek techniczny · wymiary w mm' });
     }
+    /* przekrój z paczki e-commerce — bez podpisów (oryginał: „Antibac”, „ochrona przed pleśnią” — twierdzenia biobójcze, EmpCo/BPR) */
+    if (p.fam === 'Balans' && /biały/.test(p.c || '')) docs.push({ k: 'balans-przekroj', kind: 'doc', cap: 'Przekrój — budowa warstwowa brodzika · wizualizacja poglądowa' });
     if (p.fam === 'Balans') docs.push({ k: 'info-balans', kind: 'doc', cap: 'Infografika · cechy serii' });
     /* info-frigo / info-ipsilon celowo pominięte: grafiki zawierają „Ponad 45 lat doświadczenia” i goły badge gwarancji — do korekty przed publikacją */
     const exPack = ex.filter(function (x) { return x.kind === 'pack'; }).map(function (x) { return { k: x.k, kind: 'pack', cap: x.cap }; });
