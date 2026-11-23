@@ -217,7 +217,7 @@ def main():
     jobs = {}
     for key, m in models.items():
         jobs[key] = {'obj': m['obj'], 'glb': os.path.join(OUT, key + '.glb'), 'metal': key.split('_')[1] != 'Magnetic',
-                     'size': m['size'], 'rule': m['rule'], 'cons': m['cons'], 'objout': os.path.join(OUT, key + '.obj')}
+                     'size': m['size'], 'rule': m['rule'], 'cons': m['cons'], 'objout': os.path.join(OUT, key + '.obj'), 'fam': key.split('_')[1]}
     jf = os.path.join(OUT, '_jobs.json'); rf = os.path.join(OUT, '_pomiar.json')
     json.dump(jobs, open(jf, 'w', encoding='utf-8'))
     subprocess.run([BLENDER, '-b', '--factory-startup', '--python', os.path.join(HERE, '10b_blender_brodzik.py'), '--', jf, rf], check=True,

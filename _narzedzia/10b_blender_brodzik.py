@@ -236,6 +236,55 @@ for key, J in jobs.items():
                 drain = t; modified = True
         bm.normal_update()
 
+        # --- 3b. Balans: maskownica od nowa (3 równe szczeliny), posadzka pod nią wyrównana, płytka ponad najwyższym punktem ---
+        if J.get('fam') == 'Balans' and drain is not None and smalls:
+            mv = [o for o in smalls if (lambda a, b: (Vector(((a.x + b.x) / 2, (a.y + b.y) / 2)) - drain).length)(*bbox([o])) < 12]
+            a0, b0 = bbox([max(mv, key=area)])
+            S = max(b0.x - a0.x, b0.y - a0.y)
+            for o in mv:
+                objs.remove(o); smalls.remove(o); bpy.data.objects.remove(o, do_unlink=True)
+            tree = BVHTree.FromBMesh(bm)
+            def zat2(x, y):
+                hit = tree.ray_cast(Vector((x, y, mx.z + 20)), Vector((0, 0, -1))); return hit[0].z if hit[0] else None
+            h2 = S / 2 + 1.2
+            zf = max(z for z in [zat2(drain.x + dx, drain.y + dy) for dx, dy in ((h2 + 1.5, 0), (-h2 - 1.5, 0), (0, h2 + 1.5), (0, -h2 - 1.5))] if z is not None)
+            kill = []
+            for f in bm.faces:
+                cc = f.calc_center_median()
+                if max(abs(cc.x - drain.x), abs(cc.y - drain.y)) > h2 or cc.z < 0.6: continue
+                if cc.z < zf - 0.25 or (abs(f.normal.z) > 0.9 and abs(cc.z - zf) < 1.2): kill.append(f)
+            if kill:
+                kv = set(v for f in kill for v in f.verts)
+                bmesh.ops.delete(bm, geom=kill, context='FACES_ONLY')
+                for v in [v for v in bm.verts if not v.link_faces]: bm.verts.remove(v)
+                bnd = [e for e in bm.edges if len(e.link_faces) == 1 and e.verts[0] in kv and e.verts[1] in kv]
+                r = bmesh.ops.holes_fill(bm, edges=bnd, sides=0)
+                bmesh.ops.triangulate(bm, faces=r['faces'])
+            tree = BVHTree.FromBMesh(bm)
+            zs = [z for z in [zat2(drain.x + dx * S / 2, drain.y + dy * S / 2) for dx in (-1, 0, 1) for dy in (-1, 0, 1)] if z is not None]
+            ztop = max(zs) + 0.12; zbot = min(zs) - 0.3
+            cb = bmesh.new()
+            bmesh.ops.create_cube(cb, size=1.0, matrix=mathutils.Matrix.Translation((drain.x, drain.y, (ztop + zbot) / 2)) @ mathutils.Matrix.Diagonal((S, S, ztop - zbot, 1)))
+            cov = new_obj('maskownica', cb, [])
+            sb = bmesh.new()
+            L, Wd, gap = 0.62 * S, 0.42, 1.15                     # 3 równe szczeliny, równoległe do osi x
+            for k in (-1, 0, 1):
+                bmesh.ops.create_cube(sb, size=1.0, matrix=mathutils.Matrix.Translation((drain.x, drain.y + k * gap, ztop)) @ mathutils.Matrix.Diagonal((L, Wd, 0.7, 1)))
+            cut = new_obj('szczeliny', sb, [])
+            mats_tmp = material('otwor', (0.015, 0.015, 0.015), 0.6)
+            cut.data.materials.append(mats_tmp)
+            mod = cov.modifiers.new('slots', 'BOOLEAN'); mod.operation = 'DIFFERENCE'; mod.object = cut; mod.solver = 'EXACT'
+            try: mod.material_mode = 'TRANSFER'
+            except Exception: pass
+            cov.data.materials.append(material('metal', (0.62, 0.64, 0.66), 0.28, 1.0))
+            bpy.context.view_layer.objects.active = cov
+            with bpy.context.temp_override(object=cov, active_object=cov):
+                bpy.ops.object.modifier_apply(modifier='slots')
+            bpy.data.objects.remove(cut, do_unlink=True)
+            cov['keep_mat'] = 1
+            log.append('maskownica Balans: 3 równe szczeliny, wierzch %.2f cm' % ztop)
+            bm.normal_update()
+
         # --- 4. spód ---
         cons = J.get('cons')
         mats = {'akryl': material('akryl', (0.93, 0.93, 0.92), 0.45), 'metal': material('metal', (0.62, 0.64, 0.66), 0.28, 1.0),
@@ -310,7 +359,7 @@ for key, J in jobs.items():
         big.data.materials.clear(); big.data.materials.append(mats['akryl'])
         for p in big.data.polygons: p.material_index = 0
         for o in objs:
-            if o is big: continue
+            if o is big or o.get('keep_mat'): continue
             o.data.materials.clear()
             o.data.materials.append(mats['metal'] if (J.get('metal') and o in smalls) else mats['akryl'])
         allm = [o for o in bpy.context.scene.objects if o.type == 'MESH']
