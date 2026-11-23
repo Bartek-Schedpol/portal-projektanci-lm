@@ -832,7 +832,7 @@
   const FACETS = [
     { id: 'brand', label: 'Marka', get: function (p) { return p.brand; }, opts: [{ v: 'Schedpol', l: 'Schedpol' }, { v: 'Sensea', l: 'Sensea' }] },
     { id: 'cat', label: 'Kategoria', get: function (p) { return p.cat; }, opts: SP.cats.map(function (c) { return { v: c.id, l: c.label }; }) },
-    { id: 'fam', label: 'Seria', get: function (p) { return p.fam; }, opts: SP.series.map(function (s) { return { v: s.fam, l: s.fam }; }), collapse: 8 },
+    { id: 'fam', label: 'Seria', get: function (p) { return p.fam; }, opts: SP.series.map(function (s) { return { v: s.fam, l: s.fam, n: SP.products.filter(function (p) { return p.fam === s.fam; }).length }; }).sort(function (a, b) { return b.n - a.n || a.l.localeCompare(b.l, 'pl'); }), collapse: 8 },   // najwięcej produktów u góry
     { id: 'shape', label: 'Kształt', get: function (p) { return p.shape; }, opts: ['kwadratowy', 'prostokątny', 'półokrągły', 'pięciokątny'].map(function (v) { return { v: v, l: cap(v) }; }) },
     { id: 'size', label: 'Rozmiar (długość × szerokość)', get: function (p) { return sizeKey(p); }, opts: SIZES, collapse: 10, mono: true, hideZero: true },
     { id: 'color', label: 'Kolor', get: function (p) { return p.c; }, opts: COLORS, collapse: 7 },
