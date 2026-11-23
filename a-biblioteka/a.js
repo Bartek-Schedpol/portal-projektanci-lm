@@ -987,7 +987,7 @@
         <div>
           <span class="eyebrow">Katalog · oferta w Leroy Merlin</span>
           <h1 class="page-title" style="margin-top:18px">Katalog produktów</h1>
-          <p class="page-sub">${SP.products.length} indeksów w ${SP.series.length} rodzinach. Każda pozycja ma numer ref. LM, wymiary i komplet plików do projektu.</p>
+          <p class="page-sub">${SP.products.length} produktów w ${SP.series.length} seriach. Każda pozycja ma numer ref. LM, wymiary i komplet plików do projektu.</p>
         </div>
         <label class="cat-search">${ic('search', 18)}<span class="sr">Filtruj katalog</span>
           <input id="catQ" type="search" placeholder="Filtruj: nr ref., seria, wymiar, kolor…" value="${esc(C.q)}" autocomplete="off" spellcheck="false"><kbd>/</kbd>
