@@ -18,9 +18,6 @@ window.SP.videos = [
   { id: 'bc-6375481871112', bc: ['5588818558001', '6375481871112'], poster: 'https://cf-images.eu-west-1.prod.boltdns.net/v1/jit/5588818558001/81dbde50-c3ee-4086-b3bf-040a462b9883/main/1280x720/1m47s114ms/match/image.jpg',
     t: 'Brodzik Sensea Ipsilon — montaż', kind: 'Montaż · treść wygenerowana przez AI', ai: 1, g: 'brodziki', y: 2026, fams: ['Ipsilon'] },
   { id: 'IJ9kaWSjZfI', t: 'Najazd do brodzików podpłytkowych przeznaczony do zabudowy płytkami - montaż', kind: 'Montaż', g: 'brodziki', y: 2026, fams: ['Najazd'] },
-  { id: 'QQsoJ7NhcVY', t: '[360] Grawello półokrągły', kind: 'Prezentacja 360°', g: '360', y: 2026, fams: ['Grawello'], short: 1 },
-  { id: 'fbefVh2UcT4', t: '[360] Grawello - kwadrat', kind: 'Prezentacja 360°', g: '360', y: 2026, fams: ['Grawello'], short: 1 },
-  { id: 'lBtTLFP4tAc', t: '[360] Grawello - prostokąt', kind: 'Prezentacja 360°', g: '360', y: 2026, fams: ['Grawello'], short: 1 },
   { id: 'MroB--d6IdE', t: 'Montaż odpływu liniowego Schedpol bezkołnierzowego w podłodze – krok po kroku', kind: 'Montaż', g: 'odplywy', y: 2026, cats: ['odpływ liniowy'] },
   { id: '_cToQnNQMiA', t: 'Montaż odpływu liniowego | SCHEDPOL®', kind: 'Montaż', g: 'odplywy', y: 2019, cats: ['odpływ liniowy'] },
   { id: 'f3jGsJc4k28', t: 'Brodzik podpłytkowy vs Odpływ liniowy - porównanie montażu', kind: 'Szkolenie', g: 'odplywy', y: 2019, cats: ['odpływ liniowy'] },
@@ -41,7 +38,7 @@ window.SP.videos = [
 ];
 window.SP.videoGroups = [
   { k: 'brodziki', l: 'Montaż brodzików' }, { k: 'odplywy', l: 'Odpływy liniowe' }, { k: 'wanny', l: 'Wanny: nośniki i obudowy' },
-  { k: 'sciany', l: 'Panele ścienne Wall Comfort' }, { k: '360', l: 'Prezentacje 360°' }, { k: 'serwis', l: 'Poradniki i serwis' }, { k: 'firma', l: 'O firmie' }
+  { k: 'sciany', l: 'Panele ścienne Wall Comfort' }, { k: 'serwis', l: 'Poradniki i serwis' }, { k: 'firma', l: 'O firmie' }
 ];
 /* prezentacje i katalog do Akademii — pliki w assets/akademia/ (ok = gotowe do publikacji) */
 window.SP.academyDocs = [
