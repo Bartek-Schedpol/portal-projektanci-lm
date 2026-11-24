@@ -2,106 +2,19 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Strefa projektanta Schedpol</title>
-<meta name="description" content="Portal Schedpol dla projektantów Leroy Merlin: wyszukaj produkt, pobierz pliki, karty produktów, instrukcje i filmy.">
 <meta name="robots" content="noindex,nofollow">
-<link rel="icon" href="data:,">
-<link rel="stylesheet" href="../assets/fonts/fonts.css?v=20261124a">
-<link rel="stylesheet" href="a.css?v=20261124a">
+<title>Strefa projektanta Schedpol</title>
+<!-- 24.11.2026: stary adres portalu przenosi na V2 z zachowaniem podstrony (katalog, produkt, akademia…). V1 = a-biblioteka/v1.html -->
+<script>
+(function () {
+  var h = location.hash || '', m = h.match(/^#\/([a-z]+)/), s = m ? m[1] : 'start';
+  var k = (h.match(/sek=([a-z]+)/) || [])[1], t;
+  if (s === 'start') t = k === 'cad' ? '../v2/podstrony.html#/pliki' : '../v2/index.html' + (k === 'kontakt' ? '#sek-kontakt' : '');
+  else t = '../v2/podstrony.html' + h;
+  location.replace(t);
+})();
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=../v2/index.html"></noscript>
 </head>
-<body>
-<a class="skip" href="#app">Przejdź do treści</a>
-<div class="top-sentinel" id="topSentinel" aria-hidden="true"></div>
-
-<header class="nav" id="nav">
-  <div class="nav-in">
-    <a class="brand" href="#/start" aria-label="Schedpol — Strefa projektanta, strona startowa">
-      <img class="brand-logo" src="../assets/znaki/schedpol.svg" alt="Schedpol" width="171" height="30">
-    </a>
-
-    <nav class="nav-links" id="navLinks" aria-label="Nawigacja główna">
-      <a href="#/start" data-nav="start">Start</a>
-      <a href="#/katalog" data-nav="katalog">Katalog</a>
-      <a href="#/pliki" data-nav="pliki">Pliki</a>
-      <a href="#/akademia" data-nav="akademia">Akademia</a>
-      <a href="#/start?sek=cad&amp;keep=1" data-nav="cad">Baza CAD</a>
-      <a href="#/start?sek=kontakt&amp;keep=1" data-nav="kontakt">Kontakt</a>
-    </nav>
-
-    <div class="nav-tools">
-      <button class="nav-search" type="button" data-act="open-search" aria-label="Szukaj: nr ref., seria, wymiar (skrót: ukośnik)">
-        <i data-i="search" data-size="16"></i><span>Szukaj: nr ref., seria, wymiar…</span><kbd>/</kbd>
-      </button>
-      <button class="nav-teczka" type="button" data-act="open-teczka" aria-label="Otwórz teczkę z plikami">
-        <i data-i="folder" data-size="16"></i><span>Teczka</span><b class="count" id="teczkaCount">0</b>
-      </button>
-      <button class="avatar" type="button" aria-label="Konto: Anna Nowak, projektantka, LM Poznań" title="Anna Nowak · projektantka · LM Poznań">AN</button>
-      <button class="nav-burger" type="button" data-act="toggle-menu" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
-    </div>
-  </div>
-</header>
-
-<main id="app" tabindex="-1">
-  <noscript><p class="noscript">Makieta wymaga włączonej obsługi JavaScript.</p></noscript>
-</main>
-
-<footer class="foot">
-  <div class="wrap foot-in">
-    <div class="foot-brand">
-      <img class="foot-logo" src="../assets/znaki/schedpol.svg" alt="Schedpol" width="171" height="30">
-      <p>SCHEDPOL Sp. z o.o. · od 1981<br>ul. Przemysłowa 2, 64-400 Bielsko (Międzychód)</p>
-    </div>
-    <nav class="foot-links" aria-label="Stopka">
-      <a href="#/katalog">Katalog</a>
-      <a href="#/pliki">Centrum plików</a>
-      <a href="#/akademia">Akademia</a>
-      <a href="#/start?sek=cad&amp;keep=1">Baza CAD Decor</a>
-      <a href="#/start?sek=kontakt&amp;keep=1">Kontakt</a>
-      <a href="https://www.schedpol.pl" target="_blank" rel="noopener">Pełna oferta — schedpol.pl</a>
-    </nav>
-    <p class="foot-note">Dane produktów: oferta Schedpol i Sensea dostępna w Leroy Merlin. Ceny i dostępność: w systemie sklepu.</p>
-  </div>
-</footer>
-
-<!-- Wyszukiwarka (paleta poleceń) -->
-<div class="cmd" id="cmd" role="dialog" aria-modal="true" aria-label="Wyszukiwarka" hidden>
-  <div class="cmd-box">
-    <div class="cmd-field">
-      <i data-i="search" data-size="20"></i>
-      <input id="cmdInput" type="search" placeholder="Nr ref. LM, seria, wymiar, kolor…" autocomplete="off" spellcheck="false" aria-label="Szukaj w bibliotece" aria-controls="cmdList">
-      <kbd>Esc</kbd>
-    </div>
-    <div class="sugg" id="cmdList"></div>
-  </div>
-</div>
-
-<!-- Teczka (panel wysuwany) -->
-<aside class="drawer" id="teczka" role="dialog" aria-modal="true" aria-labelledby="teczkaTitle" aria-hidden="true">
-  <header class="drawer-head">
-    <div>
-      <h2 id="teczkaTitle">Teczka</h2>
-      <p id="teczkaSum">Brak plików</p>
-    </div>
-    <button class="icon-btn" type="button" data-act="close-all" aria-label="Zamknij teczkę"><i data-i="x" data-size="18"></i></button>
-  </header>
-  <div class="drawer-body" id="teczkaBody"></div>
-  <footer class="drawer-foot" id="teczkaFoot"></footer>
-</aside>
-<div class="scrim" id="scrim" data-act="close-all"></div>
-<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
-
-<script src="../assets/data.js?v=20261124a"></script>
-<script src="../assets/bokmapa.js?v=20261124a"></script>
-<script src="../assets/lm.js?v=20261124a"></script>
-<script src="../assets/packshoty.js?v=20261124a"></script>
-<script src="../assets/rysunki.js?v=20261124a"></script>
-<script src="../assets/dokumenty.js?v=20261124a"></script>
-<script src="../assets/filmy.js?v=20261124a"></script>
-<script src="../assets/modele3d.js?v=20261124a"></script>
-<script src="../assets/icons.js?v=20261124a"></script>
-<script>window.SPP_SOLO = 1;</script>
-<script src="../assets/proto.js?v=20261124a"></script>
-<script src="a.js?v=20261124a"></script>
-</body>
+<body><p><a href="../v2/index.html">Przejdź do Strefy projektanta Schedpol</a> · <a href="v1.html">poprzednia wersja (V1)</a></p></body>
 </html>

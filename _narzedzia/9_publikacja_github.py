@@ -29,7 +29,7 @@ INDEX = """<!doctype html>
 <meta http-equiv="refresh" content="0; url=v2/index.html">
 <title>Strefa projektanta Schedpol</title>
 </head>
-<body><p><a href="v2/index.html">Przejdź do Strefy projektanta Schedpol</a> · <a href="a-biblioteka/index.html">poprzednia wersja (V1)</a></p></body>
+<body><p><a href="v2/index.html">Przejdź do Strefy projektanta Schedpol</a> · <a href="a-biblioteka/v1.html">poprzednia wersja (V1)</a></p></body>
 </html>
 """
 
@@ -91,7 +91,7 @@ def main():
     for f in FILES:
         os.makedirs(os.path.dirname(os.path.join(DST, f)), exist_ok=True)
         shutil.copy2(os.path.join(SRC, f), os.path.join(DST, f))
-    a = os.path.join(DST, "a-biblioteka", "index.html")
+    a = os.path.join(DST, "a-biblioteka", "v1.html")   # V1; a-biblioteka/index.html = przekierowanie na V2 (24.11.2026)
     s = io.open(a, encoding="utf-8").read()
     if "SPP_SOLO" not in s:
         s = re.sub(r'(<script src="\.\./assets/proto\.js[^"]*"></script>)', r'<script>window.SPP_SOLO = 1;</script>\n\1', s, count=1)
