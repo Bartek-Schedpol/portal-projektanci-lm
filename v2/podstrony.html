@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:,">
 <link rel="stylesheet" href="../assets/fonts/fonts.css?v=20261124a">
-<link rel="stylesheet" href="../a-biblioteka/a.css?v=20261124a">
+<link rel="stylesheet" href="../a-biblioteka/a.css?v=20261124b">
 <style>
 body.mbx{--brand:#943330;--brand-ink:#7A2623}
 .mbt{background:#0E0E0E;color:#C9C9C9;font-size:12.5px}.mbt-in{max-width:1400px;margin:0 auto;padding:0 var(--gut,32px);display:flex;justify-content:space-between;align-items:center;height:38px}
@@ -122,6 +122,21 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 .mbp .pf-zip{background:#141414;color:#fff}
 .mbp .pf-col{background:#F7F6F3}
 .mbp .pf-col .pf-row:not(.is-cad){background:#fff}
+/* galeria karty produktu: białe tło, przewijane miniatury, pełny ekran (24.11.2026) */
+.mbp .gal-bezel,.mbp .gal-stage,.mbp .gal-thumb{background:#fff !important}
+.mbp .gal-bezel{box-shadow:inset 0 0 0 1px var(--line)}
+.mbp .gal-stage img{cursor:zoom-in}
+.mbp .gal-stage.is-pack img,.mbp .gal-thumb.is-pack img,.mbg-lb img.is-pack{filter:drop-shadow(0 10px 22px rgba(0,0,0,.16)) drop-shadow(0 1px 2px rgba(0,0,0,.12))}
+.mbg-wrap{position:relative}
+.mbp .gal-thumbs{scroll-behavior:smooth;scrollbar-width:none;scroll-snap-type:x proximity}.mbp .gal-thumbs::-webkit-scrollbar{display:none}
+.mbp .gal-thumb{scroll-snap-align:start;box-shadow:inset 0 0 0 1px var(--line)}
+.mbg-arr{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:38px;height:38px;border-radius:50%;border:0;background:#141414;color:#fff;font-size:18px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:opacity .25s}
+.mbg-arr.l{left:-10px}.mbg-arr.r{right:-10px}.mbg-arr[hidden]{display:none}
+.mbg-lb{position:fixed;inset:0;z-index:1000;background:rgba(255,255,255,.97);display:flex;align-items:center;justify-content:center}
+.mbg-lb img{max-width:92vw;max-height:86vh;object-fit:contain;display:block}
+.mbg-lb button{position:absolute;border:0;background:#141414;color:#fff;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;display:grid;place-items:center}
+.mbg-lb .x{top:20px;right:20px}.mbg-lb .pv{left:20px;top:50%;transform:translateY(-50%)}.mbg-lb .nx{right:20px;top:50%;transform:translateY(-50%)}
+.mbg-lb .cap{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:13px;color:#555}
 </style>
 <script>
 (function(){
@@ -141,6 +156,33 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
     var mp=o.querySelector('.mbo-map');
     o.querySelectorAll('.mbo-r').forEach(function(r){r.addEventListener('mouseenter',function(){mp.classList.add('is-hov');mp.querySelectorAll('path').forEach(function(p){p.classList.toggle('on',p.getAttribute('data-r')===r.getAttribute('data-r'));});});r.addEventListener('mouseleave',function(){mp.classList.remove('is-hov');});});
   }
+  function gallery(){
+    var t=document.querySelector('#app .gal-thumbs'); if(!t||t.dataset.mbg)return; t.dataset.mbg=1;
+    var w=document.createElement('div'); w.className='mbg-wrap'; t.parentNode.insertBefore(w,t); w.appendChild(t);
+    var l=document.createElement('button'), r=document.createElement('button');
+    l.className='mbg-arr l'; r.className='mbg-arr r'; l.type=r.type='button'; l.innerHTML='&#8249;'; r.innerHTML='&#8250;';
+    l.setAttribute('aria-label','Poprzednie miniatury'); r.setAttribute('aria-label','Następne miniatury'); w.appendChild(l); w.appendChild(r);
+    function upd(){ l.hidden=t.scrollLeft<4; r.hidden=t.scrollLeft+t.clientWidth>=t.scrollWidth-4; }
+    l.onclick=function(){t.scrollBy({left:-t.clientWidth*0.8,behavior:'smooth'});}; r.onclick=function(){t.scrollBy({left:t.clientWidth*0.8,behavior:'smooth'});};
+    t.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd(); setTimeout(upd,400);
+    t.addEventListener('wheel',function(e){ if(Math.abs(e.deltaY)>Math.abs(e.deltaX)&&t.scrollWidth>t.clientWidth){ e.preventDefault(); t.scrollLeft+=e.deltaY; } },{passive:false});
+    t.addEventListener('click',function(e){ var b=e.target.closest('.gal-thumb'); if(b) setTimeout(function(){ b.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'}); },30); });
+  }
+  function lightbox(start){
+    var items=[].slice.call(document.querySelectorAll('#app .gal-thumb')).filter(function(b){return !/is-3d|3d/i.test(b.className)&&b.querySelector('img');}).map(function(b){return {src:b.querySelector('img').getAttribute('src'),cap:b.getAttribute('aria-label')||'',pack:/is-pack/.test(b.className)};});
+    if(!items.length)return; var i=Math.max(0,items.findIndex(function(x){return x.src===start;}));
+    var o=document.createElement('div'); o.className='mbg-lb'; o.setAttribute('role','dialog'); o.setAttribute('aria-label','Zdjęcie na pełnym ekranie');
+    o.innerHTML='<img alt=""><button class="x" type="button" aria-label="Zamknij">&#10005;</button>'+(items.length>1?'<button class="pv" type="button" aria-label="Poprzednie">&#8249;</button><button class="nx" type="button" aria-label="Następne">&#8250;</button>':'')+'<div class="cap"></div>';
+    document.body.appendChild(o); document.body.style.overflow='hidden';
+    var im=o.querySelector('img'), cap=o.querySelector('.cap');
+    function show(){ im.src=items[i].src; im.className=items[i].pack?'is-pack':''; cap.textContent=(i+1)+' / '+items.length; }
+    function go(d){ i=(i+d+items.length)%items.length; show(); }
+    function close(){ o.remove(); document.body.style.overflow=''; document.removeEventListener('keydown',key); }
+    function key(e){ if(e.key==='Escape')close(); else if(e.key==='ArrowRight')go(1); else if(e.key==='ArrowLeft')go(-1); }
+    o.addEventListener('click',function(e){ if(e.target===o||e.target.classList.contains('x'))close(); else if(e.target.classList.contains('pv'))go(-1); else if(e.target.classList.contains('nx'))go(1); });
+    document.addEventListener('keydown',key); show(); o.querySelector('.x').focus();
+  }
+  document.addEventListener('click',function(e){ var img=e.target.closest&&e.target.closest('#galStage img'); if(img&&document.body.classList.contains('mbp')){ e.preventDefault(); lightbox(img.getAttribute('src')); } });
   function sync(){
     var s=scr(); document.body.classList.toggle('mbp',s==='produkt'); if(s==='start'){var k=(location.hash.match(/sek=([a-z]+)/)||[])[1];if(k==='cad'){location.replace('podstrony.html#/pliki');}else{location.replace('index.html'+(k==='kontakt'?'#sek-kontakt':''));}return;}
     var b=document.getElementById('mbb'), app=document.getElementById('app'); if(!b||!app)return;
@@ -149,7 +191,7 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
     if(ph){var k=ph.querySelector('.eyebrow'),t=ph.querySelector('h1'),p=ph.querySelector('.page-sub');
       document.getElementById('mbbK').textContent=k?k.textContent:'';document.getElementById('mbbT').textContent=t?t.textContent:'';document.getElementById('mbbS').textContent=p?p.textContent:'';
       ph.classList.add('mb-moved'); b.hidden=false;}
-    else if(s==='produkt'){b.hidden=true;order();var z=app.querySelector('.zestaw');if(z&&z.closest('.pd-sec'))z.closest('.pd-sec').remove();}   // V2: bez sekcji „Produkty możliwe do dobrania” (24.11.2026)   // karta produktu: bez banera, nazwa i zdjęcie zostają nad zgięciem
+    else if(s==='produkt'){b.hidden=true;order();gallery();var z=app.querySelector('.zestaw');if(z&&z.closest('.pd-sec'))z.closest('.pd-sec').remove();}   // V2: bez sekcji „Produkty możliwe do dobrania” (24.11.2026)   // karta produktu: bez banera, nazwa i zdjęcie zostają nad zgięciem
     else b.hidden=true;
   }
   document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('mbx');
@@ -208,7 +250,6 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
       <a href="#/pliki">Baza CAD Decor</a>
       <a href="index.html#sek-kontakt">Kontakt</a>
       <a href="https://www.schedpol.pl" target="_blank" rel="noopener">Pełna oferta — schedpol.pl</a>
-      <a href="../a-biblioteka/v1.html">Poprzednia wersja portalu (V1)</a>
     </nav>
     <p class="foot-note">Dane produktów: oferta Schedpol i Sensea dostępna w Leroy Merlin. Ceny i dostępność: w systemie sklepu.</p>
   </div>
@@ -241,8 +282,8 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 <div class="scrim" id="scrim" data-act="close-all"></div>
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
-<script src="../assets/data.js?v=20261124a"></script>
-<script src="../assets/bokmapa.js?v=20261124a"></script>
+<script src="../assets/data.js?v=20261124b"></script>
+<script src="../assets/bokmapa.js?v=20261124b"></script>
 <script src="../assets/lm.js?v=20261124a"></script>
 <script src="../assets/packshoty.js?v=20261124a"></script>
 <script src="../assets/rysunki.js?v=20261124a"></script>
@@ -252,6 +293,6 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 <script src="../assets/icons.js?v=20261124a"></script>
 <script>window.SPP_SOLO = 1;</script>
 <script src="../assets/proto.js?v=20261124a"></script>
-<script src="../a-biblioteka/a.js?v=20261124a"></script>
+<script src="../a-biblioteka/a.js?v=20261124b"></script>
 </body>
 </html>

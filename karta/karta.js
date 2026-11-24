@@ -147,7 +147,6 @@
 
       <section class="main">
         <figure class="pack">${img(p.im, titleOf(p))}
-          <span class="pk-brand"><img src="../assets/znaki/${sensea ? 'sensea.png' : 'schedpol.svg'}" alt="Marka ${esc(p.brand)}"></span>
           ${p.g ? '<span class="pk-gama">Gama LM <b>' + esc(p.g) + '</b></span>' : ''}
         </figure>
         <div class="side">
