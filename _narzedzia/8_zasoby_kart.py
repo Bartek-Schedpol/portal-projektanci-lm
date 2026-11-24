@@ -41,6 +41,8 @@ def products():
 # Uwaga: 95495956 („BALANS KW 120X90”) — błąd po stronie LM, w danych zostaje „prostokątny”.
 SHAPE_FIX = {"45256512": "pięciokątny", "88758947": "pięciokątny", "82763748": "pięciokątny", "88758948": "pięciokątny",
              "82763752": "pięciokątny", "86448669": "prostokątny"}
+# Gama ustalona ręcznie dla indeksów spoza eksportu LM (decyzja Schedpol 23.11.2026).
+GAMA_FIX = {"83648377": "X"}
 def lm_export(P):
     ws = openpyxl.load_workbook(XLSX, data_only=True).active
     head = [str(c or "").strip() for c in next(ws.iter_rows(min_row=1, max_row=1, values_only=True))]
@@ -58,7 +60,8 @@ def lm_export(P):
           "(function (SP) {\n  var L = " + json.dumps({k: {x: v[x] for x in ("g", "ean", "sup")} for k, v in L.items() if k in refs}, ensure_ascii=False) + ";\n"
           "  SP.lmDate = '26.03.2026';\n  SP.lmOnly = " + json.dumps(only_lm, ensure_ascii=False) + ";\n"
           "  var SHAPE = " + json.dumps(SHAPE_FIX, ensure_ascii=False) + ";  /* kształt wg nazwy w systemie LM (arkusz tytułów był błędny) */\n"
-          "  SP.products.forEach(function (p) { var x = L[p.ref]; if (x) { p.g = x.g; p.ean = x.ean; p.sup = x.sup; } else { p.g = ''; p.lmMissing = true; }\n"
+          "  var GAMA = " + json.dumps(GAMA_FIX, ensure_ascii=False) + ";  /* gama ustalona ręcznie — indeksy spoza eksportu LM */\n"
+          "  SP.products.forEach(function (p) { var x = L[p.ref]; if (x) { p.g = x.g; p.ean = x.ean; p.sup = x.sup; } else { p.g = GAMA[p.ref] || ''; p.lmMissing = true; }\n"
           "    if (SHAPE[p.ref]) p.shape = SHAPE[p.ref]; });\n"
           "})(window.SP);\n")
     io.open(os.path.join(ROOT, "assets", "lm.js"), "w", encoding="utf-8").write(js)

@@ -75,7 +75,9 @@ def kontrola(refs):
         if abs(w - 210) > 1 or abs(h - 297) > 1: bad.append((r, "format %.0f×%.0f" % (w, h)))
         if not all("Roboto" in f for f in fonts): bad.append((r, "fonty: %s" % ", ".join(sorted(fonts))))
         if r not in txt: bad.append((r, "brak nr ref. w warstwie tekstowej"))
-        if not d[0].get_images(): bad.append((r, "brak zdjęć (nie zdążyły się wczytać)"))
+        # packshot (~94 mm przy 150 dpi ≈ 550 px) musi być w PDF; same ikonki (14–240 px) znaczą, że zdjęcia nie zdążyły się wczytać
+        # (zdarza się przy generowaniu wielu kart naraz — 11.2026 na stronę trafiło 9 kart bez obrazków, a stara kontrola ich nie złapała)
+        if max([im[2] for im in d[0].get_images(full=True)] or [0]) < 300: bad.append((r, "brak packshotu (zdjęcia nie zdążyły się wczytać)"))
         hit = d[0].search_for("charakter informacyjny")
         if not hit or hit[-1].y1 > d[0].rect.height - 5 * 72 / 25.4:
             bad.append((r, "stopka poza stroną — treść się nie mieści"))

@@ -2,7 +2,7 @@
    Wybór: tylko filmy o produktach z oferty Schedpol/Sensea w Leroy Merlin albo ogólne szkoleniowe.
    Pominięte celowo: film z logo innej sieci (Castorama), tytuły z twierdzeniami do korekty EmpCo
    („Antibac”, „idealne wygłuszenie”, „najwyższe właściwości izolacyjne”, „ekstremalnie wytrzymały”, DIN 51097),
-   serie spoza oferty LM (Etrusco, Kalait, Competia, Medium, New Horizons, Protos, Stabilsound…).
+   serie spoza oferty LM (Etrusco, Medium, Protos, Stabilsound…).
    Pola: id, t (tytuł z YouTube), kind, g (grupa w Akademii), y (rok), fams (serie w portalu), cats (kategorie — film ogólny), short (pionowy 9:16). */
 window.SP = window.SP || {};
 window.SP.ytChannel = 'https://www.youtube.com/@schedpol';

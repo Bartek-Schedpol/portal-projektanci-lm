@@ -1140,6 +1140,7 @@
   function videosFor(p) {
     const own = function (v) { return (v.fams || []).indexOf(p.fam) !== -1 ? 1 : 0; };
     return (SP.videos || []).filter(function (v) {
+      if ((v.c && v.c !== p.c) || (v.shape && v.shape !== p.shape)) return false;     // 360°: tylko film tego koloru i kształtu
       return own(v) || (v.cats || []).indexOf(p.cat) !== -1;
     }).sort(function (a, b) { return own(b) - own(a); });
   }
@@ -1149,7 +1150,7 @@
       : 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.id) + '?autoplay=1&rel=0';
   }
   function ytHTML(v, lazy) {
-    const poster = v.poster || ('https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg');
+    const poster = v.poster || ('https://i.ytimg.com/vi/' + v.id + (v.short ? '/oardefault.jpg' : '/hqdefault.jpg'));   // shorts: hqdefault bywa czarnym kadrem
     return '<figure class="yt"><div class="yt-frame">' +
       '<button type="button" class="yt-poster" data-act="yt" data-src="' + esc(videoSrc(v)) + '" aria-label="Odtwórz film: ' + esc(v.t) + '">' +
       '<img src="' + esc(poster) + '" alt="" loading="' + (lazy ? 'lazy' : 'eager') + '"><span class="yt-play">' + ic('play', 26) + '</span>' +
