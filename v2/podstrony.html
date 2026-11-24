@@ -149,7 +149,7 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
     if(ph){var k=ph.querySelector('.eyebrow'),t=ph.querySelector('h1'),p=ph.querySelector('.page-sub');
       document.getElementById('mbbK').textContent=k?k.textContent:'';document.getElementById('mbbT').textContent=t?t.textContent:'';document.getElementById('mbbS').textContent=p?p.textContent:'';
       ph.classList.add('mb-moved'); b.hidden=false;}
-    else if(s==='produkt'){b.hidden=true;order();}   // karta produktu: bez banera, nazwa i zdjęcie zostają nad zgięciem
+    else if(s==='produkt'){b.hidden=true;order();var z=app.querySelector('.zestaw');if(z&&z.closest('.pd-sec'))z.closest('.pd-sec').remove();}   // V2: bez sekcji „Produkty możliwe do dobrania” (24.11.2026)   // karta produktu: bez banera, nazwa i zdjęcie zostają nad zgięciem
     else b.hidden=true;
   }
   document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('mbx');
