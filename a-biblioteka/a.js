@@ -604,6 +604,28 @@
     const t = m[3] ? typOf(m[3]) : null;
     zipDownload(zipList([{ id: id, title: '' }]), zipSafe('Schedpol_' + m[2] + (t ? '_' + t.dir : '') + '_' + today()).replace(/ /g, '-') + '.zip', btn);
   }
+  /* 25.11: „Kopiuj link” — adres, który po otwarciu odtwarza tę samą listę plików (#/pliki?lista=…) */
+  function tzItem(id) {
+    const m = /^(p|s|t):([^:]+)(?::(.+))?$/.exec(id || '');
+    if (!m) return null;
+    if (m[1] === 'p') { const p = SP.byRef(m[2]); return p ? { id: id, title: p.s + ' ' + variant(p), sub: 'LM ' + p.ref, im: p.im } : null; }
+    const s = SP.serie(m[2]); if (!s) return null;
+    if (m[1] === 's') return { id: id, title: 'Seria ' + s.fam + ' — wszystkie pliki', sub: indeksy(s.n), im: s.pack };
+    const t = typOf(m[3]); return t ? { id: id, title: s.fam + ' — ' + t.l.toLowerCase(), sub: indeksy(s.n), im: s.pack } : null;
+  }
+  function tzImport(list) {
+    let n = 0;
+    String(list || '').split('|').forEach(function (id) {
+      if (inTeczka(id)) return;
+      const it = tzItem(id); if (it) { teczka.push(it); n++; }
+    });
+    if (n) { tzSave(); toast('Dodano do Plików', pliki(tzTotals().n), 'folder'); }
+  }
+  function tzLink() {
+    const url = location.href.split('#')[0] + '#/pliki?lista=' + encodeURIComponent(teczka.map(function (x) { return x.id; }).join('|'));
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () { toast('Link do listy plików skopiowany', '', 'copy'); },
+      function () { window.prompt('Skopiuj link do listy plików:', url); });
+  }
   function tzMail() {
     const base = location.href.split('#')[0];
     const lines = teczka.map(function (x) {
@@ -633,7 +655,7 @@
     return `<div class="tz-total"><span>${pliki(t.n)} w ${teczka.length} ${plural(teczka.length, 'pozycji', 'pozycjach', 'pozycjach')}</span><b>${mbLabel(t.mb)}</b></div>
       <button class="btn btn-primary btn-block" type="button" data-act="tz-zip"${dis}>Pobierz ZIP <span class="btn-ic">${ic('download', 16)}</span></button>
       <div class="tz-row2">
-        <button class="btn btn-block" type="button" data-act="tz-mail"${dis}>${ic('mail', 16)} Wyślij linki e-mailem</button>
+        <button class="btn btn-block" type="button" data-act="tz-link"${dis}>${ic('copy', 16)} Kopiuj link</button>
         <button class="btn" type="button" data-act="tz-clear"${dis}>Wyczyść</button>
       </div>`;
   }
@@ -1626,6 +1648,10 @@
   }
 
   function renderPliki(params) {
+    if (params && params.lista) {                              // link z „Kopiuj link”: odtwórz listę i usuń parametr z adresu
+      tzImport(params.lista);
+      try { history.replaceState(null, '', SPProto.href('pliki', {})); } catch (e) { /* bez historii */ }
+    }
     const typ = params && params.typ === 'dokumenty' ? 'dokument' : params && params.typ;      // stare linki ?typ=dokumenty
     P.tab = TABS.some(function (t) { return t.k === typ; }) ? typ : 'all';
     const st = allStats(), nFiles = st.n, mb = st.mb;
@@ -1797,7 +1823,7 @@
     else if (act === 'tz-remove') tzRemove(t.getAttribute('data-id'));
     else if (act === 'tz-clear') { teczka = []; tzSave(); tzPaint(); toast('Lista plików wyczyszczona', '', 'folder'); }
     else if (act === 'tz-zip') zipDownload(zipList(teczka), 'Schedpol_pliki_' + today() + '.zip', t);
-    else if (act === 'tz-mail') tzMail();
+    else if (act === 'tz-link') tzLink();
     else if (act === 'demo') toast(t.getAttribute('data-msg') || 'Makieta', t.getAttribute('data-detail') || '', 'download');
     else if (act === 'gal') setStage(+t.getAttribute('data-idx'));
     else if (act === 'preview') openPreview(PD.files && PD.files[+t.getAttribute('data-file')]);

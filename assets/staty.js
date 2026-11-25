@@ -21,7 +21,7 @@
 
   /* czytelny adres odsłony: /v2/start, /v2/katalog, /v2/produkt/89189407, /v1/akademia … */
   function pageUrl() {
-    var ver = /\/v2\//.test(location.pathname) ? 'v2' : (/v1\.html/.test(location.pathname) ? 'v1' : 'inne');
+    var lm = location.pathname.match(/\/(v2|en|ro)\//), ver = lm ? lm[1] : (/v1\.html/.test(location.pathname) ? 'v1' : 'inne');   // 25.11: także /en/ i /ro/
     var h = location.hash || '', m = h.match(/^#\/([a-z]+)/), scr = m ? m[1] : 'start';
     if (/podstrony\.html/.test(location.pathname) && !m) scr = 'katalog';
     var ref = (h.match(/ref=(\d+)/) || [])[1];

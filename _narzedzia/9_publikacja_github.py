@@ -16,8 +16,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.dirname(HERE)
 DST = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(SRC), "github-portal-lm")
 
-DIRS = ["v2", "a-biblioteka", "karta", "assets/fonts", "assets/img", "assets/znaki", "assets/karty", "assets/dokumenty", "assets/akademia", "assets/cad", "_narzedzia"]
-FILES = ["assets/data.js", "assets/bokmapa.js", "assets/filmy.js", "assets/modele3d.js", "assets/lm.js", "assets/packshoty.js", "assets/rysunki.js", "assets/dokumenty.js", "assets/icons.js", "assets/proto.js", "assets/staty.js", "assets/rozmiary.js",
+DIRS = ["v2", "en", "ro", "a-biblioteka", "karta", "assets/fonts", "assets/img", "assets/znaki", "assets/karty", "assets/dokumenty", "assets/akademia", "assets/cad", "_narzedzia"]
+FILES = ["assets/data.js", "assets/bokmapa.js", "assets/filmy.js", "assets/modele3d.js", "assets/lm.js", "assets/packshoty.js", "assets/rysunki.js", "assets/dokumenty.js", "assets/icons.js", "assets/proto.js", "assets/staty.js", "assets/rozmiary.js", "assets/i18n.js", "assets/i18n-en.js", "assets/i18n-ro.js",
          "assets/logo.svg", "assets/logo-white.svg", "assets/img-manifest.json"]
 SKIP = ("__pycache__", ".tmp", "Thumbs.db", "_audyt_odplyw")   # arkusze audytu tylko lokalnie
 
@@ -26,10 +26,14 @@ INDEX = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
-<meta http-equiv="refresh" content="0; url=v2/index.html">
 <title>Strefa projektanta Schedpol</title>
+<script>/* wersja językowa (25.11.2026): zapamiętany wybór, inaczej język przeglądarki — pl → v2, ro → ro, pozostałe → en */
+(function(){var k;try{k=localStorage.getItem('sp-lang')}catch(e){}
+if(!k){var l=(navigator.language||'pl').toLowerCase();k=l.indexOf('pl')===0?'pl':(l.indexOf('ro')===0?'ro':'en')}
+location.replace(({pl:'v2',en:'en',ro:'ro'}[k]||'v2')+'/index.html'+location.hash)})();</script>
+<noscript><meta http-equiv="refresh" content="0; url=v2/index.html"></noscript>
 </head>
-<body><p><a href="v2/index.html">Przejdź do Strefy projektanta Schedpol</a></p></body>
+<body><p><a href="v2/index.html">Polski</a> · <a href="en/index.html">English</a> · <a href="ro/index.html">Română</a></p></body>
 </html>
 """
 
