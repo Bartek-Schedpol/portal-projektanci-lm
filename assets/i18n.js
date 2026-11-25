@@ -26,13 +26,13 @@
       '.sp-lang>button{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 11px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff!important;font:600 12.5px/1 Inter,system-ui,sans-serif;letter-spacing:.04em;cursor:pointer}' +
       '.sp-lang>button:hover{border-color:rgba(255,255,255,.6)}' +
       '.sp-lang svg{width:15px;height:15px;flex:none}' +
-      '.sp-lang ul{position:absolute;right:0;top:calc(100% + 8px);min-width:178px;margin:0;padding:6px;list-style:none;background:#fff;color:#141414;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.06);z-index:200}' +
-      '.sp-lang ul{display:block!important;flex-direction:column}' +
-      '.sp-lang ul[hidden]{display:none!important}' +
-      '.sp-lang li{display:block;margin:0;padding:0;list-style:none}' +
-      '.sp-lang li a{display:flex;justify-content:space-between;gap:16px;padding:9px 10px;border-radius:7px;color:#141414;text-decoration:none;font:500 13.5px/1.2 Inter,system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important}' +
-      '.sp-lang li a:hover,.sp-lang li a[aria-current]{background:#f2f2f2}' +
-      '.sp-lang li small{font:600 11px/1.2 ui-monospace,monospace;color:#777}' +
+      '.sp-lang-dd{position:fixed;min-width:178px;margin:0;padding:6px;list-style:none;background:#fff;color:#141414;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.06);z-index:10000}' +
+      '.sp-lang-dd{display:block!important}' +
+      '.sp-lang-dd[hidden]{display:none!important}' +
+      '.sp-lang-dd li{display:block;margin:0;padding:0;list-style:none}' +
+      '.sp-lang-dd li a{display:flex;justify-content:space-between;gap:16px;padding:9px 10px;border-radius:7px;color:#141414;text-decoration:none;font:500 13.5px/1.2 Inter,system-ui,sans-serif!important;letter-spacing:0!important;text-transform:none!important}' +
+      '.sp-lang-dd li a:hover,.sp-lang-dd li a[aria-current]{background:#f2f2f2}' +
+      '.sp-lang-dd li small{font:600 11px/1.2 ui-monospace,monospace;color:#777}' +
       '.sp-lang-m{display:flex;gap:6px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(127,127,127,.25)}' +
       '.sp-lang-m a{flex:1;text-align:center;padding:8px 0;border-radius:7px;border:1px solid rgba(127,127,127,.4);font:600 13px Inter,system-ui,sans-serif;text-decoration:none;color:inherit}' +
       '.sp-lang-m a[aria-current]{background:#fff;color:#141414;border-color:#fff}' +
@@ -52,7 +52,12 @@
     var before = host && (host.querySelector('.avatar') || host.querySelector('.mb-cta'));
     if (host) { if (before) before.parentNode.insertBefore(w, before); else host.appendChild(w); }
     var b = w.querySelector('button'), ul = w.querySelector('ul');
-    b.addEventListener('click', function (e) { e.stopPropagation(); ul.hidden = !ul.hidden; b.setAttribute('aria-expanded', String(!ul.hidden)); });
+    /* lista w osobnej warstwie nad całą stroną (w nagłówku zasłaniała ją treść strony i kliknięcia nie działały) */
+    ul.className = 'sp-lang-dd'; ul.setAttribute('translate', 'no'); document.body.appendChild(ul);
+    function place() { var r = b.getBoundingClientRect(); ul.style.top = (r.bottom + 8) + 'px'; ul.style.right = Math.max(8, document.documentElement.clientWidth - r.right) + 'px'; }
+    window.addEventListener('resize', function () { if (!ul.hidden) place(); });
+    window.addEventListener('scroll', function () { if (!ul.hidden) place(); }, { passive: true });
+    b.addEventListener('click', function (e) { e.stopPropagation(); place(); ul.hidden = !ul.hidden; b.setAttribute('aria-expanded', String(!ul.hidden)); });
     document.addEventListener('click', function () { ul.hidden = true; b.setAttribute('aria-expanded', 'false'); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') ul.hidden = true; });
     /* menu mobilne (podstrony: #navLinks) */
@@ -64,7 +69,7 @@
     }
     /* linki przełącznika muszą nadążać za zmianą podstrony (#/katalog, #/produkt…) */
     window.addEventListener('hashchange', function () {
-      document.querySelectorAll('.sp-lang a[data-lang], .sp-lang-m a').forEach(function (a, i) {
+      document.querySelectorAll('.sp-lang-dd a[data-lang], .sp-lang-m a').forEach(function (a, i) {
         var k = a.getAttribute('data-lang') || LANGS[i % 3].k; a.setAttribute('href', hrefFor(k));
       });
     });
