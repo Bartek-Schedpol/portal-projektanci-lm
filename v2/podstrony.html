@@ -7,8 +7,8 @@
 <meta name="description" content="Portal Schedpol dla projektantów Leroy Merlin: wyszukaj produkt, pobierz pliki, karty produktów, instrukcje i filmy.">
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="../assets/fonts/fonts.css?v=20261124a">
-<link rel="stylesheet" href="../a-biblioteka/a.css?v=20261124b">
+<link rel="stylesheet" href="../assets/fonts/fonts.css?v=20261125b">
+<link rel="stylesheet" href="../a-biblioteka/a.css?v=20261125d">
 <style>
 body.mbx{--brand:#943330;--brand-ink:#7A2623}
 .mbt{background:#0E0E0E;color:#C9C9C9;font-size:12.5px}.mbt-in{max-width:1400px;margin:0 auto;padding:0 var(--gut,32px);display:flex;justify-content:space-between;align-items:center;height:38px}
@@ -199,7 +199,7 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
   window.addEventListener('hashchange',function(){setTimeout(sync,0);});
 })();
 </script>
-<script src="../assets/staty.js?v=20261124a" defer></script>
+<script src="../assets/staty.js?v=20261125b" defer></script>
 </head>
 <body>
 <a class="skip" href="#app">Przejdź do treści</a>
@@ -223,8 +223,8 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
       <button class="nav-search" type="button" data-act="open-search" aria-label="Szukaj: nr ref., seria, wymiar (skrót: ukośnik)">
         <i data-i="search" data-size="16"></i><span>Szukaj: nr ref., seria, wymiar…</span><kbd>/</kbd>
       </button>
-      <button class="nav-teczka" type="button" data-act="open-teczka" aria-label="Otwórz teczkę z plikami">
-        <i data-i="folder" data-size="16"></i><span>Teczka</span><b class="count" id="teczkaCount">0</b>
+      <button class="nav-teczka" type="button" data-act="open-teczka" aria-label="Otwórz listę plików do pobrania">
+        <i data-i="folder" data-size="16"></i><span>Pliki</span><b class="count" id="teczkaCount">0</b>
       </button>
       <button class="avatar" type="button" aria-label="Konto: Anna Nowak, projektantka, LM Poznań" title="Anna Nowak · projektantka · LM Poznań">AN</button>
       <button class="nav-burger" type="button" data-act="toggle-menu" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
@@ -260,8 +260,8 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
   <div class="cmd-box">
     <div class="cmd-field">
       <i data-i="search" data-size="20"></i>
-      <input id="cmdInput" type="search" placeholder="Nr ref. LM, seria, wymiar, kolor…" autocomplete="off" spellcheck="false" aria-label="Szukaj w bibliotece" aria-controls="cmdList">
-      <kbd>Esc</kbd>
+      <input id="cmdInput" type="search" placeholder="Nr ref. LM, EAN, seria, wymiar, kolor…" autocomplete="off" spellcheck="false" aria-label="Szukaj w bibliotece" aria-controls="cmdList">
+      <button class="btn btn-sm btn-primary cmd-go" type="button" data-act="cmd-go">Szukaj</button><kbd>Esc</kbd>
     </div>
     <div class="sugg" id="cmdList"></div>
   </div>
@@ -271,10 +271,10 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 <aside class="drawer" id="teczka" role="dialog" aria-modal="true" aria-labelledby="teczkaTitle" aria-hidden="true">
   <header class="drawer-head">
     <div>
-      <h2 id="teczkaTitle">Teczka</h2>
+      <h2 id="teczkaTitle">Pliki</h2>
       <p id="teczkaSum">Brak plików</p>
     </div>
-    <button class="icon-btn" type="button" data-act="close-all" aria-label="Zamknij teczkę"><i data-i="x" data-size="18"></i></button>
+    <button class="icon-btn" type="button" data-act="close-all" aria-label="Zamknij listę plików"><i data-i="x" data-size="18"></i></button>
   </header>
   <div class="drawer-body" id="teczkaBody"></div>
   <footer class="drawer-foot" id="teczkaFoot"></footer>
@@ -282,17 +282,18 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 <div class="scrim" id="scrim" data-act="close-all"></div>
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
-<script src="../assets/data.js?v=20261124b"></script>
-<script src="../assets/bokmapa.js?v=20261124b"></script>
-<script src="../assets/lm.js?v=20261124a"></script>
-<script src="../assets/packshoty.js?v=20261124a"></script>
-<script src="../assets/rysunki.js?v=20261124a"></script>
-<script src="../assets/dokumenty.js?v=20261124a"></script>
-<script src="../assets/filmy.js?v=20261124a"></script>
-<script src="../assets/modele3d.js?v=20261124a"></script>
-<script src="../assets/icons.js?v=20261124a"></script>
+<script src="../assets/data.js?v=20261125d"></script>
+<script src="../assets/bokmapa.js?v=20261125d"></script>
+<script src="../assets/lm.js?v=20261125b"></script>
+<script src="../assets/rozmiary.js?v=20261125b"></script>
+<script src="../assets/packshoty.js?v=20261125b"></script>
+<script src="../assets/rysunki.js?v=20261125b"></script>
+<script src="../assets/dokumenty.js?v=20261125b"></script>
+<script src="../assets/filmy.js?v=20261125b"></script>
+<script src="../assets/modele3d.js?v=20261125d"></script>
+<script src="../assets/icons.js?v=20261125b"></script>
 <script>window.SPP_SOLO = 1;</script>
-<script src="../assets/proto.js?v=20261124a"></script>
-<script src="../a-biblioteka/a.js?v=20261124b"></script>
+<script src="../assets/proto.js?v=20261125b"></script>
+<script src="../a-biblioteka/a.js?v=20261125d"></script>
 </body>
 </html>

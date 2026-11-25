@@ -1692,5 +1692,19 @@
    3600
   ],
   "tb": true
+ },
+ "balans-przekroj": {
+  "file": "balans-przekroj.jpg",
+  "w": 1200,
+  "h": 734,
+  "kind": "doc",
+  "alpha": false,
+  "src": "BALANS\\BALANS BIAŁY KAMIEŃ\\…\u0005. ZDJĘCIA DODATKOWE\\przekrój kompozyt.jpg (bez podpisów: Antibac/pleśń — EmpCo)",
+  "base": "p",
+  "orig": [
+   2500,
+   2500
+  ],
+  "tb": false
  }
 }

@@ -20,6 +20,9 @@
   /* ---------- stałe ---------- */
   const DEFAULT_REF = '89189409';
   const CAD = { name: 'Schedpol & Schedline', date: '04.2026', mb: 55.2 };
+  /* baza producenta w katalogu CAD Projekt K&A (sprawdzone 25.11.2026: „SCHEDPOL & SCHEDLINE”, kwiecień 2026, 55.2 MB, bez logowania) */
+  const CAD_URL = 'https://www.cadprojekt.com.pl/category/baza-modele3d/';
+  const CAD_DOC = 'https://cadprojekt.com.pl/instrukcje-cad-decor-pro/';
   const VERIFIED = '11.2026';
   const HINTS = ['89189406', 'Balans 80×100', 'czarny kamień', 'odpływ 80'];
   const FT = [
@@ -132,7 +135,7 @@
     return p.brand + '_' + ser + (dim ? '_' + dim : '') + ver;
   }
   /* karta produktu PDF: prawdziwe pliki z _narzedzia/7_karty_pdf.py (szablon ../karta/index.html) */
-  const KARTY_V = '20261124b';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
+  const KARTY_V = '20261125a';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
   function kartaPdf(p) { return '../assets/karty/Karta-produktu_LM' + p.ref + '.pdf?v=' + KARTY_V; }
   function kartaView(p) { return '../karta/index.html?ref=' + encodeURIComponent(p.ref); }
   /* karty gwarancyjne i instrukcje montażu przypisane do indeksu (assets/dokumenty.js) */
@@ -142,8 +145,9 @@
   }
   /* modele 3D (assets/modele3d.js) i podgląd w przeglądarce (<model-viewer>, ładowany przy pierwszym użyciu) */
   const CAD_BASE = '../assets/cad/';
+  const CAD_Q = '?v=20261125c';   // wersja modeli 3D — zmień po przebudowie brył (pamięć podręczna przeglądarek)
   function cadFor(p) { return SP.cad && SP.cad[p.ref]; }
-  function glbFor(p) { const c = cadFor(p); const g = c && c.files.filter(function (x) { return x.ext === 'GLB'; })[0]; return g ? CAD_BASE + g.f : ''; }
+  function glbFor(p) { const c = cadFor(p); const g = c && c.files.filter(function (x) { return x.ext === 'GLB'; })[0]; return g ? CAD_BASE + g.f + CAD_Q : ''; }
   let mvLoading = null;
   function loadMV() {
     if (window.customElements && customElements.get('model-viewer')) return;
@@ -188,30 +192,52 @@
     return '<model-viewer src="' + esc(src) + '" data-ref="' + esc(ref || '') + '" alt="' + esc(alt) + '" camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="800" rotation-per-second="18deg" ' +
       'shadow-intensity="1.4" shadow-softness="0.6" exposure="0.78" tone-mapping="neutral" environment-image="neutral" camera-orbit="35deg 62deg auto" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>';
   }
+  /* 25.11.2026: wyłącznie pliki, które są na serwerze (wcześniej część pozycji była atrapą makiety).
+     typ = grupa w Centrum plików i folder w paczce ZIP; rozmiary z assets/rozmiary.js (16_rozmiary_plikow.py). */
+  const FTYP = [
+    { k: 'karta', l: 'Karty produktów', dir: 'Karty produktow PDF' },
+    { k: 'model', l: 'Modele 3D', dir: 'Modele 3D' },
+    { k: 'rysunek', l: 'Rysunki techniczne', dir: 'Rysunki techniczne' },
+    { k: 'packshot', l: 'Packshoty', dir: 'Packshoty' },
+    { k: 'aranzacja', l: 'Aranżacje', dir: 'Aranzacje' },
+    { k: 'grafika', l: 'Przekroje i infografiki', dir: 'Przekroje i infografiki' },
+    { k: 'dokument', l: 'Instrukcje i karty gwarancyjne', dir: 'Instrukcje i karty gwarancyjne' }
+  ];
+  function kbOf(href) { const k = String(href || '').split('?')[0].replace(/^\.\.\/assets\//, ''); return (SP.kb && SP.kb[k]) || 0; }
+  function extOfPath(path) { return ((String(path).split('?')[0].match(/\.([a-z0-9]+)$/i) || [])[1] || '').toUpperCase(); }
   function filesFor(p) {
-    const s = serieOf(p), f = [], base = fileBase(p), has = s.files || {};
-    f.push({ ext: 'PDF', name: 'Karta-produktu_LM' + p.ref + '.pdf', desc: 'Karta produktu PDF, A4 — parametry, nr ref., EAN, rysunek techniczny, gwarancja', mb: 0.2, href: kartaPdf(p), view: kartaView(p), karta: true });
-    f.push({ ext: 'JPG', name: base + '_packshot.jpg', desc: 'Packshot JPG, 2500 px', mb: rnd(p.ref + 'a', 0.6, 1.6) });
-    f.push({ ext: 'PNG', name: base + '_packshot.png', desc: 'Packshot PNG, przezroczyste tło', mb: rnd(p.ref + 'b', 2.2, 4.8) });
-    if (has['aranżacja']) f.push({ ext: 'JPG', name: base + '_aranzacja.jpg', desc: 'Aranżacja JPG, 2500 px', mb: rnd(p.ref + 'c', 1.8, 3.9) });
-    if (has['rysunek']) f.push({ ext: 'PDF', name: base + '_rysunek-techniczny.pdf', desc: 'Rysunek techniczny PDF', mb: rnd(p.ref + 'd', 0.2, 3.2) });
+    const f = [], base = fileBase(p);
+    const add = function (o) { o.mb = kbOf(o.href) / 1024 || o.mb || 0; f.push(o); };
+    add({ ext: 'PDF', name: 'Karta-produktu_LM' + p.ref + '.pdf', desc: 'Karta produktu PDF, A4 — parametry, nr ref., EAN, rysunek techniczny, gwarancja', href: kartaPdf(p), view: kartaView(p), karta: true, typ: 'karta' });
     const cad = cadFor(p);
     if (cad) {                                      // prawdziwe modele: assets/cad (10_modele_3d.py)
       const glb = (cad.files.filter(function (x) { return x.ext === 'GLB'; })[0] || {}).f;
       const CADD = { DWG: 'Model 3D DWG (AutoCAD)', OBJ: 'Model 3D OBJ w archiwum ZIP (SketchUp, Blender, 3ds Max)', '3DS': 'Model 3D 3DS (3ds Max, CAD Decor)' };
       cad.files.filter(function (x) { return x.ext !== 'GLB'; }).forEach(function (x) {
-        f.push({ ext: x.ext, name: x.f, desc: CADD[x.ext] + ' · wymiary w cm' + (cad.approx && cad.from ? ' · bryła serii dopasowana do wymiaru produktu (wzorzec ' + String(cad.from[0]).replace('.', ',') + ' × ' + String(cad.from[1]).replace('.', ',') + ' cm)' : '') + (cad.fix ? ' · odpływ wg rysunku technicznego' : '') + (cad.note ? ' · ' + cad.note : ''), mb: x.kb / 1024, href: CAD_BASE + x.f, glb: glb ? CAD_BASE + glb : '' });
+        add({ ext: x.ext, name: x.f, desc: CADD[x.ext] + ' · wymiary w cm' + (cad.approx && cad.from ? ' · bryła serii dopasowana do wymiaru produktu (wzorzec ' + String(cad.from[0]).replace('.', ',') + ' × ' + String(cad.from[1]).replace('.', ',') + ' cm)' : '') + (cad.fix ? ' · odpływ wg rysunku technicznego' : '') + (cad.note ? ' · ' + cad.note : ''), mb: x.kb / 1024, href: CAD_BASE + x.f + CAD_Q, glb: glb ? CAD_BASE + glb + CAD_Q : '', typ: 'model' });
       });
-    } else if (p.cat !== 'akcesoria') f.push({ ext: 'DWG', name: base + '_rysunek.dwg', desc: 'Rysunek 2D DWG', mb: rnd(p.ref + 'e', 0.15, 0.6) });
+    }
     if (['brodzik', 'wanna', 'panel ścienny', 'odpływ liniowy'].indexOf(p.cat) !== -1) {
       f.push({ ext: '3D', name: 'Baza CAD Decor — ' + CAD.name, desc: 'Model 3D w bazie CAD Decor (aktualizacja ' + CAD.date + ')', mb: 0, cad: true });
     }
-    if (has['infografika']) f.push({ ext: 'PNG', name: base + '_cechy.png', desc: 'Infografika: cechy serii', mb: rnd(p.ref + 'f', 0.5, 1.4) });
-    if (has['opis']) f.push({ ext: 'PDF', name: base + '_opis.pdf', desc: 'Opis produktu', mb: rnd(p.ref + 'g', 0.05, 0.2) });
-    docsFor(p).forEach(function (d) {              // prawdziwe pliki: assets/dokumenty (8_zasoby_kart.py)
-      f.push({ ext: 'PDF', name: d.f, desc: d.t + ' · ' + d.str + ' ' + plural(d.str, 'strona', 'strony', 'stron'), mb: d.mb, href: DOC_BASE + d.f, doc: d.typ, t: d.t });
+    /* obrazy = to samo, co w galerii produktu (packshot, zdjęcia dodatkowe, aranżacje, rysunek, przekrój) */
+    const seen = {}, nTyp = {};
+    galleryFor(p).forEach(function (g) {
+      if (g.kind === '3d' || seen[g.k]) return;
+      seen[g.k] = 1;
+      const im = SP.img[g.k]; if (!im) return;
+      const href = SP.src(g.k), e = extOfPath(href);
+      const typ = g.kind === 'pack' ? 'packshot' : g.kind === 'scene' ? 'aranzacja' : (/^rys:|^draw-/.test(g.k) ? 'rysunek' : 'grafika');
+      nTyp[typ] = (nTyp[typ] || 0) + 1;
+      const suf = { packshot: 'packshot', aranzacja: 'aranzacja', rysunek: 'rysunek-techniczny', grafika: 'grafika' }[typ];
+      const lab = { packshot: 'Packshot', aranzacja: 'Aranżacja — wizualizacja poglądowa', rysunek: 'Rysunek techniczny, wymiary w mm', grafika: g.cap || 'Grafika' }[typ];
+      add({ ext: e, name: base + '_' + suf + (nTyp[typ] > 1 ? '-' + nTyp[typ] : '') + '.' + e.toLowerCase(), desc: lab + ' · ' + im.w + ' × ' + im.h + ' px' + (im.tb ? ' · przezroczyste tło' : ''),
+        href: href, typ: typ, pv: { t: 'img', src: href, tb: typ === 'packshot', note: typ === 'aranzacja' ? 'Wizualizacja poglądowa' : '' } });
     });
-    f.forEach(function (x) { x.pv = previewOf(p, x); });
+    docsFor(p).forEach(function (d) {              // prawdziwe pliki: assets/dokumenty (8_zasoby_kart.py)
+      add({ ext: 'PDF', name: d.f, desc: d.t + ' · ' + d.str + ' ' + plural(d.str, 'strona', 'strony', 'stron'), mb: d.mb, href: DOC_BASE + d.f, doc: d.typ, t: d.t, typ: 'dokument' });
+    });
+    f.forEach(function (x) { if (!x.pv) x.pv = previewOf(p, x); });
     return f;
   }
   /* podgląd pliku przed pobraniem: PDF w ramce, obrazy w lightboksie, opis jako tekst */
@@ -256,8 +282,8 @@
   function pfCols(p, all) {
     const groups = [
       { k: 'cad', t: 'Modele 3D i CAD', ic: 'cube', test: function (f) { return f.cad || ['DWG', 'OBJ', '3DS', 'GLB'].indexOf(f.ext) !== -1; } },
-      { k: 'doc', t: 'Dokumentacja', ic: 'file', test: function (f) { return f.ext === 'PDF'; } },
-      { k: 'img', t: 'Packshoty i prezentacje', ic: 'image', test: function (f) { return f.ext === 'JPG' || f.ext === 'PNG'; } }
+      { k: 'doc', t: 'Dokumentacja', ic: 'file', test: function (f) { return f.ext === 'PDF' || f.typ === 'rysunek' || f.typ === 'grafika'; } },
+      { k: 'img', t: 'Packshoty i aranżacje', ic: 'image', test: function (f) { return f.typ === 'packshot' || f.typ === 'aranzacja'; } }
     ];
     const used = {};
     return groups.map(function (g) {
@@ -370,7 +396,7 @@
         ${p.new ? '<span class="tag">Nowość</span>' : ''}
         ${brandFlag(p)}${gamaFlag(p)}
       </a>
-      <button type="button" class="card-add${inT ? ' is-in' : ''}" data-act="add-product" data-ref="${esc(p.ref)}" aria-label="Dodaj pliki produktu ${esc(p.ref)} do teczki" title="Dodaj pliki do teczki">${ic(inT ? 'check' : 'plus', 16, 1.8)}</button>
+      <button type="button" class="card-add${inT ? ' is-in' : ''}" data-act="add-product" data-ref="${esc(p.ref)}" aria-label="Dodaj pliki produktu ${esc(p.ref)} do Plików" title="Dodaj pliki do Plików">${ic(inT ? 'check' : 'plus', 16, 1.8)}</button>
       <div class="card-body">
         <p class="card-kicker">${kickerHTML(p)}</p>
         <h3 class="card-title"><a href="${href}">${esc(variant(p))}</a></h3>
@@ -391,7 +417,7 @@
       <td>${ftsHTML(p)}</td>
       <td><div class="t-act">
         <a class="icon-btn" href="${esc(kartaPdf(p))}" download aria-label="Pobierz kartę produktu PDF ${esc(p.ref)}" title="Karta produktu PDF">${ic('file', 16)}</a>
-        <button type="button" class="icon-btn" data-act="add-product" data-ref="${esc(p.ref)}" aria-label="Dodaj pliki produktu ${esc(p.ref)} do teczki" title="Dodaj pliki do teczki">${ic(inTeczka('p:' + p.ref) ? 'check' : 'plus', 16)}</button>
+        <button type="button" class="icon-btn" data-act="add-product" data-ref="${esc(p.ref)}" aria-label="Dodaj pliki produktu ${esc(p.ref)} do Plików" title="Dodaj pliki do Plików">${ic(inTeczka('p:' + p.ref) ? 'check' : 'plus', 16)}</button>
         <a class="icon-btn" href="${href}" aria-label="Otwórz kartę produktu ${esc(p.ref)}" title="Karta produktu">${ic('arrow-right', 16)}</a>
       </div></td>
     </tr>`;
@@ -442,44 +468,163 @@
   })();
   function tzSave() { try { localStorage.setItem(TZ_KEY, JSON.stringify(teczka)); } catch (e) { /* brak dostępu do pamięci */ } }
   function inTeczka(id) { return teczka.some(function (x) { return x.id === id; }); }
-  function tzTotals() { return teczka.reduce(function (a, x) { return { n: a.n + (x.n || 0), mb: a.mb + (x.mb || 0) }; }, { n: 0, mb: 0 }); }
+  /* 25.11.2026: pozycje listy „Pliki” wskazują paczkę (p: produkt, s: seria, t: seria + typ), pliki i rozmiary liczone na żywo
+     z prawdziwych plików — ZIP składa przeglądarka (JSZip z cdnjs, ładowany przy pierwszym pobraniu). */
+  teczka = teczka.filter(function (x) { return /^(p|s|t):/.test(x.id); });          // stare pozycje makiety (np. „cad”) — usunięte
+  const PKG = {};
+  function seriesFiles(fam) {
+    if (PKG[fam]) return PKG[fam];
+    const seen = {}, out = [];
+    SP.products.filter(function (p) { return p.fam === fam; }).forEach(function (p) {
+      filesFor(p).forEach(function (f) {
+        if (!f.href) return;
+        const u = f.href.split('?')[0];
+        if (seen[u]) return;
+        seen[u] = 1; out.push(f);
+      });
+    });
+    return (PKG[fam] = out);
+  }
+  function typOf(k) { return FTYP.filter(function (t) { return t.k === k; })[0]; }
+  function itemFiles(x) {
+    const m = /^(p|s|t):(.+)$/.exec(x.id || '');
+    if (!m) return [];
+    if (m[1] === 'p') {
+      const p = SP.byRef(m[2]);
+      if (!p) return [];
+      const fs = filesFor(p).filter(function (f) { return f.href; });
+      return x.names ? fs.filter(function (f) { return x.names.indexOf(f.name) !== -1; }) : fs;
+    }
+    const part = m[2].split(':'), fs = seriesFiles(part[0]);
+    return m[1] === 't' ? fs.filter(function (f) { return f.typ === part[1]; }) : fs;
+  }
+  function itemStats(x) { return itemFiles(x).reduce(function (a, f) { return { n: a.n + 1, mb: a.mb + (f.mb || 0) }; }, { n: 0, mb: 0 }); }
+  function zipSafe(s) { return String(s).replace(/[<>:"\/\\|?*]+/g, '-').replace(/\s+/g, ' ').trim(); }
+  function itemDir(x, f) {
+    if (x.id.charAt(0) === 'p') return zipSafe('LM ' + x.id.slice(2) + ' ' + x.title);
+    const t = typOf(f.typ);
+    return zipSafe(x.id.slice(2).split(':')[0]) + '/' + (t ? t.dir : 'Inne');
+  }
+  function zipList(items) {
+    const seen = {}, list = [];
+    items.forEach(function (x) {
+      itemFiles(x).forEach(function (f) {
+        const u = f.href.split('?')[0];
+        if (seen[u]) return;
+        seen[u] = 1; list.push({ href: f.href, path: itemDir(x, f) + '/' + zipSafe(f.name), mb: f.mb || 0 });
+      });
+    });
+    return list;
+  }
+  function tzTotals() { return teczka.reduce(function (a, x) { const t = itemStats(x); return { n: a.n + t.n, mb: a.mb + t.mb }; }, { n: 0, mb: 0 }); }
   function tzAdd(item) {
     const i = teczka.findIndex(function (x) { return x.id === item.id; });
-    if (i >= 0) { teczka[i] = item; toast('Zaktualizowano w teczce', item.title); }
-    else { teczka.unshift(item); toast('Dodano do teczki', item.title + ' · ' + pliki(item.n)); }
+    if (i >= 0) { teczka[i] = item; toast('Zaktualizowano w Plikach', item.title); }
+    else { teczka.unshift(item); toast('Dodano do Plików', item.title + ' · ' + pliki(itemStats(item).n)); }
     tzSave(); tzPaint(true);
   }
   function tzRemove(id) { teczka = teczka.filter(function (x) { return x.id !== id; }); tzSave(); tzPaint(); }
   function addProduct(ref, files) {
     const p = SP.byRef(ref);
     if (!p) return;
-    const fs = files || filesFor(p);
+    const all = filesFor(p).filter(function (f) { return f.href; });
+    const fs = (files || all).filter(function (f) { return f && f.href; });
     if (!fs.length) { toast('Zaznacz co najmniej jeden plik', '', 'info'); return; }
-    tzAdd({
-      id: 'p:' + ref, title: p.s + ' ' + variant(p), sub: 'LM ' + ref, n: fs.length,
-      mb: fs.reduce(function (a, f) { return a + (f.mb || 0); }, 0), im: p.im
-    });
+    const item = { id: 'p:' + ref, title: p.s + ' ' + variant(p), sub: 'LM ' + ref, im: p.im };
+    if (fs.length < all.length) item.names = fs.map(function (f) { return f.name; });
+    tzAdd(item);
   }
   function addSeries(fam) {
     const s = SP.serie(fam);
     if (!s) return;
-    tzAdd({ id: 's:' + fam, title: 'Paczka serii ' + fam, sub: indeksy(s.n), n: sumFiles(s), mb: s.mb || 0, im: s.pack });
+    tzAdd({ id: 's:' + fam, title: 'Seria ' + fam + ' — wszystkie pliki', sub: indeksy(s.n), im: s.pack });
   }
   function addType(fam, type) {
-    const s = SP.serie(fam), t = FT.filter(function (x) { return x.k === type; })[0];
-    if (!s || !t || !s.files[type]) return;
-    tzAdd({ id: 't:' + fam + ':' + type, title: fam + ' — ' + t.l.toLowerCase(), sub: 'paczka typu', n: s.files[type], mb: typeMb(s, type), im: s.pack });
+    const s = SP.serie(fam), t = typOf(type);
+    if (!s || !t) return;
+    tzAdd({ id: 't:' + fam + ':' + type, title: fam + ' — ' + t.l.toLowerCase(), sub: indeksy(s.n), im: s.pack });
+  }
+  /* pakowanie ZIP w przeglądarce */
+  let jszipP = null, zipBusy = false;
+  function loadZip() {
+    if (window.JSZip) return Promise.resolve(window.JSZip);
+    if (!jszipP) {
+      jszipP = new Promise(function (res, rej) {
+        const sc = document.createElement('script');
+        sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+        sc.onload = function () { res(window.JSZip); };
+        sc.onerror = function () { jszipP = null; rej(new Error('JSZip')); };
+        document.head.appendChild(sc);
+      });
+    }
+    return jszipP;
+  }
+  function zipDownload(list, zipName, btn) {
+    if (zipBusy) { toast('Trwa przygotowanie poprzedniej paczki', '', 'info'); return; }
+    if (!list.length) { toast('Brak plików do pobrania', '', 'info'); return; }
+    const tot = list.reduce(function (a, x) { return a + x.mb; }, 0);
+    if (tot > 300 && !window.confirm('Paczka ma ok. ' + mbLabel(tot) + ' (' + pliki(list.length) + '). Przygotowanie może potrwać kilka minut. Kontynuować?')) return;
+    zipBusy = true;
+    const lab = btn ? btn.innerHTML : '';
+    const set = function (t) { if (btn) { btn.disabled = true; btn.textContent = t; } };
+    set('Przygotowanie…');
+    loadZip().then(function (JSZip) {
+      const zip = new JSZip(), failed = [];
+      let i = 0, done = 0;
+      const worker = function () {
+        if (i >= list.length) return Promise.resolve();
+        const x = list[i++];
+        return fetch(x.href).then(function (r) { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+          .then(function (b) { zip.file(x.path, b, { binary: true }); }, function () { failed.push(x.path); })
+          .then(function () { done++; set('Pobieranie ' + done + ' / ' + list.length); return worker(); });
+      };
+      return Promise.all([worker(), worker(), worker(), worker()]).then(function () {
+        if (failed.length === list.length) throw new Error('brak plików');
+        if (failed.length) zip.file('BRAKUJACE_PLIKI.txt', 'Tych plików nie udało się pobrać — spróbuj ponownie albo pobierz je z karty produktu:\r\n' + failed.join('\r\n'));
+        return zip.generateAsync({ type: 'blob', compression: 'STORE' }, function (m) { set('Pakowanie ' + Math.round(m.percent) + '%'); });
+      });
+    }).then(function (blob) {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = zipName;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000);
+      toast('Paczka ZIP gotowa', zipName + ' · ' + mbLabel(blob.size / 1048576), 'download');
+      if (window.umami && window.umami.track) window.umami.track('pobranie', { plik: zipName, typ: 'zip', pliki: list.length });
+    }, function () {
+      toast('Nie udało się przygotować paczki ZIP', 'sprawdź połączenie i spróbuj ponownie', 'info');
+    }).then(function () {
+      zipBusy = false;
+      if (btn) { btn.disabled = false; btn.innerHTML = lab; }
+    });
+  }
+  function today() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function zipItem(id, btn) {
+    const m = /^(s|t):([^:]+)(?::(.+))?$/.exec(id || '');
+    if (!m) return;
+    const t = m[3] ? typOf(m[3]) : null;
+    zipDownload(zipList([{ id: id, title: '' }]), zipSafe('Schedpol_' + m[2] + (t ? '_' + t.dir : '') + '_' + today()).replace(/ /g, '-') + '.zip', btn);
+  }
+  function tzMail() {
+    const base = location.href.split('#')[0];
+    const lines = teczka.map(function (x) {
+      const m = /^(p|s|t):([^:]+)/.exec(x.id);
+      const url = m[1] === 'p' ? base + '#/produkt?ref=' + m[2] : base + '#/katalog?seria=' + encodeURIComponent(m[2]);
+      return '• ' + x.title + (x.sub ? ' (' + x.sub + ')' : '') + '\n  ' + url;
+    });
+    const body = 'Dzień dobry,\n\nprzesyłam linki do plików produktów Schedpol w ofercie Leroy Merlin (karty produktów, modele 3D, rysunki, instrukcje):\n\n' + lines.join('\n') + '\n\nPliki są dostępne bez logowania.';
+    location.href = 'mailto:?subject=' + encodeURIComponent('Pliki produktów Schedpol — Leroy Merlin') + '&body=' + encodeURIComponent(body);
   }
   function tzListHTML() {
     if (!teczka.length) {
-      return '<div class="tz-empty"><div class="empty-ic">' + ic('folder', 24) + '</div><b>Teczka jest pusta</b>' +
+      return '<div class="tz-empty"><div class="empty-ic">' + ic('folder', 24) + '</div><b>Lista plików jest pusta</b>' +
         '<span>Dodaj pliki z katalogu, karty produktu albo paczkę całej serii.</span></div>';
     }
     return teczka.map(function (x) {
+      const t = itemStats(x);
       return `<div class="tz-item">
         <span class="tz-ic">${x.im && SP.img[x.im] ? pimg(x.im, '') : ic(x.icon || 'zip', 20)}</span>
-        <span class="tz-main"><span class="tz-t">${esc(x.title)}</span><span class="tz-s">${x.sub ? esc(x.sub) + ' · ' : ''}${pliki(x.n)} · ${mbLabel(x.mb)}</span></span>
-        <button class="icon-btn" type="button" data-act="tz-remove" data-id="${esc(x.id)}" aria-label="Usuń z teczki: ${esc(x.title)}">${ic('x', 16)}</button>
+        <span class="tz-main"><span class="tz-t">${esc(x.title)}</span><span class="tz-s">${x.sub ? esc(x.sub) + ' · ' : ''}${pliki(t.n)} · ${mbLabel(t.mb)}</span></span>
+        <button class="icon-btn" type="button" data-act="tz-remove" data-id="${esc(x.id)}" aria-label="Usuń z Plików: ${esc(x.title)}">${ic('x', 16)}</button>
       </div>`;
     }).join('');
   }
@@ -488,7 +633,7 @@
     return `<div class="tz-total"><span>${pliki(t.n)} w ${teczka.length} ${plural(teczka.length, 'pozycji', 'pozycjach', 'pozycjach')}</span><b>${mbLabel(t.mb)}</b></div>
       <button class="btn btn-primary btn-block" type="button" data-act="tz-zip"${dis}>Pobierz ZIP <span class="btn-ic">${ic('download', 16)}</span></button>
       <div class="tz-row2">
-        <button class="btn btn-block" type="button" data-act="tz-mail"${dis}>${ic('mail', 16)} Wyślij link e-mailem</button>
+        <button class="btn btn-block" type="button" data-act="tz-mail"${dis}>${ic('mail', 16)} Wyślij linki e-mailem</button>
         <button class="btn" type="button" data-act="tz-clear"${dis}>Wyczyść</button>
       </div>`;
   }
@@ -566,7 +711,7 @@
     const submit = function () {
       const q = input.value.trim(), res = q ? SP.search(q) : [];
       if (opts.onClose) opts.onClose();
-      if (/^\d{8}$/.test(q) && res.length === 1) SPProto.go('produkt', { ref: res[0].ref });
+      if (/^(\d{8}|\d{13})$/.test(q) && res.length === 1) SPProto.go('produkt', { ref: res[0].ref });
       else SPProto.go('katalog', q ? { q: q } : {});
     };
     input.addEventListener('input', function () { paint(); if (opts.onOpen) opts.onOpen(); });
@@ -603,7 +748,7 @@
         return `<div class="bar"><em>${esc(t.l)}</em><i style="--w:${(s.files[t.k] / max).toFixed(3)}"></i><b>${s.files[t.k]}</b></div>`;
       }).join('')}</div>
       <div class="pack-foot">
-        <button class="btn btn-primary btn-block" type="button" data-act="add-series" data-fam="${esc(s.fam)}">Dodaj serię do teczki <span class="btn-ic">${ic('plus', 16)}</span></button>
+        <button class="btn btn-primary btn-block" type="button" data-act="add-series" data-fam="${esc(s.fam)}">Dodaj serię do Plików <span class="btn-ic">${ic('plus', 16)}</span></button>
         <a class="link" href="${H('katalog', { seria: s.fam })}">Zobacz ${indeksy(s.n)} w katalogu ${ic('arrow-right', 14)}</a>
       </div>`;
   }
@@ -687,7 +832,7 @@
             <p class="hero-lead rv" style="--d:120ms">Karty produktów PDF, rysunki techniczne, packshoty, instrukcje montażu i modele 3D w bazie CAD Decor — dla ${total} indeksów z oferty Leroy Merlin.</p>
             <div class="bigsearch rv" id="bigBox" style="--d:180ms" role="search">
               ${ic('search', 22)}
-              <input id="bigSearch" type="search" placeholder="Nr ref. LM, seria, wymiar, kolor…" autocomplete="off" spellcheck="false" aria-label="Szukaj w bibliotece" aria-controls="bigList">
+              <input id="bigSearch" type="search" placeholder="Nr ref. LM, EAN, seria, wymiar, kolor…" autocomplete="off" spellcheck="false" aria-label="Szukaj w bibliotece" aria-controls="bigList">
               <kbd>/</kbd>
               <button class="btn btn-primary" type="button" data-act="big-submit">Szukaj <span class="btn-ic">${ic('arrow-right', 16)}</span></button>
               <div class="sugg" id="bigList"></div>
@@ -743,8 +888,8 @@
           <li>Wstaw model do projektu i potwierdź nr ref. LM na karcie produktu w portalu.</li>
         </ol>
         <div class="cad-foot">
-          <button class="btn btn-dark" type="button" data-act="add-cad">${ic('download', 16)} Pobierz bazę</button>
-          <button class="btn" type="button" data-act="demo" data-msg="Makieta: pobieranie pliku" data-detail="Instrukcja-aktualizacji-bazy.pdf">${ic('file', 16)} Instrukcja aktualizacji</button>
+          <a class="btn btn-dark" href="${CAD_URL}" target="_blank" rel="noopener">${ic('download', 16)} Pobierz bazę</a>
+          <a class="btn" href="${CAD_DOC}" target="_blank" rel="noopener">${ic('file', 16)} Instrukcje CAD Decor PRO</a>
         </div>
       </section>
 
@@ -989,7 +1134,7 @@
           <p class="page-sub">${SP.products.length} produktów w ${SP.series.length} seriach. Każda pozycja ma numer ref. LM, wymiary i komplet plików do projektu. Gama wg eksportu referencji LM z 26.03.2026.</p>
         </div>
         <label class="cat-search">${ic('search', 18)}<span class="sr">Filtruj katalog</span>
-          <input id="catQ" type="search" placeholder="Filtruj: nr ref., seria, wymiar, kolor…" value="${esc(C.q)}" autocomplete="off" spellcheck="false"><kbd>/</kbd>
+          <input id="catQ" type="search" placeholder="Filtruj: nr ref., EAN, seria, wymiar, kolor…" value="${esc(C.q)}" autocomplete="off" spellcheck="false"><kbd>/</kbd>
         </label>
       </header>
       <div class="cat-layout">
@@ -1239,7 +1384,7 @@
           }).join('') + '</div></div>' : ''}
           <div class="pd-act">
           <div class="pd-cta">
-            <button class="btn btn-primary" type="button" data-act="add-product-sel">Dodaj pliki do teczki <span class="btn-ic">${ic('arrow-right', 16)}</span></button>
+            <button class="btn btn-primary" type="button" data-act="add-product-sel">Dodaj do Plików <span class="btn-ic">${ic('arrow-right', 16)}</span></button>
             <a class="btn btn-primary btn-karta" href="${esc(kartaPdf(p))}" download>${ic('file', 16)} Karta produktu PDF</a>
           </div>
           <p class="pd-karta"><a class="link" href="${esc(kartaView(p))}" target="_blank" rel="noopener">${ic('eye', 15)} Podgląd karty A4 przed pobraniem</a></p>
@@ -1322,8 +1467,7 @@
      Ekran: Centrum plików
      ========================================================================== */
   const P = { tab: 'all' };
-  const TABS = [{ k: 'all', l: 'Wszystkie' }].concat(FT.filter(function (t) { return FT_MAIN.indexOf(t.k) !== -1 || t.k === 'karta'; }),
-    [{ k: 'dokumenty', l: 'Instrukcje i karty' }]);
+  const TABS = [{ k: 'all', l: 'Wszystkie' }].concat(FTYP.map(function (t) { return { k: t.k, l: t.k === 'dokument' ? 'Instrukcje i karty gw.' : t.l }; }));
 
   /* biblioteka dokumentów: wszystkie instrukcje montażu i karty gwarancyjne z materiałów (assets/dokumenty.js) */
   function docsLibraryHTML() {
@@ -1352,49 +1496,76 @@
     </table></div>`;
   }
 
+  function famStats(fam) {
+    const st = { n: 0, mb: 0 };
+    seriesFiles(fam).forEach(function (f) {
+      const t = st[f.typ] || (st[f.typ] = { n: 0, mb: 0 });
+      t.n++; t.mb += f.mb || 0; st.n++; st.mb += f.mb || 0;
+    });
+    return st;
+  }
   function plikiTableHTML() {
     const tab = P.tab, all = tab === 'all';
-    if (tab === 'dokumenty') return docsLibraryHTML();
-    const rows = SP.series.filter(function (s) { return all || s.files[tab]; });
+    if (tab === 'dokument') return docsLibraryHTML();
+    const fams = SP.series.map(function (s) { return { s: s, st: famStats(s.fam) }; })
+      .filter(function (x) { return all ? x.st.n : x.st[tab]; });
     const seriaCell = function (s) {
       return '<a class="t-prod" href="' + H('katalog', { seria: s.fam }) + '"><span class="t-thumb">' + pimg(s.pack, '') + '</span><span><b>' + esc(s.fam) + '</b><small>' + esc(s.type.split(' · ')[0]) + ' · ' + indeksy(s.n) + '</small></span></a>';
     };
     const num = function (v) { return '<td class="num">' + (v ? '<b>' + v + '</b>' : '<span class="zero">—</span>') + '</td>'; };
+    const acts = function (id, fam, lab) {
+      const inT = inTeczka(id);
+      return '<td><div class="t-act">' +
+        '<button class="icon-btn" type="button" data-act="zip-pkg" data-id="' + esc(id) + '" title="Pobierz ZIP: ' + esc(lab) + '" aria-label="Pobierz ZIP: ' + esc(lab) + '">' + ic('download', 16) + '</button>' +
+        (inT ? '<span class="icon-btn is-done" title="W Plikach" aria-label="' + esc(lab) + ' jest w Plikach">' + ic('check', 16, 2) + '</span>'
+             : '<button class="icon-btn is-add" type="button" data-act="' + (id.charAt(0) === 's' ? 'add-series' : 'add-type') + '" data-fam="' + esc(fam) + '"' + (id.charAt(0) === 't' ? ' data-type="' + esc(tab) + '"' : '') + ' title="Dodaj do Plików" aria-label="Dodaj do Plików: ' + esc(lab) + '">' + ic('plus', 16, 1.8) + '</button>') +
+        '</div></td>';
+    };
+    /* 25.11: zamiast 9 kolumn — jedna kolumna „Zawartość” (liczby wg typu zawijają się), przyciski zawsze widoczne */
+    const ABBR = { karta: ['karta', 'karty', 'kart'], model: ['model 3D', 'modele 3D', 'modeli 3D'], rysunek: ['rysunek', 'rysunki', 'rysunków'],
+      packshot: ['packshot', 'packshoty', 'packshotów'], aranzacja: ['aranżacja', 'aranżacje', 'aranżacji'], grafika: ['grafika', 'grafiki', 'grafik'],
+      dokument: ['dokument', 'dokumenty', 'dokumentów'] };
     if (all) {
-      const tot = { other: 0, sum: 0, mb: 0 };
-      FT_MAIN.forEach(function (k) { tot[k] = 0; });
-      const body = rows.map(function (s) {
-        const sum = sumFiles(s);
-        const other = sum - FT_MAIN.reduce(function (a, k) { return a + (s.files[k] || 0); }, 0);
-        FT_MAIN.forEach(function (k) { tot[k] += s.files[k] || 0; });
-        tot.other += other; tot.sum += sum; tot.mb += s.mb || 0;
-        const inT = inTeczka('s:' + s.fam);
-        return '<tr><td>' + seriaCell(s) + '</td>' + FT_MAIN.map(function (k) { return num(s.files[k]); }).join('') + num(other) +
-          '<td class="num"><b>' + sum + '</b></td><td class="num">' + mbLabel(s.mb) + '</td><td><div class="t-act">' +
-          (inT ? '<span class="icon-btn is-done" title="W teczce" aria-label="Paczka serii ' + esc(s.fam) + ' jest w teczce">' + ic('check', 16, 2) + '</span>' : '<button class="icon-btn is-add" type="button" data-act="add-series" data-fam="' + esc(s.fam) + '" title="Dodaj paczkę serii do teczki" aria-label="Dodaj paczkę serii ' + esc(s.fam) + ' do teczki">' + ic('plus', 16, 1.8) + '</button>') +
-          '</div></td></tr>';
+      const tot = { n: 0, mb: 0 };
+      const body = fams.map(function (x) {
+        const st = x.st;
+        tot.n += st.n; tot.mb += st.mb;
+        const mix = FTYP.filter(function (t) { return st[t.k]; }).map(function (t) {
+          const n = st[t.k].n; return '<span class="fl-chip"><b>' + n + '</b> ' + plural(n, ABBR[t.k][0], ABBR[t.k][1], ABBR[t.k][2]) + '</span>';
+        }).join('');
+        return '<tr><td>' + seriaCell(x.s) + '</td><td class="fl-mix">' + mix + '</td><td class="num fl-mb"><b>' + pliki(st.n) + '</b><small>' + mbLabel(st.mb) + '</small></td>' + acts('s:' + x.s.fam, x.s.fam, 'seria ' + x.s.fam) + '</tr>';
       }).join('');
-      return '<div class="tbl-wrap"><table class="tbl fl-tbl"><thead><tr><th>Seria</th>' +
-        FT_MAIN.map(function (k) { return '<th style="text-align:right">' + esc(FT.filter(function (t) { return t.k === k; })[0].l) + '</th>'; }).join('') +
-        '<th style="text-align:right">Pozostałe</th><th style="text-align:right">Razem</th><th style="text-align:right">Rozmiar</th><th><span class="sr">Akcja</span></th></tr></thead><tbody>' + body +
-        '<tr><td><b>Razem · ' + rows.length + ' ' + plural(rows.length, 'rodzina', 'rodziny', 'rodzin') + '</b></td>' + FT_MAIN.map(function (k) { return num(tot[k]); }).join('') + num(tot.other) +
-        '<td class="num"><b>' + tot.sum.toLocaleString('pl-PL') + '</b></td><td class="num"><b>' + mbLabel(tot.mb) + '</b></td><td></td></tr></tbody></table></div>';
+      return '<div class="tbl-wrap"><table class="tbl fl-tbl fl-all"><thead><tr><th>Seria</th><th>Zawartość paczki</th><th style="text-align:right">Razem</th><th><span class="sr">Akcja</span></th></tr></thead><tbody>' + body +
+        '<tr class="fl-sum"><td><b>Razem · ' + fams.length + ' ' + plural(fams.length, 'seria', 'serie', 'serii') + '</b></td><td></td><td class="num fl-mb"><b>' + pliki(tot.n) + '</b><small>' + mbLabel(tot.mb) + '</small></td><td></td></tr></tbody></table></div>';
     }
-    const T = FT.filter(function (t) { return t.k === tab; })[0];
+    const T = typOf(tab);
     let tn = 0, tmb = 0;
-    const body = rows.map(function (s) {
-      const n = s.files[tab], mb = typeMb(s, tab), inT = inTeczka('t:' + s.fam + ':' + tab);
-      tn += n; tmb += mb;
-      return '<tr><td>' + seriaCell(s) + '</td>' + num(n) + '<td class="num">ok. ' + mbLabel(mb) + '</td><td><span class="st st-ok">' + ic('check', 12, 2) + ' Zweryfikowano ' + VERIFIED + '</span></td><td><div class="t-act">' +
-        (inT ? '<span class="st st-ok">' + ic('check', 12, 2) + ' W teczce</span>' : '<button class="btn btn-sm" type="button" data-act="add-type" data-fam="' + esc(s.fam) + '" data-type="' + esc(tab) + '">' + ic('plus', 14, 1.8) + ' Do teczki</button>') +
-        '</div></td></tr>';
+    const body = fams.map(function (x) {
+      const st = x.st[tab];
+      tn += st.n; tmb += st.mb;
+      return '<tr><td>' + seriaCell(x.s) + '</td>' + num(st.n) + '<td class="num">' + mbLabel(st.mb) + '</td>' +
+        acts('t:' + x.s.fam + ':' + tab, x.s.fam, x.s.fam + ' — ' + T.l.toLowerCase()) + '</tr>';
     }).join('');
-    return '<div class="tbl-wrap"><table class="tbl fl-tbl"><thead><tr><th>Seria</th><th style="text-align:right">' + esc(T.l) + '</th><th style="text-align:right">Rozmiar</th><th>Status</th><th><span class="sr">Akcja</span></th></tr></thead><tbody>' +
-      body + '<tr><td><b>Razem · ' + rows.length + ' ' + plural(rows.length, 'rodzina', 'rodziny', 'rodzin') + '</b></td>' + num(tn) + '<td class="num"><b>ok. ' + mbLabel(tmb) + '</b></td><td></td><td></td></tr></tbody></table></div>';
+    return '<div class="tbl-wrap"><table class="tbl fl-tbl"><thead><tr><th>Seria</th><th style="text-align:right">' + esc(T.l) + '</th><th style="text-align:right">Rozmiar</th><th><span class="sr">Akcja</span></th></tr></thead><tbody>' +
+      body + '<tr><td><b>Razem · ' + fams.length + ' ' + plural(fams.length, 'seria', 'serie', 'serii') + '</b></td>' + num(tn) + '<td class="num"><b>' + mbLabel(tmb) + '</b></td><td></td></tr></tbody></table></div>';
+  }
+  function allStats() {
+    const seen = {}, st = { n: 0, mb: 0 };
+    SP.series.forEach(function (s) {
+      seriesFiles(s.fam).forEach(function (f) {
+        const u = f.href.split('?')[0];
+        if (seen[u]) return;
+        seen[u] = 1;
+        const t = st[f.typ] || (st[f.typ] = { n: 0, mb: 0 });
+        t.n++; st.n++; t.mb += f.mb || 0; st.mb += f.mb || 0;
+      });
+    });
+    return st;
   }
   function tabsHTML() {
+    const st = allStats();
     return TABS.map(function (t) {
-      const n = t.k === 'dokumenty' ? Object.keys(SP.docs || {}).length : t.k === 'all' ? SP.series.reduce(function (a, s) { return a + sumFiles(s); }, 0) : SP.series.reduce(function (a, s) { return a + (s.files[t.k] || 0); }, 0);
+      const n = t.k === 'dokument' ? Object.keys(SP.docs || {}).length : t.k === 'all' ? st.n : (st[t.k] ? st[t.k].n : 0);
       return '<button class="tab' + (P.tab === t.k ? ' is-on' : '') + '" type="button" role="tab" aria-selected="' + (P.tab === t.k) + '" data-act="ftab" data-tab="' + esc(t.k) + '">' + esc(t.l) + '<small>' + n.toLocaleString('pl-PL') + '</small></button>';
     }).join('');
   }
@@ -1455,33 +1626,34 @@
   }
 
   function renderPliki(params) {
-    P.tab = TABS.some(function (t) { return t.k === (params && params.typ); }) ? params.typ : 'all';
-    const nFiles = SP.series.reduce(function (a, s) { return a + sumFiles(s); }, 0);
-    const mb = SP.series.reduce(function (a, s) { return a + (s.mb || 0); }, 0);
+    const typ = params && params.typ === 'dokumenty' ? 'dokument' : params && params.typ;      // stare linki ?typ=dokumenty
+    P.tab = TABS.some(function (t) { return t.k === typ; }) ? typ : 'all';
+    const st = allStats(), nFiles = st.n, mb = st.mb;
+    const nSer = SP.series.filter(function (s) { return famStats(s.fam).n; }).length;
     app.innerHTML = `
     <div class="wrap">
       <header class="page-head">
         <div>
           <span class="eyebrow">Centrum plików</span>
           <h1 class="page-title" style="margin-top:18px">Paczki plików dla całych serii</h1>
-          <p class="page-sub">${nFiles.toLocaleString('pl-PL')} ${plural(nFiles, 'plik', 'pliki', 'plików')} · ${mbLabel(mb)} · ${SP.series.length} ${plural(SP.series.length, 'rodzina', 'rodziny', 'rodzin')} produktów. Publikujemy wyłącznie pliki po weryfikacji treści.</p>
+          <p class="page-sub">${nFiles.toLocaleString('pl-PL')} ${plural(nFiles, 'plik', 'pliki', 'plików')} · ${mbLabel(mb)} · ${nSer} ${plural(nSer, 'seria', 'serie', 'serii')} produktów. Paczkę ZIP serii pobierzesz od razu (strzałka) albo dodasz do Plików i pobierzesz razem z innymi.</p>
         </div>
-        <button class="btn" type="button" data-act="add-cad">${ic('cube', 16)} Baza CAD Decor · ${CAD.date}</button>
+        <a class="btn" href="${CAD_URL}" target="_blank" rel="noopener">${ic('cube', 16)} Baza CAD Decor · ${CAD.date}</a>
       </header>
       <div class="fl-layout">
         <section aria-label="Paczki serii">
           <div class="tabs" id="flTabs" role="tablist" aria-label="Typ plików"></div>
           <div id="flTable"></div>
           <div class="notes">
-            <div class="note"><h3>${ic('shield', 18)} Statusy plików</h3><p>Publikujemy wyłącznie pliki po weryfikacji treści. Każdy plik ma status i datę weryfikacji.</p>
+            <div class="note"><h3>${ic('shield', 18)} Statusy plików</h3><p>Publikujemy wyłącznie pliki po weryfikacji treści. Paczki ZIP powstają z aktualnych plików w chwili pobrania.</p>
               <div class="sts"><span class="st st-ok">${ic('check', 12, 2)} Zweryfikowano ${VERIFIED}</span><span class="st st-cad">${ic('cube', 12, 1.8)} Baza ${CAD.date}</span></div></div>
-            <div class="note"><h3>${ic('layers', 18)} Wersje</h3><p>Po aktualizacji pliku poprzednia wersja znika z biblioteki. Paczki ZIP i linki z teczki zawierają aktualne wersje plików.</p></div>
+            <div class="note"><h3>${ic('layers', 18)} Wersje</h3><p>Po aktualizacji pliku poprzednia wersja znika z biblioteki. Paczki ZIP i linki z Plików zawierają aktualne wersje plików.</p></div>
             <div class="note"><h3>${ic('file', 18)} Nazwy plików</h3><p>Jeden schemat nazw dla wszystkich materiałów:</p><p><code>Schedpol_&lt;Seria&gt;_&lt;wymiar&gt;_&lt;typ&gt;.&lt;ext&gt;</code></p></div>
           </div>
         </section>
-        <aside class="bezel fl-side" id="tzInline" aria-label="Teczka">
+        <aside class="bezel fl-side" id="tzInline" aria-label="Pliki do pobrania">
           <div class="core">
-            <div class="panel-h" style="margin-bottom:0"><h2>Teczka</h2><span class="kicker">ZIP</span></div>
+            <div class="panel-h" style="margin-bottom:0"><h2>Pliki</h2><span class="kicker">ZIP</span></div>
             <p class="mono" id="tzInSum" style="margin-top:2px;font-size:12.5px;color:var(--ink-2)"></p>
             <div class="tz-list" id="tzInList"></div>
             <div class="drawer-foot" id="tzInFoot" style="padding:16px 0 0;margin-top:12px"></div>
@@ -1597,6 +1769,7 @@
     const act = t.getAttribute('data-act');
     if (act === 'open-search') openSearch();
     else if (act === 'open-teczka') openTeczka();
+    else if (act === 'cmd-go') cmdSearch.submit();
     else if (act === 'open-facets') openFacets();
     else if (act === 'close-all') closeAll(true);
     else if (act === 'toggle-menu') {
@@ -1619,11 +1792,12 @@
     }
     else if (act === 'add-series') addSeries(t.getAttribute('data-fam'));
     else if (act === 'add-type') addType(t.getAttribute('data-fam'), t.getAttribute('data-type'));
-    else if (act === 'add-cad') tzAdd({ id: 'cad', title: 'Baza CAD Decor — ' + CAD.name, sub: 'aktualizacja ' + CAD.date, n: 1, mb: CAD.mb, icon: 'cube' });
+    else if (act === 'add-cad') window.open(CAD_URL, '_blank', 'noopener');
+    else if (act === 'zip-pkg') zipItem(t.getAttribute('data-id'), t);
     else if (act === 'tz-remove') tzRemove(t.getAttribute('data-id'));
-    else if (act === 'tz-clear') { teczka = []; tzSave(); tzPaint(); toast('Teczka wyczyszczona', '', 'folder'); }
-    else if (act === 'tz-zip') { const tt = tzTotals(); toast('Makieta: paczka ZIP gotowa do pobrania', pliki(tt.n) + ' · ' + mbLabel(tt.mb), 'download'); }
-    else if (act === 'tz-mail') toast('Makieta: link do teczki wysłany', 'anna.nowak@…', 'mail');
+    else if (act === 'tz-clear') { teczka = []; tzSave(); tzPaint(); toast('Lista plików wyczyszczona', '', 'folder'); }
+    else if (act === 'tz-zip') zipDownload(zipList(teczka), 'Schedpol_pliki_' + today() + '.zip', t);
+    else if (act === 'tz-mail') tzMail();
     else if (act === 'demo') toast(t.getAttribute('data-msg') || 'Makieta', t.getAttribute('data-detail') || '', 'download');
     else if (act === 'gal') setStage(+t.getAttribute('data-idx'));
     else if (act === 'preview') openPreview(PD.files && PD.files[+t.getAttribute('data-file')]);

@@ -108,6 +108,7 @@
 .mb-tech-ic{width:52px;height:52px;border-radius:12px;background:var(--brand);display:grid;place-items:center}
 .mb-tech-t small{display:block;color:var(--mut);font-size:12.5px;margin-bottom:2px}.mb-tech-t b{font-size:17px}
 .mb-tech-c{display:flex;flex-direction:column;align-items:flex-end;gap:6px}.mb-tech-m{font-size:13px;color:var(--mut)}
+.mb-szukaj{margin:-4px -6px -4px auto;border:0;border-radius:7px;background:var(--brand,#943330);color:#fff;font:600 13px "Inter",sans-serif;padding:7px 14px;cursor:pointer;flex:none}.mb-szukaj:hover{filter:brightness(.92)}
 .mb-inp input{border:0;outline:0;font:inherit;color:var(--ink);flex:1;min-width:0;background:transparent}
 .mbx .mb-nav ul a{color:inherit}
 .mbx footer .mb-wrap{gap:24px;flex-wrap:wrap}
@@ -152,8 +153,8 @@
     </div>
     <div class="mb-float">
       <div class="mb-k"><span class="mb-sq"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>Znajdź produkt po numerze ref.&nbsp;LM</div>
-      <p>Wpisz numer z karty sklepu albo wymiar brodzika — od razu zobaczysz komplet plików.</p>
-      <form class="mb-inp" action="podstrony.html" onsubmit="var v=this.q.value.trim();location.href='podstrony.html#/katalog'+(v?'?q='+encodeURIComponent(v):'');return false"><input name="q" type="search" placeholder="np. 89189407 lub 90 × 120" aria-label="Szukaj po nr ref. LM lub wymiarze" autocomplete="off"><kbd>↵</kbd></form>
+      <p>Wpisz nr ref. LM, kod EAN albo wymiar brodzika — od razu zobaczysz komplet plików.</p>
+      <form class="mb-inp" action="podstrony.html" onsubmit="var v=this.q.value.trim();location.href='podstrony.html#/katalog'+(v?'?q='+encodeURIComponent(v):'');return false"><input name="q" type="search" placeholder="np. 89189407, EAN lub 90 × 120" aria-label="Szukaj po nr ref. LM, kodzie EAN lub wymiarze" autocomplete="off"><button class="mb-szukaj" type="submit">Szukaj</button></form>
       <div class="mb-mini"><span>DWG</span><span>3D · GLB/OBJ</span><span>Karta PDF</span></div>
     </div>
   </div>
@@ -177,11 +178,11 @@
   </div>
   <div class="mb-ph">
     <img src="../assets/img/balans-ws-a.jpg" alt="Brodzik Schedpol Balans w aranżacji łazienki">
-    <div class="mb-badge"><div class="mb-b1">⬇</div><div class="mb-b2">Rysunek, model 3D i karta PDF — pobierasz osobno albo całą teczką</div></div>
+    <div class="mb-badge"><div class="mb-b1">⬇</div><div class="mb-b2">Rysunek, model 3D i karta PDF — pobierasz osobno albo wszystko naraz w ZIP</div></div>
   </div>
   <div class="mb-txt">
     <p><b>Strefa projektanta zbiera w jednym miejscu dane techniczne produktów Schedpol i Sensea dostępnych w Leroy Merlin.</b> Każda pozycja ma numer ref. LM, wymiary, rysunek z pozycją odpływu i model 3D.</p>
-    <p>Pliki wybrane z różnych kart odkładasz do teczki i pobierasz razem, gotowe do przekazania klientowi albo wykonawcy.</p>
+    <p>Pliki wybrane z różnych kart odkładasz do Plików i pobierasz razem, gotowe do przekazania klientowi albo wykonawcy.</p>
     <div class="mb-sign"><a class="mb-pill mb-d" href="podstrony.html#/akademia">O portalu <b>→</b></a><small><b>Doradca techniczny Schedpol</b>pomoc przy doborze produktu</small></div>
     <ul class="mb-chk"><li>Numer ref. LM i gama przy każdej pozycji</li><li>Modele 3D z odpływem w miejscu jak w produkcie</li><li>Karty produktów PDF do wydruku A4</li></ul>
   </div>

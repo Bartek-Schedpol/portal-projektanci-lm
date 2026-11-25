@@ -40,7 +40,8 @@ def products():
 # Kształty, w których arkusz tytułów rozjeżdża się z nazwą w systemie LM, a LM ma rację (sprawdzone z etykietą/wymiarem).
 # Uwaga: 95495956 („BALANS KW 120X90”) — błąd po stronie LM, w danych zostaje „prostokątny”.
 SHAPE_FIX = {"45256512": "pięciokątny", "88758947": "pięciokątny", "82763748": "pięciokątny", "88758948": "pięciokątny",
-             "82763752": "pięciokątny", "86448669": "prostokątny"}
+             "82763752": "pięciokątny", "86448669": "prostokątny",
+             "87098822": "półokrągły", "87098831": "półokrągły", "87098801": "półokrągły"}   # 25.11.2026: Magnetic 1/4K (audyt odpływu)
 # Gama ustalona ręcznie dla indeksów spoza eksportu LM (decyzja Schedpol 23.11.2026).
 GAMA_FIX = {"83648377": "X"}
 def lm_export(P):
@@ -199,7 +200,7 @@ ECOM_MAP = {
 
 
 def ecom_file(p):
-    fam, sh = p["fam"], SHAPE.get(p.get("shape") or "", "")
+    fam, sh = p["fam"], SHAPE.get(SHAPE_FIX.get(p["ref"]) or p.get("shape") or "", "")   # kształt wg nazwy LM ma pierwszeństwo
     if (fam, sh) in ECOM_MAP:
         return ECOM_MAP[(fam, sh)]
     if fam == "Ipsilon":

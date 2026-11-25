@@ -17,9 +17,9 @@ SRC = os.path.dirname(HERE)
 DST = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(SRC), "github-portal-lm")
 
 DIRS = ["v2", "a-biblioteka", "karta", "assets/fonts", "assets/img", "assets/znaki", "assets/karty", "assets/dokumenty", "assets/akademia", "assets/cad", "_narzedzia"]
-FILES = ["assets/data.js", "assets/bokmapa.js", "assets/filmy.js", "assets/modele3d.js", "assets/lm.js", "assets/packshoty.js", "assets/rysunki.js", "assets/dokumenty.js", "assets/icons.js", "assets/proto.js", "assets/staty.js",
+FILES = ["assets/data.js", "assets/bokmapa.js", "assets/filmy.js", "assets/modele3d.js", "assets/lm.js", "assets/packshoty.js", "assets/rysunki.js", "assets/dokumenty.js", "assets/icons.js", "assets/proto.js", "assets/staty.js", "assets/rozmiary.js",
          "assets/logo.svg", "assets/logo-white.svg", "assets/img-manifest.json"]
-SKIP = ("__pycache__", ".tmp", "Thumbs.db")
+SKIP = ("__pycache__", ".tmp", "Thumbs.db", "_audyt_odplyw")   # arkusze audytu tylko lokalnie
 
 INDEX = """<!doctype html>
 <html lang="pl">
@@ -29,7 +29,7 @@ INDEX = """<!doctype html>
 <meta http-equiv="refresh" content="0; url=v2/index.html">
 <title>Strefa projektanta Schedpol</title>
 </head>
-<body><p><a href="v2/index.html">Przejdź do Strefy projektanta Schedpol</a> · <a href="a-biblioteka/v1.html">poprzednia wersja (V1)</a></p></body>
+<body><p><a href="v2/index.html">Przejdź do Strefy projektanta Schedpol</a></p></body>
 </html>
 """
 

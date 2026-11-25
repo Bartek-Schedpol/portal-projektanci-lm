@@ -262,7 +262,7 @@ HELP = r"""
     var terms = q.split(' ');
     return SP.products.filter(function (p) {
       var hay = (p.ref + ' ' + p.s + ' ' + p.fam + ' ' + p.cat + ' ' + p.shape + ' ' + p.c + ' ' + p.brand + ' ' +
-        (p.a != null ? p.a + 'x' + p.b : '') + ' ' + (p.b != null ? p.b + 'x' + p.a : '') + ' ' + p.t).toLowerCase().replace(/×/g, 'x');
+        (p.a != null ? p.a + 'x' + p.b : '') + ' ' + (p.b != null ? p.b + 'x' + p.a : '') + ' ' + p.t + ' ' + (p.ean || '') + ' ' + (p.sup || '')).toLowerCase().replace(/×/g, 'x');   // 25.11: także EAN i kod dostawcy (lm.js)
       return terms.every(function (t) { return hay.indexOf(t) !== -1; });
     });
   };

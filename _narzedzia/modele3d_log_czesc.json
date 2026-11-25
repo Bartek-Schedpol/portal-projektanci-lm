@@ -1,0 +1,481 @@
+{
+ "Sensea_Ipsilon_90x90x5-5k-oN": {
+  "dims": [
+   90.0,
+   90.0,
+   5.1
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (30.0, 30.0) -> (-30.0, 30.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 236 ścian (96 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   -30.0,
+   30.0
+  ]
+ },
+ "Sensea_Ipsilon_90x90x4,5-oN": {
+  "dims": [
+   90.0,
+   90.0,
+   4.5
+  ],
+  "modified": false,
+  "log": [
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1848 ścian (1848 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   32.0,
+   32.0
+  ]
+ },
+ "Sensea_Ipsilon_80x80x4,5-oN": {
+  "dims": [
+   80.0,
+   80.0,
+   4.5
+  ],
+  "modified": false,
+  "log": [
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1846 ścian (1846 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   27.0,
+   27.0
+  ]
+ },
+ "Sensea_Ipsilon_100x90x4,5-oD": {
+  "dims": [
+   90.0,
+   100.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (32.0, 37.0) -> (31.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1336 ścian (1336 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   31.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_80x80x5-5k-oN": {
+  "dims": [
+   80.0,
+   80.0,
+   5.1
+  ],
+  "modified": true,
+  "log": [
+   "wymiar 90x90 -> 80x80",
+   "odpływ (26.7, 26.7) -> (-25.0, 25.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 236 ścian (95 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   -25.0,
+   25.0
+  ]
+ },
+ "Sensea_Ipsilon_120x80x4,5-oD": {
+  "dims": [
+   80.0,
+   120.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (27.0, 47.0) -> (26.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1336 ścian (1336 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   26.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_100x80x4,5-oD": {
+  "dims": [
+   80.0,
+   100.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (27.0, 37.0) -> (26.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1336 ścian (1336 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   26.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_80x80x4,5-R55-oN": {
+  "dims": [
+   80.0,
+   80.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (27.0, 27.0) -> (24.4, -24.4)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1251 ścian (1251 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   24.4,
+   -24.4
+  ]
+ },
+ "Sensea_Ipsilon_160x80x5,5-oD": {
+  "dims": [
+   80.0,
+   160.0,
+   5.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (27.0, 67.0) -> (26.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1336 ścian (1336 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   26.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_90x90x4,5-R55-oN": {
+  "dims": [
+   90.0,
+   90.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (32.0, 32.0) -> (29.4, -29.4)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1251 ścian (1251 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   29.4,
+   -29.4
+  ]
+ },
+ "Sensea_Ipsilon_120x70x4,5-oD": {
+  "dims": [
+   70.0,
+   120.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "wymiar 75x120 -> 70x120",
+   "odpływ (22.8, 47.0) -> (21.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1302 ścian (1302 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   21.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_120x90x4,5-oD": {
+  "dims": [
+   90.0,
+   120.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (32.0, 47.0) -> (31.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1337 ścian (1337 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   31.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_140x80x4,5-oD": {
+  "dims": [
+   80.0,
+   140.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (27.0, 57.0) -> (26.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1336 ścian (1336 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   26.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_140x70x4,5-oD": {
+  "dims": [
+   70.0,
+   140.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "wymiar 75x140 -> 70x140",
+   "odpływ (22.8, 57.0) -> (21.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1302 ścian (1302 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   21.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_100x70x4,5-oD": {
+  "dims": [
+   70.0,
+   100.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "wymiar 75x100 -> 70x100",
+   "odpływ (22.8, 37.0) -> (21.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1302 ścian (1302 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   21.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_160x90x5,5-oD": {
+  "dims": [
+   90.0,
+   160.0,
+   5.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (32.0, 67.0) -> (31.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1336 ścian (1336 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   31.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_160x70x5,5-oD": {
+  "dims": [
+   70.0,
+   160.0,
+   5.5
+  ],
+  "modified": true,
+  "log": [
+   "wymiar 75x160 -> 70x160",
+   "odpływ (22.8, 67.0) -> (21.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1302 ścian (1302 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   21.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_140x90x4,5-oD": {
+  "dims": [
+   90.0,
+   140.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (32.0, 57.0) -> (31.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1336 ścian (1336 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   31.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_90x70x4,5-oN": {
+  "dims": [
+   70.0,
+   90.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "wymiar 75x90 -> 70x90",
+   "odpływ (22.8, 32.0) -> (19.8, 29.8)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1302 ścian (1302 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   19.8,
+   29.8
+  ]
+ },
+ "Sensea_Ipsilon_90x80x4,5-oD": {
+  "dims": [
+   80.0,
+   90.0,
+   4.5
+  ],
+  "modified": true,
+  "log": [
+   "odpływ (27.0, 32.0) -> (26.0, 0.0)",
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1337 ścian (1337 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   26.0,
+   0.0
+  ]
+ },
+ "Sensea_Ipsilon_100x100x4,5-oN": {
+  "dims": [
+   100.0,
+   100.0,
+   4.5
+  ],
+  "modified": false,
+  "log": [
+   "spód standardowy płaski (płyta)",
+   "laminat/płyta: 1846 ścian (1846 jako warstwa pod skorupą)"
+  ],
+  "drain": [
+   37.0,
+   37.0
+  ]
+ },
+ "Schedpol_Dafne_89,9x89,8x23-R55": {
+  "dims": [
+   89.9,
+   89.8,
+   47.0
+  ],
+  "modified": false,
+  "log": [
+   "Dafne: stelaż 2 szyny + 4 nogi (rysunek)",
+   "spód standardowy głęboki (laminat)",
+   "laminat/płyta: 2411 ścian (2411 jako warstwa pod skorupą)"
+  ],
+  "drain": null
+ },
+ "Schedpol_Dafne_80,1x80x23-R55": {
+  "dims": [
+   80.0,
+   80.1,
+   47.0
+  ],
+  "modified": false,
+  "log": [
+   "Dafne: stelaż 2 szyny + 4 nogi (rysunek)",
+   "spód standardowy głęboki (laminat)",
+   "laminat/płyta: 2413 ścian (2413 jako warstwa pod skorupą)"
+  ],
+  "drain": null
+ },
+ "Schedpol_Comfo_90,1x90,1x17": {
+  "dims": [
+   90.1,
+   90.1,
+   17.0
+  ],
+  "modified": false,
+  "log": [
+   "Comfo: stopa regulowana 10.5 cm",
+   "Comfo: wypustki antypoślizgowe 31 szt.",
+   "spód standardowy głęboki (laminat)",
+   "laminat/płyta: 2896 ścian (2896 jako warstwa pod skorupą)"
+  ],
+  "drain": null
+ },
+ "Schedpol_Comfo_89,9x89,4x17-R55": {
+  "dims": [
+   89.4,
+   89.9,
+   17.0
+  ],
+  "modified": false,
+  "log": [
+   "Comfo: stopa regulowana 10.4 cm",
+   "Comfo: wypustki antypoślizgowe 24 szt.",
+   "spód standardowy głęboki (laminat)",
+   "laminat/płyta: 2813 ścian (2813 jako warstwa pod skorupą)"
+  ],
+  "drain": null
+ },
+ "Schedpol_Comfo_80,1x80x17": {
+  "dims": [
+   80.0,
+   80.1,
+   17.0
+  ],
+  "modified": false,
+  "log": [
+   "Comfo: stopa regulowana 10.5 cm",
+   "Comfo: wypustki antypoślizgowe 20 szt.",
+   "spód standardowy głęboki (laminat)",
+   "laminat/płyta: 2896 ścian (2896 jako warstwa pod skorupą)"
+  ],
+  "drain": null
+ },
+ "Schedpol_Comfo_80,1x80x17-R55": {
+  "dims": [
+   80.1,
+   80.0,
+   17.0
+  ],
+  "modified": false,
+  "log": [
+   "Comfo: stopa regulowana 10.4 cm",
+   "Comfo: wypustki antypoślizgowe 18 szt.",
+   "spód standardowy głęboki (laminat)",
+   "laminat/płyta: 2819 ścian (2819 jako warstwa pod skorupą)"
+  ],
+  "drain": null
+ },
+ "Schedpol_Comfo_70x69,9x17": {
+  "dims": [
+   70.0,
+   69.9,
+   17.0
+  ],
+  "modified": false,
+  "log": [
+   "Comfo: stopa regulowana 10.5 cm",
+   "Comfo: wypustki antypoślizgowe 11 szt.",
+   "spód standardowy głęboki (laminat)",
+   "laminat/płyta: 2896 ścian (2896 jako warstwa pod skorupą)"
+  ],
+  "drain": null
+ },
+ "Schedpol_Comfo_100x80x17": {
+  "dims": [
+   100.0,
+   80.0,
+   17.0
+  ],
+  "modified": true,
+  "log": [
+   "wymiar 90x90 -> 100x80",
+   "Comfo: stopa regulowana 10.5 cm",
+   "Comfo: wypustki antypoślizgowe 28 szt.",
+   "spód standardowy głęboki (laminat)",
+   "laminat/płyta: 2856 ścian (2856 jako warstwa pod skorupą)"
+  ],
+  "drain": null
+ }
+}

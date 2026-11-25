@@ -8,6 +8,9 @@ outd = args[0]; os.makedirs(outd, exist_ok=True)
 for glb in args[1:]:
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.ops.import_scene.gltf(filepath=glb)
+    for m in bpy.data.materials:                 # kolor podglądu = kolor bazowy materiału (laminat, mata, akryl…)
+        bs = m.node_tree.nodes.get('Principled BSDF') if m.use_nodes else None
+        if bs: m.diffuse_color = tuple(bs.inputs['Base Color'].default_value)
     sc = bpy.context.scene
     sc.render.engine = 'BLENDER_WORKBENCH'
     sc.display.shading.light = 'STUDIO'; sc.display.shading.color_type = 'MATERIAL'

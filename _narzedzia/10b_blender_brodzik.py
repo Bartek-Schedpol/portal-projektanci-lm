@@ -84,6 +84,7 @@ def material(name, rgb, rough, metal=0.0):
     b = m.node_tree.nodes.get('Principled BSDF')
     b.inputs['Base Color'].default_value = (*rgb, 1); b.inputs['Roughness'].default_value = rough
     b.inputs['Metallic'].default_value = metal
+    m.diffuse_color = (*rgb, 1)                         # kolor w podglądzie Workbench (rendery kontrolne 10c)
     return m
 
 
@@ -345,6 +346,122 @@ for key, J in jobs.items():
                 bpy.ops.object.modifier_apply(modifier='cut')
             bpy.data.objects.remove(o_cut, do_unlink=True)
             log.append('spód zintegrowany (nośnik %.1f cm)' % hc)
+        elif cons == 'lamin':
+            # 25.11.2026 — brodzik standardowy (laminowany), wg zdjęć spodu od użytkownika:
+            #   płaski (Ipsilon, h < 8 cm): biała płyta wzmacniająca w ramce, otwór odpływu z kołnierzem;
+            #   głęboki (Comfo, Dafne): laminat (beżowy, matowy), kołnierz wokół otworu, plastikowa stopka pośrodku.
+            #   Kolory ścianek ustawia krok 5 (materiał „laminat”/„plyta” — kolor wariantu go nie zmienia).
+            flat = H0 < 8
+            tree = BVHTree.FromBMesh(bm)
+            def zup(x, y):
+                hit = tree.ray_cast(Vector((x, y, -5.0)), Vector((0, 0, 1)))
+                return hit[0].z if hit[0] else None
+            nb = bmesh.new()
+            if flat:
+                disc(nb, dpos.x, dpos.y, -0.03, 3.6, 5.4, 0)                      # kołnierz otworu (plastik)
+                disc(nb, dpos.x, dpos.y, -0.02, 0, 3.6, 1)                        # otwór
+                new_obj('spod_odplyw', nb, [mats['plastik'], mats['otwor']])
+                log.append('spód standardowy płaski (płyta)')
+            else:
+                zr = [z for z in (zup(dpos.x + dx, dpos.y + dy) for dx, dy in ((7, 0), (-7, 0), (0, 7), (0, -7))) if z is not None and z > 1]
+                if zr:
+                    disc(nb, dpos.x, dpos.y, min(zr) - 0.05, 3.7, 5.6, 0)         # kołnierz otworu pod skorupą
+                fam = J.get('fam')
+                # środek ciężkości obrysu (dla brodzika półokrągłego środek bryły, nie prostokąta otaczającego)
+                A2 = cx0 = cy0 = 0.0
+                for i in range(len(H)):
+                    (x1, y1), (x2, y2) = H[i], H[(i + 1) % len(H)]
+                    cr_ = x1 * y2 - x2 * y1; A2 += cr_; cx0 += (x1 + x2) * cr_; cy0 += (y1 + y2) * cr_
+                cx0, cy0 = cx0 / (3 * A2), cy0 / (3 * A2)
+                if (Vector((cx0, cy0)) - dpos).length < 12:                      # podpora nie na odpływie
+                    cx0, cy0 = cx0 - (dpos.x - cx0) * 0.5, cy0 - (dpos.y - cy0) * 0.5
+                zc = zup(cx0, cy0)
+                parts = []                                                       # (bmesh, nazwa, materiały)
+                def cyl(b, x, y, z0, z1, r0, r1, seg=32):
+                    bmesh.ops.create_cone(b, cap_ends=True, segments=seg, radius1=r0, radius2=r1, depth=z1 - z0,
+                                          matrix=mathutils.Matrix.Translation((x, y, (z0 + z1) / 2)))
+                if fam == 'Comfo' and zc is not None and zc > 3:
+                    # 25.11.2026 (zdjęcie od użytkownika): jedna regulowana stopa pośrodku — talerz Ø10 cm z 4 wkrętami,
+                    # korpus stożkowy z nakrętką regulacji, podstawa z kołnierzem; sięga od spodu skorupy do posadzki.
+                    zt = zc - 0.12
+                    lb, mb_ = bmesh.new(), bmesh.new()
+                    cyl(lb, cx0, cy0, zt - 0.45, zt, 5.0, 5.0, 40)                   # talerz
+                    cyl(lb, cx0, cy0, zt - 1.6, zt - 0.45, 2.0, 3.2)                 # stożek pod talerzem
+                    cyl(lb, cx0, cy0, 0.55 * zt, zt - 1.6, 1.7, 1.7)                 # górna tuleja
+                    cyl(lb, cx0, cy0, 1.3, 0.45 * zt, 2.1, 1.6)                      # korpus dolny (żebrowany na zdjęciu)
+                    cyl(lb, cx0, cy0, 0.0, 1.3, 3.6, 3.6, 40)                        # podstawa z kołnierzem
+                    cyl(mb_, cx0, cy0, 0.45 * zt, 0.55 * zt, 2.3, 2.3, 6)           # nakrętka regulacji (sześciokąt)
+                    for k in range(4):                                             # wkręty w talerzu
+                        a = math.pi / 4 + k * math.pi / 2
+                        cyl(mb_, cx0 + 3.6 * math.cos(a), cy0 + 3.6 * math.sin(a), zt - 0.45 - 0.01, zt - 0.2, 0.35, 0.35, 12)
+                    parts += [(lb, 'stopa_comfo', [mats['plastik']]), (mb_, 'stopa_comfo_metal', [mats['metal']])]
+                    log.append('Comfo: stopa regulowana %.1f cm' % zt)
+                elif fam == 'Dafne':
+                    # 25.11.2026 — stelaż montażowy wg rysunku technicznego Dafne (wymiary w mm dla 800; 900 proporcjonalnie):
+                    # dwie szyny równoległe, końce szyny 1: (460,73)→(678,458), szyny 2: (61,350)→(283,735) w układzie
+                    # u = bok, przy którego końcu leży odpływ, v = drugi bok, początek w narożniku prostym; 4 nogi na końcach szyn,
+                    # wysokość całkowita z nogami 350 mm (brodzik 230 + 35 rant) -> nogi ok. 12 cm pod spodem.
+                    x0, y0, x1, y1 = mn.x, mn.y, mx.x, mx.y
+                    C4 = [(x0, y0), (x1, y0), (x1, y1), (x0, y1)]
+                    cut = [i for i, p in enumerate(C4) if not inside((p[0] + (9 if p[0] < 0 else -9), p[1] + (9 if p[1] < 0 else -9)), H)]
+                    qi = (cut[0] + 2) % 4 if cut else 0
+                    Q = Vector(C4[qi]); A_ = Vector(C4[(qi + 1) % 4]) - Q; B_ = Vector(C4[(qi + 3) % 4]) - Q
+                    eu, ev = A_.normalized(), B_.normalized()
+                    if (dpos - Q).dot(ev) > (dpos - Q).dot(eu): eu, ev = ev, eu  # u = bok, wzdłuż którego odpływ jest dalej od narożnika
+                    sc_ = (x1 - x0) / 80.0 / 10.0                                  # mm rysunku -> cm modelu
+                    def P(u, v): return Q + eu * (u * sc_) + ev * (v * sc_)
+                    rb, fb = bmesh.new(), bmesh.new()
+                    for (u0, v0, u1, v1) in ((460, 73, 678, 458), (61, 350, 283, 735)):
+                        a, b = P(u0, v0), P(u1, v1); d = b - a; L = d.length; ang = math.atan2(d.y, d.x); m_ = (a + b) / 2
+                        bmesh.ops.create_cube(rb, size=1.0, matrix=mathutils.Matrix.Translation((m_.x, m_.y, -1.0)) @ mathutils.Matrix.Rotation(ang, 4, 'Z')
+                                              @ mathutils.Matrix.Diagonal((L + 2.0, 3.0, 2.0, 1)))   # ceownik 30×20 mm
+                        for t in (a + d.normalized() * 1.5, b - d.normalized() * 1.5):            # nogi przy końcach szyny
+                            cyl(rb, t.x, t.y, -5.5, -2.0, 0.5, 0.5, 12)                        # pręt gwintowany
+                            cyl(rb, t.x, t.y, -2.25, -1.95, 0.9, 0.9, 6)                       # nakrętka pod szyną
+                            cyl(fb, t.x, t.y, -10.5, -5.5, 1.9, 1.3)                           # noga (stożek)
+                            cyl(fb, t.x, t.y, -12.0, -10.5, 2.9, 2.9, 32)                      # stopka
+                    parts += [(rb, 'stelaz_szyny', [mats['metal']]), (fb, 'stelaz_nogi', [mats['plastik']])]
+                    log.append('Dafne: stelaż 2 szyny + 4 nogi (rysunek)')
+                elif zc is not None and zc > 2:
+                    hf = min(2.0, zc - 0.5)
+                    bmesh.ops.create_cone(nb, cap_ends=True, segments=40, radius1=3.0, radius2=3.4, depth=hf,
+                                          matrix=mathutils.Matrix.Translation((cx0, cy0, zc - hf / 2 - 0.12)))   # wierzch pod skorupą (nie przebija na wierzch)
+                    disc(nb, cx0, cy0, zc - hf - 0.01, 0, 0.9, 1, n=24)               # gniazdo śruby stopki
+                    log.append('stopka %.1f cm pod skorupą' % hf)
+                for f in nb.faces:
+                    if f.material_index not in (0, 1): f.material_index = 0
+                o = new_obj('spod_stopka', nb, [mats['plastik'], mats['otwor']])
+                o['keep_mat'] = 1
+                for b_, nm, ms in parts:
+                    po = new_obj(nm, b_, ms); po['keep_mat'] = 1
+                if fam == 'Comfo':
+                    # wypustki antypoślizgowe na dnie (rysunek i packshot Comfo): owalne, ok. 22×12 mm, siatka ukośna co ok. 11,6 cm
+                    def zdn(x, y):
+                        hit = tree.ray_cast(Vector((x, y, mx.z + 20)), Vector((0, 0, -1)))
+                        return (hit[0].z, hit[1]) if hit[0] else (None, None)
+                    zfl, _ = zdn(cx0, cy0)
+                    wb = bmesh.new(); nw = 0
+                    a1 = math.radians(-14); a2 = math.radians(76); pitch = 11.6
+                    e1 = Vector((math.cos(a1), math.sin(a1))); e2 = Vector((math.cos(a2), math.sin(a2)))
+                    rng = int((mx.x - mn.x) / pitch) + 3
+                    for i in range(-rng, rng + 1):
+                        for k in range(-rng, rng + 1):
+                            q = Vector((cx0, cy0)) + e1 * (i * pitch) + e2 * (k * pitch) + e1 * (pitch / 2 if k % 2 else 0) * 0
+                            if not inside((q.x, q.y), H) or dist_hull((q.x, q.y), H) < 12.5 or (q - dpos).length < 9: continue
+                            z, nrm = zdn(q.x, q.y)
+                            if z is None or zfl is None or abs(z - zfl) > 0.9: continue
+                            g = bmesh.new()
+                            bmesh.ops.create_uvsphere(g, u_segments=20, v_segments=8, radius=1.0)
+                            for v in g.verts:
+                                if v.co.z < 0: v.co.z = 0.0
+                            bm_m = mathutils.Matrix.Translation((q.x, q.y, z - 0.02)) @ mathutils.Matrix.Rotation(math.radians(48), 4, 'Z') @ mathutils.Matrix.Diagonal((1.2, 0.65, 0.4, 1))
+                            bmesh.ops.transform(g, matrix=bm_m, verts=g.verts)
+                            me_ = bpy.data.meshes.new('w'); g.to_mesh(me_); g.free(); wb.from_mesh(me_); bpy.data.meshes.remove(me_)
+                            nw += 1
+                    if nw:
+                        wo = new_obj('wypustki', wb, [mats['akryl']])
+                        log.append('Comfo: wypustki antypoślizgowe %d szt.' % nw)
+                log.append('spód standardowy głęboki (laminat)')
         bm.to_mesh(big.data); bm.free()
         # normalne: usuń zapisane w OBJ (dawały „ducha” starego odpływu), wygładzanie wg kąta
         for o in [o for o in bpy.context.scene.objects if o.type == 'MESH']:
@@ -358,6 +475,42 @@ for key, J in jobs.items():
         # --- 5. materiały, UV, eksport ---
         big.data.materials.clear(); big.data.materials.append(mats['akryl'])
         for p in big.data.polygons: p.material_index = 0
+        if cons == 'lamin':                       # spód skorupy widoczny od dołu -> laminat / płyta
+            flat = H0 < 8
+            big.data.materials.append(material('plyta', (0.90, 0.90, 0.88), 0.92) if flat else material('laminat', (0.89, 0.86, 0.79), 0.93))
+            bt = bmesh.new(); bt.from_mesh(big.data); bt.faces.ensure_lookup_table(); tr = BVHTree.FromBMesh(bt); bt.free()
+            nlam, dup = 0, []
+            UP, DN = Vector((0, 0, 1)), Vector((0, 0, -1))
+            for p in big.data.polygons:                  # test niezależny od kierunku normalnych (w bryłach 2021 bywają odwrócone)
+                n, c = p.normal, p.center
+                if flat and dist_hull((c.x, c.y), H) < 1.2: continue             # ramka akrylowa wokół płyty
+                if abs(n.z) > 0.5:                       # poziome: pierwsza ściana trafiona promieniem od dołu
+                    hit = tr.ray_cast(Vector((c.x, c.y, -10.0)), UP)
+                    under = hit[2] == p.index
+                else:                                    # pionowe: po stronie środka brodzika otwarta przestrzeń aż do posadzki
+                    r = Vector((c.x, c.y)); r = r.normalized() if r.length > 0.1 else Vector((1, 0))
+                    q = Vector((c.x - r.x * 0.4, c.y - r.y * 0.4, c.z - 0.05))
+                    under = c.z < H0 - 0.8 and tr.ray_cast(q, DN)[0] is None
+                if not under: continue
+                # skorupa z grubością -> przekoloruj; pojedyncza powierzchnia (ta sama ściana widoczna z wierzchu) -> osobna warstwa 1 mm pod spodem
+                if abs(n.z) > 0.5:
+                    h = tr.ray_cast(Vector((c.x, c.y, c.z + 0.02)), UP); thick = h[0] is not None and h[3] < 3.0
+                    off = Vector((0, 0, -0.1))
+                else:
+                    h = tr.ray_cast(Vector((c.x + r.x * 0.02, c.y + r.y * 0.02, c.z)), Vector((r.x, r.y, 0))); thick = h[0] is not None and h[3] < 3.0
+                    off = Vector((-r.x * 0.1, -r.y * 0.1, 0))
+                if thick:
+                    p.material_index = 1
+                else:
+                    dup.append(([big.data.vertices[i].co + off for i in p.vertices]))
+                nlam += 1
+            if dup:
+                lb = bmesh.new()
+                for P in dup:
+                    try: lb.faces.new([lb.verts.new(v) for v in P])
+                    except ValueError: pass
+                lo = new_obj('spod_laminat', lb, [big.data.materials[1]]); lo['keep_mat'] = 1
+            log.append('laminat/płyta: %d ścian (%d jako warstwa pod skorupą)' % (nlam, len(dup)))
         for o in objs:
             if o is big or o.get('keep_mat'): continue
             o.data.materials.clear()
@@ -365,7 +518,9 @@ for key, J in jobs.items():
         allm = [o for o in bpy.context.scene.objects if o.type == 'MESH']
         if modified and J.get('objout'):
             bpy.ops.object.select_all(action='SELECT')
-            bpy.ops.wm.obj_export(filepath=J['objout'], export_selected_objects=False, export_materials=False,
+            for o in allm:
+                if o.name.startswith('spod_laminat'): o.select_set(False)   # warstwa koloru tylko dla podglądu GLB, nie do CAD
+            bpy.ops.wm.obj_export(filepath=J['objout'], export_selected_objects=True, export_materials=False,
                                   export_uv=False, export_normals=True)
         for o in allm:
             o.data.transform(mathutils.Matrix.Diagonal((0.01, 0.01, 0.01, 1)))   # cm -> m (AR 1:1)

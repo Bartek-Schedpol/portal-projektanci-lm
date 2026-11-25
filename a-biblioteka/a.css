@@ -1379,3 +1379,28 @@ h1, h2, h3 { letter-spacing: -.02em; }
 .pd-act .pd-karta, .pd-act .pd-note { margin-top: 10px; }
 .pd-act + .pds { margin-top: 14px; }
 .btn.btn-karta { display: inline-flex; align-items: center; gap: 8px; }
+/* 25.11: przycisk „Szukaj” w palecie wyszukiwania (klik zamiast samego Entera) */
+.cmd-field .cmd-go { flex: none; height: 36px; }
+/* 25.11: Centrum plików — tabela mieści się bez przewijania, przyciski zawsze widoczne */
+.fl-tbl.fl-all { width: 100%; }
+.fl-tbl .fl-mix { white-space: normal; line-height: 1.9; }
+.fl-chip { display: inline-block; margin: 0 6px 0 0; padding: 0 8px; border-radius: 999px; background: rgba(20, 20, 20, .045); font-size: 12px; color: var(--ink-2); white-space: nowrap; line-height: 22px; }
+.fl-chip b { font-weight: 600; color: var(--ink); font-family: var(--mono); }
+.fl-tbl .fl-mb b { display: block; }
+.fl-tbl .fl-mb small { display: block; color: var(--ink-3); font-size: 12px; }
+.fl-tbl td:last-child { position: sticky; right: 0; background: var(--surface); }
+.fl-tbl .t-act { justify-content: flex-end; }
+@media (max-width: 1180px) {
+  .fl-layout { grid-template-columns: minmax(0, 1fr); }
+  .fl-side { position: static; }
+}
+@media (max-width: 640px) {
+  .fl-tbl.fl-all thead { display: none; }
+  .fl-tbl.fl-all tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  .fl-tbl.fl-all td { padding: 0; border: 0; position: static; }
+  .fl-tbl.fl-all td:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
+  .fl-tbl.fl-all td.fl-mb { grid-column: 1; grid-row: 3; text-align: left; }
+  .fl-tbl.fl-all td:last-child { grid-column: 2; grid-row: 1; }
+  .fl-tbl.fl-all .fl-mb b, .fl-tbl.fl-all .fl-mb small { display: inline; margin-right: 6px; }
+  .fl-tbl.fl-all tr.fl-sum td:nth-child(2), .fl-tbl.fl-all tr.fl-sum td:last-child { display: none; }
+}

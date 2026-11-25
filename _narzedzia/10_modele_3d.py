@@ -104,7 +104,10 @@ def drain_rule(p):
     return None
 
 
-CONS = {'kompozytowy': 'kompozyt', 'zintegrowany': 'zintegr'}
+CONS = {'kompozytowy': 'kompozyt', 'zintegrowany': 'zintegr', 'laminowany': 'lamin'}   # laminowany = brodziki standardowe (25.11.2026)
+ONLY = 'lamin' if '--lamin' in sys.argv else None   # --lamin: przebuduj tylko bryły standardowe, resztę zostaw bez zmian
+ONLY_REFS = set(sys.argv[sys.argv.index('--refs') + 1].split(',')) if '--refs' in sys.argv else None   # --refs 1,2: tylko bryły tych indeksów
+PART = bool(ONLY or ONLY_REFS)
 RULE_TAG = {'corner': 'N', 'corner_opp': 'N', 'corner_adj': 'N', 'short_mid': 'K', 'long_mid': 'D'}
 
 
@@ -153,10 +156,16 @@ def harmony(prods, out):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    for f in os.listdir(OUT):                     # czyść zawartość (katalog bywa zablokowany przez inny proces)
-        os.remove(os.path.join(OUT, f))
+    if not PART:
+        for f in os.listdir(OUT):                 # czyść zawartość (katalog bywa zablokowany przez inny proces)
+            os.remove(os.path.join(OUT, f))
     data = json.loads(open(os.path.join(ROOT, 'assets', 'data.js'), encoding='utf-8').read().split('=', 1)[1].split(';\n')[0])
     prods = data['products']
+    # kształt wg nazwy LM (packshoty.js: FIX) — arkusz źródłowy data.js ma błędy (np. Magnetic 1/4K jako „prostokątny”, audyt 25.11.2026)
+    pk = open(os.path.join(ROOT, 'assets', 'packshoty.js'), encoding='utf-8').read()
+    FIX = json.JSONDecoder().raw_decode(pk[pk.index('var FIX = ') + 10:])[0]
+    for p in prods:
+        if FIX.get(p['ref'], {}).get('shape'): p['shape'] = FIX[p['ref']]['shape']
     cats = {}
     def cat(folder):
         if folder not in cats: cats[folder] = catalog(folder)
@@ -214,6 +223,13 @@ def main():
         models[key]['refs'].append(p['ref'])
         refs[p['ref']] = key
 
+    if PART:
+        models = {k: m for k, m in models.items() if (ONLY and m['cons'] == ONLY) or (ONLY_REFS and set(m['refs']) & ONLY_REFS)}
+        refs = {r: k for r, k in refs.items() if k in models}
+        for k in models:
+            for f in os.listdir(OUT):
+                if f.startswith(k + '.'): os.remove(os.path.join(OUT, f))
+        print('tryb częściowy (%s): brył %d, indeksów %d' % (ONLY or ','.join(sorted(ONLY_REFS)), len(models), len(refs)))
     jobs = {}
     for key, m in models.items():
         jobs[key] = {'obj': m['obj'], 'glb': os.path.join(OUT, key + '.glb'), 'metal': key.split('_')[1] != 'Magnetic',
@@ -223,7 +239,7 @@ def main():
     subprocess.run([BLENDER, '-b', '--factory-startup', '--python', os.path.join(HERE, '10b_blender_brodzik.py'), '--', jf, rf], check=True,
                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     meas = json.load(open(rf, encoding='utf-8')); os.remove(jf)
-    shutil.copy2(rf, os.path.join(HERE, 'modele3d_log.json')); os.remove(rf)
+    shutil.copy2(rf, os.path.join(HERE, 'modele3d_log%s.json' % ('_czesc' if PART else ''))); os.remove(rf)
     import zipfile
     for key, m in models.items():
         r = meas.get(key, {})
@@ -259,7 +275,12 @@ def main():
             out[ref]['approx'] = 1; out[ref]['from'] = approx[ref]
         if m.get('fixed'):
             out[ref]['fix'] = 1
-    harmony(prods, out)
+    if PART:                                      # dopisz do istniejącego spisu, reszta bez zmian
+        old = open(os.path.join(ROOT, 'assets', 'modele3d.js'), encoding='utf-8').read()
+        old = json.loads(old[old.index('window.SP.cad = ') + 16:].rstrip().rstrip(';'))
+        old.update(out); out = old
+    else:
+        harmony(prods, out)
     js = ('/* Modele 3D przypisane do indeksów LM — generuje _narzedzia/10_modele_3d.py (+10b_blender_brodzik.py) z paczki „008 Modele 3D”.\n'
           '   Bryły z katalogu Schedpol 2021, poprawione: wymiar produktu, położenie odpływu wg rysunku technicznego, spód wg konstrukcji. */\n'
           'window.SP = window.SP || {};\nwindow.SP.cad = ' + json.dumps(out, ensure_ascii=False) + ';\n')
