@@ -7,7 +7,7 @@ Polska wersja dostaje sam przełącznik języka (i18n.js bez słownika).
 import io, os, re
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
-V = '20261125k'
+V = '20261125m'
 PAGES = ['index.html', 'podstrony.html']
 HIDE = '<style>.i18n-wait body{visibility:hidden}</style>'   # bez „mignięcia” polskiego tekstu przed tłumaczeniem
 

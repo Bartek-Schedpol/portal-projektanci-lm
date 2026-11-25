@@ -23,7 +23,7 @@
     var css = document.createElement('style');
     css.textContent =
       '.sp-lang{position:relative;flex:none}' +
-      '.sp-lang>button{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 11px;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:transparent;color:inherit;font:600 12.5px/1 Inter,system-ui,sans-serif;letter-spacing:.04em;cursor:pointer}' +
+      '.sp-lang>button{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 11px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff!important;font:600 12.5px/1 Inter,system-ui,sans-serif;letter-spacing:.04em;cursor:pointer}' +
       '.sp-lang>button:hover{border-color:rgba(255,255,255,.6)}' +
       '.sp-lang svg{width:15px;height:15px;flex:none}' +
       '.sp-lang ul{position:absolute;right:0;top:calc(100% + 8px);min-width:178px;margin:0;padding:6px;list-style:none;background:#fff;color:#141414;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,.18),0 0 0 1px rgba(0,0,0,.06);z-index:200}' +
