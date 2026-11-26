@@ -19,7 +19,7 @@
 
   /* ---------- stałe ---------- */
   const DEFAULT_REF = '89189409';
-  const CAD = { name: 'Schedpol & Schedline', date: '04.2026', mb: 55.2 };
+  const CAD = { name: 'Schedpol & Sensea', date: '04.2026', mb: 55.2 };
   /* baza producenta w katalogu CAD Projekt K&A (sprawdzone 25.11.2026: „SCHEDPOL & SCHEDLINE”, kwiecień 2026, 55.2 MB, bez logowania) */
   const CAD_URL = 'https://www.cadprojekt.com.pl/category/baza-modele3d/';
   const CAD_DOC = 'https://cadprojekt.com.pl/instrukcje-cad-decor-pro/';
