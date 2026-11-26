@@ -135,7 +135,7 @@
     return p.brand + '_' + ser + (dim ? '_' + dim : '') + ver;
   }
   /* karta produktu PDF: prawdziwe pliki z _narzedzia/7_karty_pdf.py (szablon ../karta/index.html) */
-  const KARTY_V = '20261125a';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
+  const KARTY_V = '20261126i';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
   function kartaPdf(p) { return '../assets/karty/Karta-produktu_LM' + p.ref + '.pdf?v=' + KARTY_V; }
   function kartaView(p) { return '../karta/index.html?ref=' + encodeURIComponent(p.ref); }
   /* karty gwarancyjne i instrukcje montażu przypisane do indeksu (assets/dokumenty.js) */
@@ -217,7 +217,7 @@
         add({ ext: x.ext, name: x.f, desc: CADD[x.ext] + ' · wymiary w cm' + (cad.approx && cad.from ? ' · bryła serii dopasowana do wymiaru produktu (wzorzec ' + String(cad.from[0]).replace('.', ',') + ' × ' + String(cad.from[1]).replace('.', ',') + ' cm)' : '') + (cad.fix ? ' · odpływ wg rysunku technicznego' : '') + (cad.note ? ' · ' + cad.note : ''), mb: x.kb / 1024, href: CAD_BASE + x.f + CAD_Q, glb: glb ? CAD_BASE + glb + CAD_Q : '', typ: 'model' });
       });
     }
-    if (['brodzik', 'wanna', 'panel ścienny', 'odpływ liniowy'].indexOf(p.cat) !== -1) {
+    if (['brodzik', 'wanna', 'panel ścienny', 'odpływ liniowy'].indexOf(p.cat) !== -1 && !p.noCadDecor) {   // UNITY (06.2026) nie ma w bazie CAD Decor 04.2026
       f.push({ ext: '3D', name: 'Baza CAD Decor — ' + CAD.name, desc: 'Model 3D w bazie CAD Decor (aktualizacja ' + CAD.date + ')', mb: 0, cad: true });
     }
     /* obrazy = to samo, co w galerii produktu (packshot, zdjęcia dodatkowe, aranżacje, rysunek, przekrój) */
@@ -380,9 +380,9 @@
   }
   /* flaga marki na zdjęciu w katalogu: oryginalne logo Sensea (z etykiety) lub Schedpol (logotyp korporacyjny 2016) */
   const BRAND_LOGO = { 'Sensea': '../assets/znaki/sensea.png', 'Schedpol': '../assets/znaki/schedpol.svg' };
-  /* gama LM z eksportu referencji (26.03.2026) — flaga na zdjęciu, jak logo marki */
+  /* gama LM z eksportu referencji (26.11.2026) — flaga na zdjęciu, jak logo marki */
   function gamaFlag(p, cls) {
-    return p.g ? '<span class="flag flag-gama' + (cls ? ' ' + cls : '') + '" title="Gama Leroy Merlin wg eksportu referencji z 26.03.2026">Gama <b>' + esc(p.g) + '</b></span>' : '';
+    return p.g ? '<span class="flag flag-gama' + (cls ? ' ' + cls : '') + '" title="Gama Leroy Merlin wg eksportu referencji z 26.11.2026">Gama <b>' + esc(p.g) + '</b></span>' : '';
   }
   function brandFlag(p) {
     const src = BRAND_LOGO[p.brand];
@@ -994,7 +994,7 @@
       return m[k];
     }).sort(function (a, b) { return a.s - b.s; });
   })();
-  const GAMY = ['A', 'B', 'C', 'L', 'X', 'brak'];   // wg eksportu referencji LM z 26.03.2026 (assets/lm.js)
+  const GAMY = ['A', 'B', 'C', 'L', 'M', 'X', 'brak'];   // wg eksportu referencji LM z 26.11.2026 (nowa gama M; assets/aktualizacja-lm.js)
   const FACETS = [
     { id: 'brand', label: 'Marka', get: function (p) { return p.brand; }, opts: [{ v: 'Schedpol', l: 'Schedpol' }, { v: 'Sensea', l: 'Sensea' }] },
     { id: 'cat', label: 'Kategoria', get: function (p) { return p.cat; }, opts: SP.cats.map(function (c) { return { v: c.id, l: c.label }; }) },
@@ -1003,7 +1003,7 @@
     { id: 'size', label: 'Rozmiar (długość × szerokość)', get: function (p) { return sizeKey(p); }, opts: SIZES, collapse: 10, mono: true, hideZero: true },
     { id: 'color', label: 'Kolor', get: function (p) { return p.c; }, opts: COLORS, collapse: 7 },
     { id: 'gama', label: 'Gama LM', get: function (p) { return p.g || 'brak'; }, opts: GAMY.map(function (g) { return { v: g, l: g === 'brak' ? 'nie podano' : g, mono: g !== 'brak' }; }),
-      hint: 'Gama wg eksportu referencji LM z 26.03.2026.' }
+      hint: 'Gama wg eksportu referencji LM z 26.11.2026.' }
   ];
   function facetById(id) { return FACETS.filter(function (F) { return F.id === id; })[0]; }
   function optLabel(F, v) { const o = F.opts.filter(function (x) { return x.v === v; })[0]; return o ? o.l : v; }
@@ -1152,7 +1152,7 @@
         <div>
           <span class="eyebrow">Katalog · oferta w Leroy Merlin</span>
           <h1 class="page-title" style="margin-top:18px">Katalog produktów</h1>
-          <p class="page-sub">${SP.products.length} produktów w ${SP.series.length} seriach. Każda pozycja ma numer ref. LM, wymiary i komplet plików do projektu. Gama wg eksportu referencji LM z 26.03.2026.</p>
+          <p class="page-sub">${SP.products.length} produktów w ${SP.series.length} seriach. Każda pozycja ma numer ref. LM, wymiary i komplet plików do projektu. Gama wg eksportu referencji LM z 26.11.2026.</p>
         </div>
         <label class="cat-search">${ic('search', 18)}<span class="sr">Filtruj katalog</span>
           <input id="catQ" type="search" placeholder="Filtruj: nr ref., EAN, seria, wymiar, kolor…" value="${esc(C.q)}" autocomplete="off" spellcheck="false"><kbd>/</kbd>
@@ -1425,10 +1425,9 @@
           <div class="panel-h"><h2 id="cT">Cechy serii ${esc(p.fam)}</h2><span class="kicker">${esc(s.type.split(' · ')[0])}</span></div>
           ${s.feats && s.feats.length ? '<ol class="feats">' + s.feats.map(function (f, i) { return '<li><span>0' + (i + 1) + '</span>' + esc(f) + '</li>'; }).join('') + '</ol>' : '<p class="feats-lead">' + esc(s.lead) + '</p>'}
         </section>
-        <section class="panel gw" aria-labelledby="gT">
-          <h2 class="gw-h" id="gT">${ic('shield', 20)} Gwarancja</h2>
-          ${gw.lines.length ? '<ul class="gw-lines">' + gw.lines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' : ''}
-          <p>${esc(GW_TAIL)}</p>
+        <section class="panel gw" aria-labelledby="gT"${gw.lines.length || docsFor(p).length ? '' : ' hidden'}>
+          <h2 class="gw-h" id="gT">${ic('shield', 20)} ${gw.lines.length ? 'Gwarancja' : 'Dokumenty'}</h2>
+          ${gw.lines.length ? '<ul class="gw-lines">' + gw.lines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul><p>' + esc(GW_TAIL) + '</p>' : ''}
           ${docsFor(p).map(function (d) {
             return '<a class="link" href="' + esc(DOC_BASE + d.f) + '" target="_blank" rel="noopener">' + ic('file', 15) + ' ' + esc(d.t) + ' <small>(PDF, ' + esc(nf(d.mb, 1)) + ' MB)</small></a>';
           }).join('')}

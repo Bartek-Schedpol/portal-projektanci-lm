@@ -475,6 +475,17 @@ window.I18N = {
 "Obudowa podpłytkowa do wanien prostokątnych": "Tileable panel for rectangular bathtubs",
 "Obudowa podpłytkowa do wanien półokrągłych": "Tileable panel for corner bathtubs",
 "Usuń filtr": "Remove filter",
+"Bestseller": "Bestseller",
+"Odpływ liniowy do podłóg winylowych (wykładziny i panele o grubości 2–3 mm). Długości 60–90 cm, maskownica 2w1 w pięciu wykończeniach.": "Linear drain for vinyl floors (sheet and panels 2–3 mm thick). Lengths 60–90 cm, 2-in-1 cover in five finishes.",
+"Do podłóg winylowych o grubości 2–3 mm — maskownica na poziomie posadzki, bez progu.": "For vinyl floors 2–3 mm thick — cover flush with the floor, no threshold.",
+"Przepływ 42 l/min (dane producenta).": "Flow rate 42 l/min (manufacturer's data).",
+"Maskownica 2w1 w pięciu wykończeniach: stal, czarny, złoty, miedziany, grafitowy (PVD).": "2-in-1 cover in five finishes: steel, black, gold, copper, graphite (PVD).",
+"Regulowane nóżki: wysokość montażu 70–85 mm. Syfon wyjmowany od góry haczykiem z zestawu.": "Adjustable feet: installation height 70–85 mm. Trap removable from above with the hook supplied.",
+"Korpus z aluminium. Długości 60, 70, 80 i 90 cm.": "Aluminium body. Lengths 60, 70, 80 and 90 cm.",
+"Widok z góry": "Top view",
+"Korpus odpływu z syfonem": "Drain body with trap",
+"Wizualizacja poglądowa · zbliżenie": "Illustrative visualisation · close-up",
+"Rozmiar paczki:": "Package size:",
 "lat": "years",
 "realizacja do {n} dni": "delivery within {n} days",
 "Dropshipping od {n} produktu · realizacja do {n} dni": "Dropshipping from {n} product · delivery within {n} days",
@@ -504,6 +515,42 @@ window.I18N = {
 "Obudowa podpłytkowa do wanien prostokątnych i półokrągłych, do oklejenia płytkami. Dwie wersje: z podcięciem na stopy (wnęka przy posadzce, miejsce na taśmę LED) albo bez podcięcia — panele do samej posadzki.": "Tileable panel for rectangular and corner bathtubs. Two versions: with a toe recess (recess at floor level, room for an LED strip) or without — panels down to the floor."
 },
 "phrases": [
+[
+"Odpływ liniowy pod winyl",
+"Linear drain for vinyl floors"
+],
+[
+"odpływ liniowy pod winyl",
+"linear drain for vinyl floors"
+],
+[
+"Maskownica stal",
+"Steel cover"
+],
+[
+"złoty",
+"gold"
+],
+[
+"miedziany",
+"copper"
+],
+[
+"grafitowy",
+"graphite"
+],
+[
+"Złoty",
+"Gold"
+],
+[
+"Miedziany",
+"Copper"
+],
+[
+"Grafitowy",
+"Graphite"
+],
 [
 "Brodzik głęboki zintegrowany",
 "Deep integrated shower tray"

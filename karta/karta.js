@@ -25,7 +25,8 @@
     'gobaby': [55, 78, 1.6], 'dafne': [46, 80, 1.6], 'torres-w': [40, 56, 1.25], 'torres-b': [40, 56, 1.25],
     'odplyw-scena': [62, 88, 2.4], 'odplyw-detal': [58, 86, 2.0], 'odplyw-black': [70, 80, 1.9], 'odplyw-prime': [72, 82, 2.2],
     'wc-po': [28, 62, 1.35], 'nosnik': [50, 72, 1.3], 'obudowa-led': [50, 72, 1.3], 'obudowa-pol': [50, 72, 1.3],
-    'najazd-a': [50, 55, 1], 'najazd-b': [50, 55, 1]
+    'najazd-a': [50, 55, 1], 'najazd-b': [50, 55, 1],
+    'unity-aranzacja-steel': [44, 72, 1.7], 'unity-aranzacja-black': [44, 72, 1.7], 'unity-aranzacja-gold': [44, 72, 1.7], 'unity-aranzacja-copper': [44, 72, 1.7], 'unity-aranzacja-graphite': [44, 72, 1.7]
   };
   /* gwarancja wg karty Stabilsafe v15.25 (kanał DIY); znaki: oryginały z etykiet Sensea i z przeglądu oferty Schedpol */
   const GW_TAIL = 'Warunek: montaż zgodnie z instrukcją, przez osobę o odpowiednich kwalifikacjach. Zakres i terytorium — karta gwarancyjna Stabilsafe v15.25. Gwarancja nie ogranicza ustawowych praw kupującego.';
@@ -79,6 +80,9 @@
   }
   function sceneFor(p) {
     const s = serieOf(p), pc = prodCol(p);
+    /* 26.11: aranżacja w kolorze tego wariantu (zdjęcia dodatkowe, np. UNITY — każda maskownica ma własną) */
+    const ph = ((SP.extra && SP.extra[p.ref]) || []).filter(function (x) { return x.kind === 'photo' && SP.img[x.k]; })[0];
+    if (ph && !(s.scenes || []).length) return { k: ph.k, cap: 'Wizualizacja poglądowa' };
     let all = (s.scenes || []).concat(EXTRA_SCENES[p.fam] || []).filter(function (k) { return SP.img[k] && !SKIP_SCENES[k]; });
     if (p.fam === 'Obudowa uniwersalna') {               // aranżacja tej wersji obudowy (kształt + podcięcie)
       const ob = (p.shape === 'półokrągły' ? 'pol' : 'pr') + (/LED/.test(p.ver || '') ? '-led' : '');
@@ -171,14 +175,14 @@
       </section>
 
       <section class="low">
-        <div class="gw">
+        ${gw.lines.length ? `<div class="gw">
           ${gw.badge ? '<img class="gw-badge" src="../assets/znaki/' + gw.badge + '.png" alt="Znak gwarancji">' : ''}
           <div>
             <h2>Gwarancja producenta</h2>
-            ${gw.lines.length ? '<ul>' + gw.lines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' : ''}
+            <ul>${gw.lines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('')}</ul>
             <p>${esc(GW_TAIL)}</p>
           </div>
-        </div>
+        </div>` : ''}
         <div class="col">
           <h2>${feats.length ? 'Cechy serii ' + esc(p.fam) : 'O produkcie'}</h2>
           ${feats.length ? '<ol class="feats">' + feats.map(function (f, i) { return '<li><span>0' + (i + 1) + '</span>' + esc(f) + '</li>'; }).join('') + '</ol>'

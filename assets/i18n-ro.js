@@ -475,6 +475,17 @@ window.I18N = {
 "Obudowa podpłytkowa do wanien prostokątnych": "Panou pentru placare pentru căzi dreptunghiulare",
 "Obudowa podpłytkowa do wanien półokrągłych": "Panou pentru placare pentru căzi de colț",
 "Usuń filtr": "Elimină filtrul",
+"Bestseller": "Bestseller",
+"Odpływ liniowy do podłóg winylowych (wykładziny i panele o grubości 2–3 mm). Długości 60–90 cm, maskownica 2w1 w pięciu wykończeniach.": "Rigolă liniară pentru pardoseli din vinil (covor și panouri de 2–3 mm). Lungimi 60–90 cm, capac 2 în 1 în cinci finisaje.",
+"Do podłóg winylowych o grubości 2–3 mm — maskownica na poziomie posadzki, bez progu.": "Pentru pardoseli din vinil de 2–3 mm — capac la nivelul pardoselii, fără prag.",
+"Przepływ 42 l/min (dane producenta).": "Debit 42 l/min (date ale producătorului).",
+"Maskownica 2w1 w pięciu wykończeniach: stal, czarny, złoty, miedziany, grafitowy (PVD).": "Capac 2 în 1 în cinci finisaje: oțel, negru, auriu, cupru, grafit (PVD).",
+"Regulowane nóżki: wysokość montażu 70–85 mm. Syfon wyjmowany od góry haczykiem z zestawu.": "Picioare reglabile: înălțime de montaj 70–85 mm. Sifon detașabil de sus cu cârligul inclus.",
+"Korpus z aluminium. Długości 60, 70, 80 i 90 cm.": "Corp din aluminiu. Lungimi 60, 70, 80 și 90 cm.",
+"Widok z góry": "Vedere de sus",
+"Korpus odpływu z syfonem": "Corpul rigolei cu sifon",
+"Wizualizacja poglądowa · zbliżenie": "Vizualizare orientativă · prim-plan",
+"Rozmiar paczki:": "Dimensiunea pachetului:",
 "lat": "de ani",
 "realizacja do {n} dni": "livrare în maximum {n} zile",
 "Dropshipping od {n} produktu · realizacja do {n} dni": "Dropshipping de la {n} produs · livrare în maximum {n} zile",
@@ -504,6 +515,42 @@ window.I18N = {
 "Obudowa podpłytkowa do wanien prostokątnych i półokrągłych, do oklejenia płytkami. Dwie wersje: z podcięciem na stopy (wnęka przy posadzce, miejsce na taśmę LED) albo bez podcięcia — panele do samej posadzki.": "Panou pentru placare pentru căzi dreptunghiulare și de colț. Două versiuni: cu degajare pentru picioare (la nivelul pardoselii, loc pentru bandă LED) sau fără — panouri până la pardoseală."
 },
 "phrases": [
+[
+"Odpływ liniowy pod winyl",
+"Rigolă liniară pentru vinil"
+],
+[
+"odpływ liniowy pod winyl",
+"rigolă liniară pentru vinil"
+],
+[
+"Maskownica stal",
+"Capac oțel"
+],
+[
+"złoty",
+"auriu"
+],
+[
+"miedziany",
+"cupru"
+],
+[
+"grafitowy",
+"grafit"
+],
+[
+"Złoty",
+"Auriu"
+],
+[
+"Miedziany",
+"Cupru"
+],
+[
+"Grafitowy",
+"Grafit"
+],
 [
 "Brodzik głęboki zintegrowany",
 "Cădiță de duș adâncă integrată"

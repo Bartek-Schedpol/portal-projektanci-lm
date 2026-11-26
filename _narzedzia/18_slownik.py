@@ -484,6 +484,17 @@ Nośnik uniwersalny do wanien | Universal bathtub support | Suport universal pen
 Obudowa podpłytkowa do wanien prostokątnych | Tileable panel for rectangular bathtubs | Panou pentru placare pentru căzi dreptunghiulare
 Obudowa podpłytkowa do wanien półokrągłych | Tileable panel for corner bathtubs | Panou pentru placare pentru căzi de colț
 Usuń filtr | Remove filter | Elimină filtrul
+Bestseller | Bestseller | Bestseller
+Odpływ liniowy do podłóg winylowych (wykładziny i panele o grubości 2–3 mm). Długości 60–90 cm, maskownica 2w1 w pięciu wykończeniach. | Linear drain for vinyl floors (sheet and panels 2–3 mm thick). Lengths 60–90 cm, 2-in-1 cover in five finishes. | Rigolă liniară pentru pardoseli din vinil (covor și panouri de 2–3 mm). Lungimi 60–90 cm, capac 2 în 1 în cinci finisaje.
+Do podłóg winylowych o grubości 2–3 mm — maskownica na poziomie posadzki, bez progu. | For vinyl floors 2–3 mm thick — cover flush with the floor, no threshold. | Pentru pardoseli din vinil de 2–3 mm — capac la nivelul pardoselii, fără prag.
+Przepływ 42 l/min (dane producenta). | Flow rate 42 l/min (manufacturer's data). | Debit 42 l/min (date ale producătorului).
+Maskownica 2w1 w pięciu wykończeniach: stal, czarny, złoty, miedziany, grafitowy (PVD). | 2-in-1 cover in five finishes: steel, black, gold, copper, graphite (PVD). | Capac 2 în 1 în cinci finisaje: oțel, negru, auriu, cupru, grafit (PVD).
+Regulowane nóżki: wysokość montażu 70–85 mm. Syfon wyjmowany od góry haczykiem z zestawu. | Adjustable feet: installation height 70–85 mm. Trap removable from above with the hook supplied. | Picioare reglabile: înălțime de montaj 70–85 mm. Sifon detașabil de sus cu cârligul inclus.
+Korpus z aluminium. Długości 60, 70, 80 i 90 cm. | Aluminium body. Lengths 60, 70, 80 and 90 cm. | Corp din aluminiu. Lungimi 60, 70, 80 și 90 cm.
+Widok z góry | Top view | Vedere de sus
+Korpus odpływu z syfonem | Drain body with trap | Corpul rigolei cu sifon
+Wizualizacja poglądowa · zbliżenie | Illustrative visualisation · close-up | Vizualizare orientativă · prim-plan
+Rozmiar paczki: | Package size: | Dimensiunea pachetului:
 lat | years | de ani
 realizacja do {n} dni | delivery within {n} days | livrare în maximum {n} zile
 Dropshipping od {n} produktu · realizacja do {n} dni | Dropshipping from {n} product · delivery within {n} days | Dropshipping de la {n} produs · livrare în maximum {n} zile
@@ -515,6 +526,15 @@ Obudowa podpłytkowa do wanien prostokątnych i półokrągłych, do oklejenia p
 """
 
 PHRASES = r"""
+Odpływ liniowy pod winyl | Linear drain for vinyl floors | Rigolă liniară pentru vinil
+odpływ liniowy pod winyl | linear drain for vinyl floors | rigolă liniară pentru vinil
+Maskownica stal | Steel cover | Capac oțel
+złoty | gold | auriu
+miedziany | copper | cupru
+grafitowy | graphite | grafit
+Złoty | Gold | Auriu
+Miedziany | Copper | Cupru
+Grafitowy | Graphite | Grafit
 Brodzik głęboki zintegrowany | Deep integrated shower tray | Cădiță de duș adâncă integrată
 Brodzik głęboki laminowany | Deep laminated shower tray | Cădiță de duș adâncă laminată
 brodzik głęboki zintegrowany | deep integrated shower tray | cădiță de duș adâncă integrată

@@ -49,7 +49,7 @@
         return '<li><a href="' + hrefFor(l.k) + '" data-lang="' + l.k + '"' + (l.k === LANG ? ' aria-current="true"' : '') + '><span>' + l.n + '</span><small>' + l.k.toUpperCase() + (l.k === LANG ? ' ✓' : '') + '</small></a></li>';
       }).join('') + '</ul>';
     var host = document.querySelector('.nav-tools') || document.querySelector('.mb-nav') || document.querySelector('header nav') || document.querySelector('header');
-    var before = host && (host.querySelector('.avatar') || host.querySelector('.mb-cta'));
+    var before = host && (host.querySelector('.avatar') || host.querySelector('.mb-cta') || host.querySelector('.nav-teczka'));   // przed białym przyciskiem, jak na Starcie
     if (host) { if (before) before.parentNode.insertBefore(w, before); else host.appendChild(w); }
     var b = w.querySelector('button'), ul = w.querySelector('ul');
     /* lista w osobnej warstwie nad całą stroną (w nagłówku zasłaniała ją treść strony i kliknięcia nie działały) */

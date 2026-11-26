@@ -138,6 +138,20 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 .mbg-lb button{position:absolute;border:0;background:#141414;color:#fff;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;display:grid;place-items:center}
 .mbg-lb .x{top:20px;right:20px}.mbg-lb .pv{left:20px;top:50%;transform:translateY(-50%)}.mbg-lb .nx{right:20px;top:50%;transform:translateY(-50%)}
 .mbg-lb .cap{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:13px;color:#555}
+/* 26.11: nagłówek podstron jak na Starcie — linki po prawej, lupa w kółku, język, biały przycisk „Centrum plików” (z licznikiem listy Pliki) */
+.mbx .nav-in{max-width:1240px;height:78px;padding:0 32px;gap:36px}
+.mbx .brand-logo{height:30px;width:auto}
+.mbx .nav-links{margin-left:auto;gap:28px}
+.mbx .nav-links a{padding:0 0 4px;font-size:14.5px;font-weight:500;color:#fff;opacity:.86;background:transparent!important;border-radius:0;height:auto;line-height:1.4}
+.mbx .nav-links a:hover{opacity:1}
+.mbx .nav-links a.is-on{opacity:1;box-shadow:none;border-bottom:2px solid var(--brand)}
+.mbx .nav-tools{gap:12px}
+.mbx .nav-search{width:40px;height:40px;padding:0;justify-content:center;border-radius:50%;background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);color:#fff}
+.mbx .nav-search span,.mbx .nav-search kbd{display:none}
+.mbx .nav-teczka{height:auto;padding:11px 20px;font-weight:600;font-size:14px;gap:8px;text-decoration:none}
+.mbx .nav-teczka .count{min-width:20px;height:20px;font-size:11px}
+.mbx .nav-teczka .count.is-zero{display:none}
+@media (max-width:900px){.mbx .nav-in{height:64px;padding:0 8px 0 14px;gap:8px}.mbx .nav-links{margin-left:0}.mbx .nav-links a{padding:12px 0;border-bottom:0}.mbx .nav-tools{gap:8px;margin-left:auto}.mbx .brand-logo{height:20px!important}.mbx .nav-search{width:36px;height:36px}.mbx .nav-teczka{padding:8px 12px;font-size:12.5px;white-space:nowrap}.mbx .nav-teczka span{display:inline}}
 </style>
 <script>
 (function(){
@@ -202,8 +216,8 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 </script>
 <script src="../assets/staty.js?v=20261125k" defer></script>
 <style>.i18n-wait body{visibility:hidden}</style>
-<script src="../assets/i18n-en.js?v=20261126b"></script>
-<script src="../assets/i18n.js?v=20261126b"></script>
+<script src="../assets/i18n-en.js?v=20261126j"></script>
+<script src="../assets/i18n.js?v=20261126j"></script>
 </head>
 <body>
 <a class="skip" href="#app">Przejdź do treści</a>
@@ -227,9 +241,9 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
       <button class="nav-search" type="button" data-act="open-search" aria-label="Szukaj: nr ref., seria, wymiar (skrót: ukośnik)">
         <i data-i="search" data-size="16"></i><span>Szukaj: nr ref., seria, wymiar…</span><kbd>/</kbd>
       </button>
-      <button class="nav-teczka" type="button" data-act="open-teczka" aria-label="Otwórz listę plików do pobrania">
-        <i data-i="folder" data-size="16"></i><span>Pliki</span><b class="count" id="teczkaCount">0</b>
-      </button>
+      <a class="nav-teczka" href="#/pliki" aria-label="Centrum plików">
+        <span>Centrum plików</span><b class="count" id="teczkaCount">0</b>
+      </a>
       <button class="nav-burger" type="button" data-act="toggle-menu" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
     </div>
   </div>
@@ -285,8 +299,8 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 <div class="scrim" id="scrim" data-act="close-all"></div>
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
-<script src="../assets/data.js?v=20261126b"></script>
-<script src="../assets/bokmapa.js?v=20261126b"></script>
+<script src="../assets/data.js?v=20261126i"></script>
+<script src="../assets/bokmapa.js?v=20261126i"></script>
 <script src="../assets/lm.js?v=20261125b"></script>
 <script src="../assets/rozmiary.js?v=20261125b"></script>
 <script src="../assets/packshoty.js?v=20261125b"></script>
@@ -294,9 +308,10 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 <script src="../assets/dokumenty.js?v=20261125b"></script>
 <script src="../assets/filmy.js?v=20261125b"></script>
 <script src="../assets/modele3d.js?v=20261125d"></script>
+<script src="../assets/aktualizacja-lm.js?v=20261126h"></script>
 <script src="../assets/icons.js?v=20261125b"></script>
 <script>window.SPP_SOLO = 1;</script>
 <script src="../assets/proto.js?v=20261125b"></script>
-<script src="../a-biblioteka/a.js?v=20261126b"></script>
+<script src="../a-biblioteka/a.js?v=20261126i"></script>
 </body>
 </html>

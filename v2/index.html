@@ -128,15 +128,19 @@
 }
 .mb-coop2-h{display:flex;align-items:center;justify-content:space-between;gap:24px}.mb-30{position:relative;width:150px;height:150px;flex:none;color:#8A6A1E}.mb-30 svg{width:100%;height:100%;display:block}.mb-30n{position:absolute;left:0;right:0;top:50%;transform:translateY(-74%);text-align:center;font:400 42px/1 Inter,sans-serif;letter-spacing:-.03em;color:#8A6A1E}.mb-30l{position:absolute;left:0;right:0;top:50%;transform:translateY(190%);text-align:center;font:600 10px/1 Inter,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#8A6A1E;padding-left:.32em}.mb-stats.mb-stats3{grid-template-columns:repeat(3,1fr)}
 @media (max-width:760px){.mb-30{width:104px;height:104px}.mb-30n{font-size:29px}.mb-30l{font-size:7.5px}.mb-stats.mb-stats3{grid-template-columns:1fr}.mb-stats.mb-stats3 div{border-right:0}}
+.hnews-box .hnews-bs .hnew-bs{grid-column:span 2}.hnews-box .hnews-bs .hnew-bs .hcat-txt b{font-size:32px}.hnew-tag.hnew-tag-bs{background:#B8902F;color:#fff}
+@media (max-width:760px){.hnews-box .hnews-bs .hnew-bs{grid-column:span 1}}
+/* 26.11: paralaksa zdjęcia w hero — warstwa wyższa o 15%, przesuwana wolniej niż strona (bez background-attachment:fixed — nie działa na iOS) */
+.mb-hero{overflow:hidden}.mb-hero-bg{position:absolute;left:0;right:0;top:-15%;height:130%;background:#222 url(hero.jpg) center 30%/cover no-repeat;will-change:transform;z-index:0}.mb-hero:before{z-index:1}.mb-hero .mb-nav{z-index:3}
 </style>
 <script src="../assets/staty.js?v=20261125k" defer></script>
-<script src="../assets/i18n.js?v=20261126b" defer></script>
+<script src="../assets/i18n.js?v=20261126j" defer></script>
 </head>
 <body class="mbx">
 
 
 
-<section class="mb-hero">
+<section class="mb-hero"><div class="mb-hero-bg" aria-hidden="true"></div>
   <nav class="mb-nav"><div class="mb-wrap">
     <img src="../assets/logo-white.svg" alt="Schedpol">
     <ul><li class="mb-on"><a href="index.html">Start</a></li><li><a href="podstrony.html#/katalog">Katalog</a></li><li><a href="podstrony.html#/pliki">Pliki</a></li><li><a href="podstrony.html#/akademia">Akademia</a></li><li><a href="#sek-kontakt">Kontakt</a></li></ul>
@@ -152,7 +156,7 @@
         <a class="mb-pill mb-p" href="podstrony.html#/katalog">Przejdź do katalogu <b>→</b></a>
         <a class="mb-pill mb-g" href="podstrony.html#/akademia">Akademia projektanta</a>
       </div>
-      <div class="mb-ticks"><span>371 produktów</span><span>23 serie</span><span>Pliki bez logowania</span></div>
+      <div class="mb-ticks"><span>391 produktów</span><span>24 serie</span><span>Pliki bez logowania</span></div>
     </div>
     <div class="mb-float">
       <div class="mb-k"><span class="mb-sq"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>Znajdź produkt po numerze ref.&nbsp;LM</div>
@@ -193,37 +197,42 @@
     <ul class="mb-chk"><li>Numer ref. LM i gama przy każdej pozycji</li><li>Modele 3D z odpływem w miejscu jak w produkcie</li><li>Karty produktów PDF do wydruku A4</li></ul>
   </div>
   <div class="mb-stats" style="grid-column:1/-1">
-    <div><b>371</b><span>produktów w ofercie LM</span></div>
-    <div><b>23</b><span>serie Schedpol i Sensea</span></div>
+    <div><b>391</b><span>produktów w ofercie LM</span></div>
+    <div><b>24</b><span>serie Schedpol i Sensea</span></div>
     <div><b>317</b><span>brodzików</span></div>
-    <div><b>16</b><span>odpływów liniowych</span></div>
+    <div><b>36</b><span>odpływów liniowych</span></div>
   </div>
 </div></section>
 
 <div class="home mb-cur"><div class="wrap"><section class="home-block hnews-box" aria-labelledby="newsT">
             <div class="home-h home-h-row"><div><span class="home-k">Nowości 2026</span><h2 id="newsT">Nowe serie w ofercie Leroy Merlin</h2></div>
               <a class="link" href="podstrony.html#/katalog">Cały katalog <svg class="i i-arrow-right" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13.5 6.5L19 12l-5.5 5.5"></path></svg></a></div>
-            <div class="hnews"><a class="hcat hnew  hnew-0 in" href="podstrony.html#/katalog?seria=Balans">
+            <div class="hnews hnews-bs"><a class="hcat hnew hnew-bs in" href="podstrony.html#/katalog?seria=Frigo&amp;kolor=bia%C5%82y%20kamie%C5%84">
+                <img src="../assets/img/frigo-ws-a.jpg" alt="" decoding="async" style="object-position:30% 88%">
+                <span class="hnew-tag hnew-tag-bs">Bestseller</span>
+                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+                <span class="hcat-txt"><b>Frigo · biały kamień</b><span>Brodzik zintegrowany Sensea · 20 indeksów</span></span>
+              </a><a class="hcat hnew  hnew-s in" href="podstrony.html#/katalog?seria=Balans">
                 <img src="../assets/img/balans-cas.jpg" alt="" decoding="async" style="object-position:30% 75%">
                 <span class="hnew-tag">Nowość</span>
                 <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
                 <span class="hcat-txt"><b>Balans</b><span>Brodzik kompozytowy · 47 indeksów</span></span>
-              </a><a class="hcat hnew  hnew-1 in" href="podstrony.html#/katalog?seria=Harmony">
-                <img src="../assets/img/odplyw-black.jpg" alt="" decoding="async" style="object-position:55% 60%">
-                <span class="hnew-tag">Nowość</span>
-                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
-                <span class="hcat-txt"><b>Harmony</b><span>Odpływ liniowy · 16 indeksów</span></span>
-              </a><a class="hcat hnew  hnew-2 in" href="podstrony.html#/katalog?seria=Consist">
+              </a><a class="hcat hnew  hnew-s in" href="podstrony.html#/katalog?seria=Consist">
                 <img src="../assets/img/consist.jpg" alt="" decoding="async" style="object-position:50% 60%">
                 <span class="hnew-tag">Nowość</span>
                 <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
                 <span class="hcat-txt"><b>Consist</b><span>Brodzik zintegrowany · 2 indeksy</span></span>
-              </a><a class="hcat hnew  hnew-3 in" href="podstrony.html#/katalog?seria=Tebe">
-                <img src="../assets/img/tebe.jpg" alt="" decoding="async" style="object-position:50% 60%">
+              </a><a class="hcat hnew hnew-bs in" href="podstrony.html#/katalog?seria=Balans&amp;kolor=bia%C5%82y%20kamie%C5%84">
+                <img src="../assets/img/balans-ws-a.jpg" alt="" decoding="async" style="object-position:50% 70%">
+                <span class="hnew-tag hnew-tag-bs">Bestseller</span>
+                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+                <span class="hcat-txt"><b>Balans · biały kamień</b><span>Brodzik kompozytowy Schedpol · 15 indeksów</span></span>
+              </a><a class="hcat hnew  hnew-s in" href="podstrony.html#/katalog?seria=Unity">
+                <img src="../assets/img/unity-aranzacja-graphite.jpg" alt="" decoding="async" style="object-position:50% 55%">
                 <span class="hnew-tag">Nowość</span>
                 <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
-                <span class="hcat-txt"><b>Tebe</b><span>Brodzik laminowany · 4 indeksy</span></span>
-              </a><a class="hcat hnew  hnew-4 in" href="podstrony.html#/katalog?seria=Najazd">
+                <span class="hcat-txt"><b>Unity</b><span>Odpływ liniowy pod winyl · 20 indeksów</span></span>
+              </a><a class="hcat hnew  hnew-s in" href="podstrony.html#/katalog?seria=Najazd">
                 <img src="../assets/img/najazd-a.jpg" alt="" decoding="async" style="object-position:50% 60%">
                 <span class="hnew-tag">Nowość</span>
                 <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
@@ -243,7 +252,7 @@
           </a><a class="hcat is-scene hcat-2  in" style="--d:80ms" href="podstrony.html#/katalog?cat=odp%C5%82yw%20liniowy">
             <img src="../assets/img/odplyw-black.jpg" alt="" decoding="async" style="object-position:50% 100%;--z:1.8;--tx:-16.0%;--ty:-20.0%">
             <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
-            <span class="hcat-txt"><b>Odpływy liniowe</b><span>16 indeksów</span><span class="cat-meta"><span class="cm-cols"><i style="background:#C9CCCF" title="stal"></i><i style="background:#1B1B1C" title="czarny"></i></span><span class="cm-cad">DWG · 3D</span></span></span>
+            <span class="hcat-txt"><b>Odpływy liniowe</b><span>36 indeksów</span><span class="cat-meta"><span class="cm-cols"><i style="background:#C9CCCF" title="stal"></i><i style="background:#1B1B1C" title="czarny"></i><i style="background:#C9A24B" title="złoty"></i><i style="background:#B8734F" title="miedziany"></i><i style="background:#4B4D52" title="grafitowy"></i></span><span class="cm-cad">DWG · 3D</span></span></span>
           </a><a class="hcat is-scene hcat-3  in" style="--d:120ms" href="podstrony.html#/katalog?cat=panel%20%C5%9Bcienny">
             <img src="../assets/img/wc-po.jpg" alt="" decoding="async" style="object-position:50% 50%;--z:1.8;--tx:14.0%;--ty:-2.0%">
             <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
@@ -287,5 +296,6 @@ document.querySelectorAll('.mb-bk').forEach(function(r){
  r.addEventListener('mouseenter',function(){map.classList.add('is-hov');map.querySelectorAll('path').forEach(function(p){p.classList.toggle('on',p.getAttribute('data-r')===r.getAttribute('data-r'));});});
  r.addEventListener('mouseleave',function(){map.classList.remove('is-hov');});});})();
 </script>
+<script>/* paralaksa hero (26.11) */(function(){var h=document.querySelector(".mb-hero"),b=h&&h.querySelector(".mb-hero-bg");if(!b||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))return;var q=0;function f(){q=0;var y=window.pageYOffset||0,hh=h.offsetHeight;if(y>hh*1.2)return;b.style.transform="translate3d(0,"+Math.round(y*0.35)+"px,0)";}addEventListener("scroll",function(){if(!q){q=1;requestAnimationFrame(f);}},{passive:true});f();})();</script>
 </body>
 </html>
