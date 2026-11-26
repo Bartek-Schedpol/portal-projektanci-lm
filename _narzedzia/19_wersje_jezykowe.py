@@ -27,6 +27,9 @@ for f in PAGES:
         d = os.path.join(ROOT, lang); os.makedirs(d, exist_ok=True)
         t = base.replace('<html lang="pl">', '<html lang="%s" class="i18n-wait">' % lang, 1)
         t = t.replace('url(hero.jpg)', 'url(../v2/hero.jpg)').replace('src="hero.jpg"', 'src="../v2/hero.jpg"')
+        # znak „30 lat” (SVG — tłumacz w i18n.js go pomija): napisy na wstędze i pod spodem
+        Z30 = {'en': ('YEARS', 'OF PARTNERSHIP', '2'), 'ro': ('DE ANI', 'DE COLABORARE', '1.6')}[lang]
+        t = t.replace('letter-spacing="4" fill="#fff">LAT</text>', 'letter-spacing="%s" fill="#fff">%s</text>' % (Z30[2], Z30[0])).replace('>WSPÓŁPRACY</text>', '>%s</text>' % Z30[1])
         t = t.replace('</head>', HIDE + '\n<script src="../assets/i18n-%s.js?v=%s"></script>\n<script src="../assets/i18n.js?v=%s"></script>\n</head>' % (lang, V, V), 1)
         t = t.replace('<!doctype html>', '<!doctype html>\n<!-- Wygenerowano z v2/%s (_narzedzia/19_wersje_jezykowe.py) — nie edytować ręcznie -->' % f, 1)
         io.open(os.path.join(d, f), 'w', encoding='utf-8', newline='').write(t)
