@@ -212,9 +212,16 @@
   function bar(p) {
     const b = document.getElementById('bar');
     if (/[?&]druk=1/.test(location.search)) { b.remove(); return; }
-    b.innerHTML = '<span>Podgląd karty · LM <b>' + esc(p.ref) + '</b></span>' +
+    /* 26.11: „Wróć do produktu” — karta otwiera się w tym samym oknie (także na tablecie, w trybie pełnoekranowym) */
+    const back = (/github\.io$/.test(location.hostname) ? '../podstrony.html' : '../v2/podstrony.html') + '#/produkt?ref=' + encodeURIComponent(p.ref);
+    b.innerHTML = '<a class="btn btn-ghost btn-back" href="' + back + '" id="kBack">← Wróć do produktu</a>' +
+      '<span>Karta produktu · LM <b>' + esc(p.ref) + '</b></span>' +
       '<a class="btn" href="../assets/karty/Karta-produktu_LM' + esc(p.ref) + '.pdf" download>Pobierz PDF</a>' +
       '<button class="btn btn-ghost" type="button" onclick="window.print()">Drukuj</button>';
+    const k = document.getElementById('kBack');                 // wejście z portalu: wróć tam, skąd przyszedł (ta sama wersja językowa, ta sama pozycja)
+    k.addEventListener('click', function (e) {
+      if (document.referrer && document.referrer.indexOf(location.origin) === 0 && history.length > 1) { e.preventDefault(); history.back(); }
+    });
   }
 
   const m = /[?&]ref=(\d+)/.exec(location.search);

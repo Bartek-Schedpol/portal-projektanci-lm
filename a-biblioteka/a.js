@@ -1407,9 +1407,9 @@
           <div class="pd-act">
           <div class="pd-cta">
             <button class="btn btn-primary" type="button" data-act="add-product-sel">Dodaj do Plików <span class="btn-ic">${ic('arrow-right', 16)}</span></button>
-            <a class="btn btn-primary btn-karta" href="${esc(kartaPdf(p))}" download>${ic('file', 16)} Karta produktu PDF</a>
+            <a class="btn btn-primary btn-karta" href="${esc(kartaView(p))}">${ic('file', 16)} Karta produktu PDF</a>
           </div>
-          <p class="pd-karta"><a class="link" href="${esc(kartaView(p))}" target="_blank" rel="noopener">${ic('eye', 15)} Podgląd karty A4 przed pobraniem</a></p>
+          <p class="pd-karta"><a class="link" href="${esc(kartaPdf(p))}" download>${ic('download', 15)} Pobierz kartę A4 PDF</a></p>
           <p class="pd-note">${ic('info', 16)} Cena i dostępność: w systemie sklepu Leroy Merlin.</p>
           </div>
           ${pdSizes(p)}

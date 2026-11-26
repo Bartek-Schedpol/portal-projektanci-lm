@@ -476,6 +476,7 @@ window.I18N = {
 "Obudowa podpłytkowa do wanien półokrągłych": "Tileable panel for corner bathtubs",
 "Usuń filtr": "Remove filter",
 "Bestseller": "Bestseller",
+"Pobierz kartę A{n} PDF": "Download A{n} sheet PDF (PL)",
 "Odpływ liniowy do podłóg winylowych (wykładziny i panele o grubości 2–3 mm). Długości 60–90 cm, maskownica 2w1 w pięciu wykończeniach.": "Linear drain for vinyl floors (sheet and panels 2–3 mm thick). Lengths 60–90 cm, 2-in-1 cover in five finishes.",
 "Do podłóg winylowych o grubości 2–3 mm — maskownica na poziomie posadzki, bez progu.": "For vinyl floors 2–3 mm thick — cover flush with the floor, no threshold.",
 "Przepływ 42 l/min (dane producenta).": "Flow rate 42 l/min (manufacturer's data).",

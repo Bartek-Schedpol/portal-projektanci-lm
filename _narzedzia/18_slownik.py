@@ -485,6 +485,7 @@ Obudowa podpłytkowa do wanien prostokątnych | Tileable panel for rectangular b
 Obudowa podpłytkowa do wanien półokrągłych | Tileable panel for corner bathtubs | Panou pentru placare pentru căzi de colț
 Usuń filtr | Remove filter | Elimină filtrul
 Bestseller | Bestseller | Bestseller
+Pobierz kartę A{n} PDF | Download A4 sheet PDF (PL) | Descarcă fișa A4 PDF (PL)
 Odpływ liniowy do podłóg winylowych (wykładziny i panele o grubości 2–3 mm). Długości 60–90 cm, maskownica 2w1 w pięciu wykończeniach. | Linear drain for vinyl floors (sheet and panels 2–3 mm thick). Lengths 60–90 cm, 2-in-1 cover in five finishes. | Rigolă liniară pentru pardoseli din vinil (covor și panouri de 2–3 mm). Lungimi 60–90 cm, capac 2 în 1 în cinci finisaje.
 Do podłóg winylowych o grubości 2–3 mm — maskownica na poziomie posadzki, bez progu. | For vinyl floors 2–3 mm thick — cover flush with the floor, no threshold. | Pentru pardoseli din vinil de 2–3 mm — capac la nivelul pardoselii, fără prag.
 Przepływ 42 l/min (dane producenta). | Flow rate 42 l/min (manufacturer's data). | Debit 42 l/min (date ale producătorului).
