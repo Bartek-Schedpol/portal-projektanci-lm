@@ -996,7 +996,7 @@
       return m[k];
     }).sort(function (a, b) { return a.s - b.s; });
   })();
-  const GAMY = ['A', 'B', 'C', 'L', 'M', 'X', 'brak'];   // wg eksportu referencji LM z 26.11.2026 (nowa gama M; assets/aktualizacja-lm.js)
+  const GAMY = ['A', 'B', 'C', 'L', 'M', 'X'].concat(SP.products.some(function (p) { return !p.g; }) ? ['brak'] : []);   // wg eksportu LM z 26.11.2026; „nie podano” tylko, gdy jakiś indeks nie ma gamy
   const FACETS = [
     { id: 'brand', label: 'Marka', get: function (p) { return p.brand; }, opts: [{ v: 'Schedpol', l: 'Schedpol' }, { v: 'Sensea', l: 'Sensea' }] },
     { id: 'cat', label: 'Kategoria', get: function (p) { return p.cat; }, opts: SP.cats.map(function (c) { return { v: c.id, l: c.label }; }) },
