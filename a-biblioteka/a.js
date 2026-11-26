@@ -784,8 +784,7 @@
   const COOP = [
     { l: 'Kompletność dostaw w 2025 r.', v: '99,53%', i: 'box-check' },
     { l: 'Średni czas realizacji zamówień w 2025 r.', v: '6,31', u: 'dnia', i: 'clock' },
-    { l: 'Minimum zakupowe', v: '1800 zł', u: 'netto', i: 'cart' },
-    { l: 'Dropshipping od 1 produktu', v: '+65 zł', u: 'netto dopłaty', i: 'truck' }
+    { l: 'Dropshipping od 1 produktu · realizacja do 4 dni', v: '+45 zł', u: 'netto dopłaty', i: 'truck' }   // 26.11: bez minimum zakupowego
   ];
   /* doradca techniczny — dane ze schedpol.pl/kontakt (sprawdzone 19.11.2026) */
   const TECH = { n: 'Maciej Naskręt', role: 'Doradca techniczny — klient indywidualny i inwestycje', tel: '502 356 267', mail: 'doradcatechniczny@schedpol.pl' };
@@ -1389,8 +1388,7 @@
                 <a href="mailto:${esc(b.mail)}">${ic('mail', 15)} ${esc(b.mail)}</a></div></div>`;
             }).join('')}</div>
             <dl class="pd-order-terms">
-              <div><dt>Minimum logistyczne</dt><dd><b>${esc(COOP[2].v)}</b> ${esc(COOP[2].u)}</dd></div>
-              <div><dt>Dropshipping od 1 produktu</dt><dd><b>${esc(COOP[3].v)}</b> ${esc(COOP[3].u)}</dd></div>
+              <div><dt>Dropshipping od 1 produktu · realizacja do 4 dni</dt><dd><b>${esc(COOP[2].v)}</b> ${esc(COOP[2].u)}</dd></div>
             </dl>
           </div>
         </section>

@@ -484,6 +484,10 @@ Nośnik uniwersalny do wanien | Universal bathtub support | Suport universal pen
 Obudowa podpłytkowa do wanien prostokątnych | Tileable panel for rectangular bathtubs | Panou pentru placare pentru căzi dreptunghiulare
 Obudowa podpłytkowa do wanien półokrągłych | Tileable panel for corner bathtubs | Panou pentru placare pentru căzi de colț
 Usuń filtr | Remove filter | Elimină filtrul
+lat | years | de ani
+realizacja do {n} dni | delivery within {n} days | livrare în maximum {n} zile
+Dropshipping od {n} produktu · realizacja do {n} dni | Dropshipping from {n} product · delivery within {n} days | Dropshipping de la {n} produs · livrare în maximum {n} zile
+30 lat współpracy Schedpol i Leroy Merlin | 30 years of Schedpol and Leroy Merlin cooperation | 30 de ani de colaborare Schedpol și Leroy Merlin
 Kopiuj link | Copy link | Copiază linkul
 Link do listy plików skopiowany | File list link copied | Linkul listei de fișiere a fost copiat
 Skopiuj link do listy plików: | Copy the file list link: | Copiază linkul listei de fișiere:
