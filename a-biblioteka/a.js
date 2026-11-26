@@ -136,15 +136,17 @@
   }
   /* karta produktu PDF: prawdziwe pliki z _narzedzia/7_karty_pdf.py (szablon ../karta/index.html) */
   const KARTY_V = '20261126i';   // wersja kart PDF — po każdym przegenerowaniu zmień, żeby przeglądarki nie podawały starych plików z pamięci podręcznej
-  function kartaPdf(p) { return '../assets/karty/Karta-produktu_LM' + p.ref + '.pdf?v=' + KARTY_V; }
-  function kartaView(p) { return '../karta/index.html?ref=' + encodeURIComponent(p.ref); }
+  /* 26.11: prefiks ścieżek — '../' dla stron w podfolderach (v2/, en/, ro/, a-biblioteka/), '' dla wersji PL w katalogu głównym (window.SP_UP) */
+  const UP = window.SP_UP != null ? window.SP_UP : '../';
+  function kartaPdf(p) { return UP + 'assets/karty/Karta-produktu_LM' + p.ref + '.pdf?v=' + KARTY_V; }
+  function kartaView(p) { return UP + 'karta/index.html?ref=' + encodeURIComponent(p.ref); }
   /* karty gwarancyjne i instrukcje montażu przypisane do indeksu (assets/dokumenty.js) */
-  const DOC_BASE = '../assets/dokumenty/';
+  const DOC_BASE = UP + 'assets/dokumenty/';
   function docsFor(p) {
     return ((SP.docMap && SP.docMap[p.ref]) || []).map(function (k) { return SP.docs[k]; }).filter(Boolean);
   }
   /* modele 3D (assets/modele3d.js) i podgląd w przeglądarce (<model-viewer>, ładowany przy pierwszym użyciu) */
-  const CAD_BASE = '../assets/cad/';
+  const CAD_BASE = UP + 'assets/cad/';
   const CAD_Q = '?v=20261125c';   // wersja modeli 3D — zmień po przebudowie brył (pamięć podręczna przeglądarek)
   function cadFor(p) { return SP.cad && SP.cad[p.ref]; }
   function glbFor(p) { const c = cadFor(p); const g = c && c.files.filter(function (x) { return x.ext === 'GLB'; })[0]; return g ? CAD_BASE + g.f + CAD_Q : ''; }
@@ -172,7 +174,7 @@
     const f = finishFor(p);
     let nrm = null, det = null;
     if (f.stone) {
-      try { nrm = await mv.createTexture('../assets/img/stone-normal.jpg'); det = await mv.createTexture('../assets/img/stone-detail.jpg'); } catch (e) { nrm = det = null; }
+      try { nrm = await mv.createTexture(UP + 'assets/img/stone-normal.jpg'); det = await mv.createTexture(UP + 'assets/img/stone-detail.jpg'); } catch (e) { nrm = det = null; }
     }
     mv.model.materials.forEach(function (m) {
       if (m.name !== 'akryl') return;   // kolor wariantu tylko dla bryły; maskownice, mata, nośnik EPS, spód skorupy bez zmian
@@ -379,7 +381,7 @@
     }).join('') + '</span>';
   }
   /* flaga marki na zdjęciu w katalogu: oryginalne logo Sensea (z etykiety) lub Schedpol (logotyp korporacyjny 2016) */
-  const BRAND_LOGO = { 'Sensea': '../assets/znaki/sensea.png', 'Schedpol': '../assets/znaki/schedpol.svg' };
+  const BRAND_LOGO = { 'Sensea': UP + 'assets/znaki/sensea.png', 'Schedpol': UP + 'assets/znaki/schedpol.svg' };
   /* gama LM z eksportu referencji (26.11.2026) — flaga na zdjęciu, jak logo marki */
   function gamaFlag(p, cls) {
     return p.g ? '<span class="flag flag-gama' + (cls ? ' ' + cls : '') + '" title="Gama Leroy Merlin wg eksportu referencji z 26.11.2026">Gama <b>' + esc(p.g) + '</b></span>' : '';
@@ -848,7 +850,7 @@
       <section class="home-hero" aria-labelledby="heroT">
         <div class="wrap home-hero-in">
           <div class="home-copy">
-            <div class="hero-partner rv"><img class="lm-logo" src="../assets/znaki/leroy-merlin.svg" alt="Leroy Merlin" width="79" height="48"><span>Strefa architekta i projektanta</span></div>
+            <div class="hero-partner rv"><img class="lm-logo" src="${UP}assets/znaki/leroy-merlin.svg" alt="Leroy Merlin" width="79" height="48"><span>Strefa architekta i projektanta</span></div>
             <h1 class="home-title rv" id="heroT" style="--d:60ms">Projektuj łazienki z produktami Schedpol i Sensea</h1>
             <p class="hero-lead rv" style="--d:120ms">Karty produktów PDF, rysunki techniczne, packshoty, instrukcje montażu i modele 3D w bazie CAD Decor — dla ${total} indeksów z oferty Leroy Merlin.</p>
             <div class="bigsearch rv" id="bigBox" style="--d:180ms" role="search">
@@ -1368,7 +1370,7 @@
         <section class="gal" aria-label="Galeria produktu">
           <div class="bezel gal-bezel"><div class="core gal-stage is-pack" id="galStage">${stageInner(gal[0], galAlt(gal[0], p))}</div>
             <div class="gal-marks">
-              ${gw.badge ? '<a class="gal-gw" href="#gT" title="Gwarancja producenta — zakres niżej"><img src="../assets/znaki/' + gw.badge + '.png" alt="Znak gwarancji producenta: ' + esc(gw.lines[0] ? gw.lines[0].split(' — ')[0] : '') + '"></a>' : ''}
+              ${gw.badge ? '<a class="gal-gw" href="#gT" title="Gwarancja producenta — zakres niżej"><img src="' + UP + 'assets/znaki/' + gw.badge + '.png" alt="Znak gwarancji producenta: ' + esc(gw.lines[0] ? gw.lines[0].split(' — ')[0] : '') + '"></a>' : ''}
               ${BRAND_LOGO[p.brand] ? '<span class="gal-brand gal-brand-' + esc(p.brand.toLowerCase()) + '"><img src="' + BRAND_LOGO[p.brand] + '" alt="Marka ' + esc(p.brand) + '"></span>' : ''}
               ${gamaFlag(p, 'gal-gama')}
             </div></div>
@@ -1620,7 +1622,7 @@
             <span class="ak-doc-ic">${ic('book', 26)}</span>
             <div class="ak-doc-t"><span class="home-k">${esc(d.kind || 'Katalog PDF')}</span><h3>${esc(d.t)}</h3><p>${esc(d.d)}</p>${d.ok ? '' : '<p class="ak-soon">' + ic('clock', 14) + ' ' + esc(d.note) + '</p>'}</div>
             <div class="ak-doc-a">${d.ok
-              ? '<button class="btn" type="button" data-act="preview-url" data-src="../assets/akademia/' + esc(d.f) + '" data-name="' + esc(d.f) + '" data-desc="' + esc(d.t) + '">' + ic('eye', 16) + ' Podgląd</button><a class="btn btn-primary" href="../assets/akademia/' + esc(d.f) + '" download>' + ic('download', 16) + ' Pobierz PDF</a>'
+              ? '<button class="btn" type="button" data-act="preview-url" data-src="' + UP + 'assets/akademia/' + esc(d.f) + '" data-name="' + esc(d.f) + '" data-desc="' + esc(d.t) + '">' + ic('eye', 16) + ' Podgląd</button><a class="btn btn-primary" href="' + UP + 'assets/akademia/' + esc(d.f) + '" download>' + ic('download', 16) + ' Pobierz PDF</a>'
               : '<button class="btn" type="button" disabled>' + ic('download', 16) + ' Wkrótce</button>'}</div>
           </article>`;
         }).join('')}

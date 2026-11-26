@@ -9,12 +9,12 @@
 (function () {
   var h = location.hash || '', m = h.match(/^#\/([a-z]+)/), s = m ? m[1] : 'start';
   var k = (h.match(/sek=([a-z]+)/) || [])[1], t;
-  if (s === 'start') t = k === 'cad' ? '../v2/podstrony.html#/pliki' : '../v2/index.html' + (k === 'kontakt' ? '#sek-kontakt' : '');
-  else t = '../v2/podstrony.html' + h;
+  if (s === 'start') t = k === 'cad' ? '../podstrony.html#/pliki' : '../index.html' + (k === 'kontakt' ? '#sek-kontakt' : '');
+  else t = '../podstrony.html' + h;
   location.replace(t);
 })();
 </script>
-<noscript><meta http-equiv="refresh" content="0; url=../v2/index.html"></noscript>
+<noscript><meta http-equiv="refresh" content="0; url=../index.html"></noscript>
 </head>
-<body><p><a href="../v2/index.html">Przejdź do Strefy projektanta Schedpol</a></p></body>
+<body><p><a href="../index.html">Przejdź do Strefy projektanta Schedpol</a></p></body>
 </html>

@@ -21,7 +21,7 @@
 
   /* czytelny adres odsłony: /v2/start, /v2/katalog, /v2/produkt/89189407, /v1/akademia … */
   function pageUrl() {
-    var lm = location.pathname.match(/\/(v2|en|ro)\//), ver = lm ? lm[1] : (/v1\.html/.test(location.pathname) ? 'v1' : 'inne');   // 25.11: także /en/ i /ro/
+    var lm = location.pathname.match(/\/(v2|en|ro)\//), ver = lm ? lm[1] : (/v1\.html/.test(location.pathname) ? 'v1' : 'v2');   // 26.11: PL w katalogu głównym liczona jako v2   // 25.11: także /en/ i /ro/
     var h = location.hash || '', m = h.match(/^#\/([a-z]+)/), scr = m ? m[1] : 'start';
     if (/podstrony\.html/.test(location.pathname) && !m) scr = 'katalog';
     var ref = (h.match(/ref=(\d+)/) || [])[1];

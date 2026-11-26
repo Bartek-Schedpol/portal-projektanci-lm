@@ -12,11 +12,12 @@
   try { localStorage.setItem('sp-lang', LANG); } catch (e) { /* bez pamięci */ }
 
   /* ---------- przełącznik ---------- */
+  /* 26.11: wersja PL na stronie publicznej leży w katalogu głównym (bez „v2/” w adresie), lokalnie w v2/ */
+  var PLDIR = /github\.io$/.test(location.hostname) ? '' : 'v2';
   function hrefFor(k) {
-    var L = LANGS.filter(function (x) { return x.k === k; })[0];
-    var p = location.pathname.replace(/\/(v2|en|ro)\/([^\/]*)$/, '/' + L.dir + '/$2');
-    if (p === location.pathname && !/\/(v2|en|ro)\//.test(p)) p = p.replace(/[^\/]*$/, '') + L.dir + '/index.html';
-    return p + location.search + location.hash;
+    var L = LANGS.filter(function (x) { return x.k === k; })[0], dir = k === 'pl' ? PLDIR : L.dir;
+    var m = location.pathname.match(/^(.*?\/)(?:(?:en|ro|v2)\/)?([^\/]*)$/) || ['', '/', ''];
+    return m[1] + (dir ? dir + '/' : '') + (m[2] || 'index.html') + location.search + location.hash;
   }
   function switcher() {
     if (document.getElementById('spLang')) return;

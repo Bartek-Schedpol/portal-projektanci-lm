@@ -2,13 +2,303 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Strefa projektanta Schedpol</title>
-<script>/* wersja językowa (25.11.2026): zapamiętany wybór, inaczej język przeglądarki — pl → v2, ro → ro, pozostałe → en */
-(function(){var k;try{k=localStorage.getItem('sp-lang')}catch(e){}
-if(!k){var l=(navigator.language||'pl').toLowerCase();k=l.indexOf('pl')===0?'pl':(l.indexOf('ro')===0?'ro':'en')}
-location.replace(({pl:'v2',en:'en',ro:'ro'}[k]||'v2')+'/index.html'+location.hash)})();</script>
-<noscript><meta http-equiv="refresh" content="0; url=v2/index.html"></noscript>
+<script>/* pierwsze wejście: język przeglądarki (pl → ta strona, ro → ro/, pozostałe → en/); zapamiętany wybór ma pierwszeństwo */
+(function(){try{if(localStorage.getItem('sp-lang'))return;}catch(e){return;}var l=(navigator.language||'pl').toLowerCase();
+if(l.indexOf('pl')===0)return;location.replace((l.indexOf('ro')===0?'ro':'en')+'/index.html'+location.hash);})();</script>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="a-biblioteka/a.css">
+<style>
+:root{--brand:#943330;--brand-ink:#7A2623;--lm:#78BE20;--ink:#141414;--mut:#5C5F66;--line:#E6E6E3;--dark:#151515;--tile:#F4F3F0}
+.mbx *{box-sizing:border-box}.mbx{margin:0;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased}
+.mbx a{color:inherit;text-decoration:none}.mb-wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.mb-note{position:fixed;left:16px;bottom:16px;z-index:20;background:#111;color:#fff;font-size:12px;padding:8px 12px;border-radius:8px;opacity:.85}
+/* pasek górny */
+.mb-top{background:#0E0E0E;color:#C9C9C9;font-size:12.5px}.mb-top .mb-wrap{display:flex;justify-content:space-between;align-items:center;height:38px;gap:16px}
+.mb-top span{display:inline-flex;align-items:center;gap:8px;margin-right:22px}.mb-top i{width:6px;height:6px;border-radius:50%;background:var(--lm);display:inline-block}
+/* hero */
+.mb-hero{position:relative;min-height:640px;color:#fff;background:#222 url(v2/hero.jpg) center 30%/cover no-repeat}
+.mb-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.88) 0%,rgba(10,10,10,.70) 42%,rgba(10,10,10,.15) 75%,rgba(10,10,10,.05) 100%)}
+.mb-nav{position:relative;z-index:2;border-bottom:1px solid rgba(255,255,255,.14)}.mb-nav .mb-wrap{display:flex;align-items:center;height:78px;gap:36px}
+.mb-nav img{height:30px}.mb-nav ul{display:flex;gap:28px;list-style:none;margin:0 0 0 auto;padding:0;font-size:14.5px;font-weight:500}
+.mb-nav li{opacity:.86}.mb-nav li.mb-on{opacity:1;border-bottom:2px solid var(--brand);padding-bottom:4px}
+.mb-nav .mb-cta{background:#fff;color:var(--ink);font-weight:600;font-size:14px;padding:11px 20px;border-radius:99px}
+.mb-nav .mb-ic{width:40px;height:40px;border:1px solid rgba(255,255,255,.35);border-radius:50%;display:grid;place-items:center}
+.mb-hero .mb-wrap.mb-body{position:relative;z-index:2;display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:end;padding-top:92px;padding-bottom:70px}
+.mb-eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#E9B9B6;display:flex;align-items:center;gap:10px}
+.mb-eyebrow:before{content:"";width:28px;height:2px;background:var(--brand)}
+.mb-hero h1{font-size:58px;line-height:1.06;letter-spacing:-.02em;font-weight:700;margin:18px 0 20px;max-width:640px}
+.mb-hero p.mb-lead{font-size:17px;line-height:1.6;color:#E4E4E4;max-width:540px;margin:0 0 32px}
+.mb-btns{display:flex;gap:14px;flex-wrap:wrap}.mb-pill{display:inline-flex;align-items:center;gap:12px;font-weight:600;font-size:15px;border-radius:99px;padding:8px 8px 8px 24px}
+.mb-pill b{width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+.mb-pill.mb-p{background:var(--brand);color:#fff}.mb-pill.mb-p b{background:#fff;color:var(--brand)}
+.mb-pill.mb-g{border:1px solid rgba(255,255,255,.5);color:#fff;padding:8px 24px}
+.mb-ticks{display:flex;gap:28px;margin-top:44px;font-size:14px;color:#DADADA;flex-wrap:wrap}.mb-ticks span{display:flex;align-items:center;gap:10px}
+.mb-ticks span:before{content:"✓";width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,255,255,.45);display:grid;place-items:center;font-size:11px}
+.mb-float{background:#fff;color:var(--ink);border-radius:16px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.35);margin-bottom:8px}
+.mb-float .mb-k{display:flex;gap:12px;align-items:center;font-weight:700;font-size:16px;line-height:1.25}
+.mb-float .mb-sq{width:40px;height:40px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;flex:none}
+.mb-float p{font-size:13.5px;line-height:1.55;color:var(--mut);margin:12px 0 14px}
+.mb-inp{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px;color:#9A9A9A;gap:8px}
+.mb-inp kbd{margin-left:auto;font:600 11px "Inter";border:1px solid var(--line);border-radius:5px;padding:2px 6px;color:#777}
+.mb-float .mb-mini{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}.mb-float .mb-mini span{font-size:11.5px;background:var(--tile);border-radius:99px;padding:4px 10px;color:#444}
+.mb-count{position:absolute;z-index:2;left:32px;bottom:26px;font-size:12px;color:#BDBDBD;letter-spacing:.12em}
+/* sekcja 2 */
+.mb-s2{padding:110px 0}.mb-s2 .mb-wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:72px;align-items:start}
+.mb-s2 .mb-eyebrow{color:var(--brand)}.mbx h2.mb-h{font-size:40px;line-height:1.15;letter-spacing:-.015em;font-weight:700;margin:16px 0 0}
+.mb-s2 .mb-head{grid-column:1/-1;max-width:760px;margin-bottom:8px}
+.mb-ph{position:relative}.mb-ph img{width:100%;height:440px;object-fit:cover;border-radius:18px;display:block}
+.mb-badge{position:absolute;left:28px;bottom:-34px;display:flex;align-items:stretch;background:#fff;border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.14);overflow:hidden;max-width:340px}
+.mb-badge .mb-b1{background:var(--brand);color:#fff;width:86px;display:grid;place-items:center;font-size:28px}
+.mb-badge .mb-b2{padding:16px 18px;font-weight:600;font-size:15px;line-height:1.35}
+.mb-txt p{font-size:16px;line-height:1.7;color:var(--mut);margin:0 0 18px}.mb-txt p b{color:var(--ink)}
+.mb-sign{display:flex;align-items:center;gap:18px;margin:28px 0 30px}.mb-pill.mb-d{background:var(--ink);color:#fff}.mb-pill.mb-d b{background:var(--brand);color:#fff}
+.mb-sign small{font-size:13px;color:var(--mut);line-height:1.4}.mb-sign small b{display:block;color:var(--ink);font-size:14px}
+.mb-chk{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}.mb-chk li{padding:15px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:15px;display:flex;gap:14px;align-items:center}
+.mb-chk li:before{content:"✓";color:var(--brand);font-weight:800}
+.mb-stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);margin-top:96px}
+.mb-stats div{padding:30px 24px 0;border-right:1px solid var(--line)}.mb-stats div:last-child{border-right:0}
+.mb-stats b{font-size:44px;font-weight:700;letter-spacing:-.02em;display:block}.mb-stats span{font-size:14px;color:var(--mut)}
+/* sekcja kategorii (ciemna) */
+.mb-s3{background:var(--dark);color:#fff;padding:100px 0}.mb-s3 .mb-top3{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:46px}
+.mb-s3 h2{color:#fff}.mb-s3 p{color:#BDBDBD;font-size:15.5px;line-height:1.7;margin:0}.mb-s3 .mb-eyebrow{color:#E9B9B6}
+.mb-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.mb-card{background:#fff;color:var(--ink);border-radius:16px;padding:24px;display:flex;flex-direction:column;min-height:300px;position:relative}
+.mb-card .mb-tag{position:absolute;top:18px;right:18px;font-size:11px;font-weight:700;background:var(--brand);color:#fff;border-radius:99px;padding:4px 10px}
+.mb-card .mb-ico{width:46px;height:46px;border-radius:12px;background:var(--tile);display:grid;place-items:center;margin-bottom:22px}
+.mb-card h3{margin:0 0 8px;font-size:19px}.mb-card .mb-bar{height:2px;width:46px;background:var(--brand);margin:8px 0 14px}
+.mb-card p{color:var(--mut);font-size:14px;line-height:1.6;margin:0 0 20px}.mb-card .mb-n{font-size:13px;color:var(--ink);font-weight:600;margin-top:auto;margin-bottom:16px}
+.mb-card .mb-go{display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:#fff;border-radius:99px;padding:7px 7px 7px 18px;font-size:13.5px;font-weight:600}
+.mb-card .mb-go b{width:30px;height:30px;border-radius:50%;background:var(--brand);display:grid;place-items:center}
+.mb-s3 .mb-foot{margin-top:34px;text-align:center;font-size:14px;color:#BDBDBD}.mb-s3 .mb-foot a{color:#fff;border-bottom:1px solid var(--brand)}
+/* sekcja 4 */
+.mb-s4 .mb-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0}.mb-s4{padding:100px 0}
+.mb-s4 .mb-red{background:var(--brand);color:#fff;padding:56px;border-radius:18px 0 0 18px}.mb-s4 .mb-red h2{color:#fff;font-size:36px}
+.mb-s4 .mb-red p{color:#F1D6D4;line-height:1.7;margin:16px 0 28px}.mb-s4 .mb-red .mb-row{display:flex;gap:26px;flex-wrap:wrap;font-size:14px}
+.mb-s4 .mb-red .mb-row div b{display:block;font-size:18px;margin-top:4px}
+.mb-s4 .mb-pic{border-radius:0 18px 18px 0;background:url(assets/img/odplyw-scena.jpg) center/cover}
+.mbx footer{background:#0E0E0E;color:#9C9C9C;font-size:13px;padding:30px 0}.mbx footer .mb-wrap{display:flex;justify-content:space-between;align-items:center}
+.mbx footer img{height:24px}
+.mb-coop{padding:56px 0 0}.mb-coop .hcoop{margin:0}.mb-coop .wrap,.mb-cur .wrap{max-width:1240px;padding:0 32px}.mb-coop .hcoop-l{grid-template-columns:repeat(4,minmax(0,1fr))}
+.mb-cur{padding:40px 0 20px}.mb-bok{padding-bottom:90px}
+.mbx .mb-stats{margin-top:90px}
+.mb-coop2{padding:96px 0 0}.mb-coop2 .mb-eyebrow{color:var(--brand)}
+.mbx .mb-coop2 .mb-stats{margin-top:44px}
+.mb-stats b small{font-size:16px;font-weight:500;color:var(--mut);margin-left:8px;letter-spacing:0}
+.mb-lmk{display:flex;align-items:center;gap:16px}.mb-lmk img{height:40px;width:auto;display:block;background:#fff;padding:6px 10px;border-radius:8px;box-sizing:content-box}.mb-lmk span{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;padding-left:16px;border-left:1px solid rgba(255,255,255,.35);line-height:1.3}
+.mb-sup{background:var(--dark);color:#fff;padding:100px 0}
+.mb-sup-top{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:56px}
+.mb-sup .mb-h{color:#fff}.mb-sup .mb-eyebrow{color:#E9B9B6}.mb-sup p{color:#BDBDBD;font-size:15.5px;line-height:1.7;margin:0 0 16px}
+.mb-hrs{display:inline-flex;align-items:center;gap:8px;font-size:13px;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:6px 14px;color:#ddd}
+.mb-hrs:before{content:"";width:7px;height:7px;border-radius:50%;background:#78BE20}
+.mb-sup-grid{display:grid;grid-template-columns:5fr 7fr;gap:64px;align-items:center}
+.mb-map svg{width:100%;height:auto;display:block}
+.mb-map path{fill:#2C2C2C;stroke:var(--dark);stroke-width:.8;transition:fill .35s}
+.mb-map path[data-r="1"]{fill:#943330}.mb-map path[data-r="2"]{fill:#6E2724}.mb-map path[data-r="3"]{fill:#B9524D}
+.mb-map.is-hov path{fill:#2C2C2C}.mb-map.is-hov path.on{fill:#C9423C}
+.mb-map text{fill:#fff;font:700 9px "Inter";text-anchor:middle;pointer-events:none}
+.mb-bks{border-top:1px solid rgba(255,255,255,.14)}
+.mb-bk{display:grid;grid-template-columns:56px 1fr auto 40px;align-items:center;gap:20px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.14);transition:background .3s}
+.mb-bk:hover{background:rgba(255,255,255,.04)}
+.mb-bk-n{font-size:13px;font-weight:700;color:#E9B9B6;letter-spacing:.08em}
+.mb-bk-t b{display:block;font-size:18px}.mb-bk-t small{color:#9C9C9C;font-size:13.5px}
+.mb-bk-c{text-align:right}.mb-bk-c b{display:block;font-size:24px;letter-spacing:-.01em}.mb-bk-c small{color:#BDBDBD;font-size:13.5px}
+.mb-bk-go{width:36px;height:36px;border-radius:50%;background:var(--brand);display:grid;place-items:center;font-weight:700}
+.mb-tech{margin-top:34px;background:#fff;color:var(--ink);border-radius:16px;padding:20px 22px;display:grid;grid-template-columns:52px 1fr auto;gap:18px;align-items:center}
+.mb-tech-ic{width:52px;height:52px;border-radius:12px;background:var(--brand);display:grid;place-items:center}
+.mb-tech-t small{display:block;color:var(--mut);font-size:12.5px;margin-bottom:2px}.mb-tech-t b{font-size:17px}
+.mb-tech-c{display:flex;flex-direction:column;align-items:flex-end;gap:6px}.mb-tech-m{font-size:13px;color:var(--mut)}
+.mb-szukaj{margin:-4px -6px -4px auto;border:0;border-radius:7px;background:var(--brand,#943330);color:#fff;font:600 13px "Inter",sans-serif;padding:7px 14px;cursor:pointer;flex:none}.mb-szukaj:hover{filter:brightness(.92)}
+.mb-inp input{border:0;outline:0;font:inherit;color:var(--ink);flex:1;min-width:0;background:transparent}
+.mbx .mb-nav ul a{color:inherit}
+.mbx footer .mb-wrap{gap:24px;flex-wrap:wrap}
+@media (max-width:900px){
+ .mb-wrap{padding:0 16px}
+ .mb-nav ul{display:none}.mb-nav .mb-cta{white-space:nowrap;padding:9px 14px;font-size:13px}.mb-nav img{height:24px}.mb-nav .mb-wrap{gap:14px}.mb-nav .mb-cta{margin-left:auto}
+ .mb-hero{min-height:0}.mb-hero .mb-wrap.mb-body{grid-template-columns:1fr;padding-top:48px;padding-bottom:40px}
+ .mb-hero h1{font-size:36px}.mb-ticks{gap:14px;margin-top:28px}
+ .mbx h2.mb-h{font-size:28px}
+ .mb-s2{padding:64px 0}.mb-s2 .mb-wrap{grid-template-columns:1fr;gap:56px}.mb-ph img{height:300px}
+ .mb-stats{grid-template-columns:1fr 1fr}.mb-stats div:nth-child(2){border-right:0}.mb-stats div{padding:22px 16px 18px}.mb-stats b{font-size:32px}
+ .mb-coop2{padding-top:56px}
+ .mb-sup{padding:64px 0}.mb-sup-top,.mb-sup-grid{grid-template-columns:1fr;gap:28px}.mb-map{max-width:320px}
+ .mb-bk{grid-template-columns:36px 1fr;gap:10px}.mb-bk-c{grid-column:2;text-align:left}.mb-bk-go{display:none}
+ .mb-tech{grid-template-columns:52px 1fr}.mb-tech-c{grid-column:1/-1;align-items:flex-start}
+ .mb-lmk span{font-size:11px}
+}
+.mb-coop2-h{display:flex;align-items:center;justify-content:space-between;gap:24px}.mb-coop2-h{flex-direction:row-reverse;justify-content:center;gap:40px}.mb-coop2-h>div:first-child{text-align:left}.mb-coop2 .mb-coop2-h .mb-eyebrow{color:#78BE20}.mb-coop2-h .mb-eyebrow:before{display:none}   /* 26.11: znak 30 lat i napisy obok siebie, wyśrodkowane; nadtytuł w zieleni LM */.mb-30{width:210px;flex:none}.mb-30 svg{width:100%;height:auto;display:block}.mb-stats.mb-stats3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:760px){.mb-30{width:104px;height:104px}.mb-stats.mb-stats3{grid-template-columns:1fr}.mb-stats.mb-stats3 div{border-right:0}}
+.hnews-box .hnews-bs .hnew-bs{grid-column:span 2}.hnews-box .hnews-bs .hnew-bs .hcat-txt b{font-size:32px}.hnew-tag.hnew-tag-bs{background:#B8902F;color:#fff}
+@media (max-width:760px){.hnews-box .hnews-bs .hnew-bs{grid-column:span 1}}
+/* 26.11: paralaksa zdjęcia w hero — warstwa wyższa o 15%, przesuwana wolniej niż strona (bez background-attachment:fixed — nie działa na iOS) */
+.mb-hero{overflow:hidden}.mb-hero-bg{position:absolute;left:0;right:0;top:-15%;height:130%;background:#222 url(v2/hero.jpg) center 30%/cover no-repeat;will-change:transform;z-index:0}.mb-hero:before{z-index:1}.mb-hero .mb-nav{z-index:3}
+</style>
+<script src="assets/staty.js?v=20261126k" defer></script>
+<script src="assets/i18n.js?v=20261126k" defer></script>
 </head>
-<body><p><a href="v2/index.html">Polski</a> · <a href="en/index.html">English</a> · <a href="ro/index.html">Română</a></p></body>
+<body class="mbx">
+
+
+
+<section class="mb-hero"><div class="mb-hero-bg" aria-hidden="true"></div>
+  <nav class="mb-nav"><div class="mb-wrap">
+    <img src="assets/logo-white.svg" alt="Schedpol">
+    <ul><li class="mb-on"><a href="index.html">Start</a></li><li><a href="podstrony.html#/katalog">Katalog</a></li><li><a href="podstrony.html#/pliki">Pliki</a></li><li><a href="podstrony.html#/akademia">Akademia</a></li><li><a href="#sek-kontakt">Kontakt</a></li></ul>
+    <a class="mb-ic" aria-label="Szukaj w katalogu" href="podstrony.html#/katalog"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a>
+    <a class="mb-cta" href="podstrony.html#/pliki">Centrum plików</a>
+  </div></nav>
+  <div class="mb-wrap mb-body">
+    <div>
+      <div class="mb-lmk"><img src="assets/znaki/leroy-merlin.svg" alt="Leroy Merlin" width="79" height="48"><span>Portal architekta i projektanta</span></div>
+      <h1>Projektuj łazienki z produktami Schedpol i&nbsp;Sensea</h1>
+      <p class="mb-lead">Rysunki techniczne, modele 3D i karty produktów do każdej pozycji z oferty Leroy Merlin — wyszukasz je po numerze ref. LM.</p>
+      <div class="mb-btns">
+        <a class="mb-pill mb-p" href="podstrony.html#/katalog">Przejdź do katalogu <b>→</b></a>
+        <a class="mb-pill mb-g" href="podstrony.html#/akademia">Akademia projektanta</a>
+      </div>
+      <div class="mb-ticks"><span>391 produktów</span><span>24 serie</span><span>Pliki bez logowania</span></div>
+    </div>
+    <div class="mb-float">
+      <div class="mb-k"><span class="mb-sq"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>Znajdź produkt po numerze ref.&nbsp;LM</div>
+      <p>Wpisz nr ref. LM, kod EAN albo wymiar brodzika — od razu zobaczysz komplet plików.</p>
+      <form class="mb-inp" action="podstrony.html" onsubmit="var v=this.q.value.trim();location.href='podstrony.html#/katalog'+(v?'?q='+encodeURIComponent(v):'');return false"><input name="q" type="search" placeholder="np. 89189407, EAN lub 90 × 120" aria-label="Szukaj po nr ref. LM, kodzie EAN lub wymiarze" autocomplete="off"><button class="mb-szukaj" type="submit">Szukaj</button></form>
+      <div class="mb-mini"><span>DWG</span><span>3D · GLB/OBJ</span><span>Karta PDF</span></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="mb-coop2"><div class="mb-wrap">
+  <div class="mb-coop2-h"><div>
+  <div class="mb-eyebrow">30 lat współpracy z Leroy Merlin</div>
+  <h2 class="mb-h">Razem od 1997 roku</h2>
+  </div>
+  <div class="mb-30" role="img" aria-label="30 lat współpracy Schedpol i Leroy Merlin"><svg viewBox="0 0 270 175" aria-hidden="true"><text x="2" y="134" font-family="Inter,sans-serif" font-weight="800" font-size="156" letter-spacing="-12" fill="#2B2B2B">30</text><path d="M112 100 L150 86 L150 118 L112 132 Z" fill="#4E8A12"/><path d="M150 86 L166 96 L150 118 Z" fill="#3D6E0E"/><path d="M166 96 L262 60 L248 82 L268 98 L150 142 L150 118 Z" fill="#78BE20"/><text class="z30-r" transform="translate(174 128) rotate(-20.6)" font-family="Inter,sans-serif" font-weight="800" font-size="19" letter-spacing="4" fill="#fff">LAT</text><text class="z30-s" x="6" y="170" font-family="Inter,sans-serif" font-weight="700" font-size="16" letter-spacing="5.2" fill="#2B2B2B">WSPÓŁPRACY</text></svg></div>
+  </div>
+  <div class="mb-stats mb-stats3">
+    <div><b>99,53%</b><span>kompletność dostaw w 2025 r.</span></div>
+    <div><b>6,31<small>dnia</small></b><span>średni czas realizacji zamówień w 2025 r.</span></div>
+    <div><b>+45 zł<small>netto dopłaty</small></b><span>dropshipping od 1 produktu · realizacja do 4 dni</span></div>
+  </div>
+</div></section>
+<section class="mb-s2"><div class="mb-wrap">
+  <div class="mb-head">
+    <div class="mb-eyebrow">Jedno miejsce na pliki do projektu</div>
+    <h2 class="mb-h">Wszystko, czego potrzebujesz, żeby wstawić produkt do projektu łazienki</h2>
+  </div>
+  <div class="mb-ph">
+    <img src="assets/img/balans-ws-a.jpg" alt="Brodzik Schedpol Balans w aranżacji łazienki">
+    <div class="mb-badge"><div class="mb-b1">⬇</div><div class="mb-b2">Rysunek, model 3D i karta PDF — pobierasz osobno albo wszystko naraz w ZIP</div></div>
+  </div>
+  <div class="mb-txt">
+    <p><b>Strefa projektanta zbiera w jednym miejscu dane techniczne produktów Schedpol i Sensea dostępnych w Leroy Merlin.</b> Każda pozycja ma numer ref. LM, wymiary, rysunek z pozycją odpływu i model 3D.</p>
+    <p>Pliki wybrane z różnych kart odkładasz do Plików i pobierasz razem, gotowe do przekazania klientowi albo wykonawcy.</p>
+    <div class="mb-sign"><a class="mb-pill mb-d" href="podstrony.html#/akademia">O portalu <b>→</b></a><small><b>Doradca techniczny Schedpol</b>pomoc przy doborze produktu</small></div>
+    <ul class="mb-chk"><li>Numer ref. LM i gama przy każdej pozycji</li><li>Modele 3D z odpływem w miejscu jak w produkcie</li><li>Karty produktów PDF do wydruku A4</li></ul>
+  </div>
+  <div class="mb-stats" style="grid-column:1/-1">
+    <div><b>391</b><span>produktów w ofercie LM</span></div>
+    <div><b>24</b><span>serie Schedpol i Sensea</span></div>
+    <div><b>317</b><span>brodzików</span></div>
+    <div><b>36</b><span>odpływów liniowych</span></div>
+  </div>
+</div></section>
+
+<div class="home mb-cur"><div class="wrap"><section class="home-block hnews-box" aria-labelledby="newsT">
+            <div class="home-h home-h-row"><div><span class="home-k">Nowości 2026</span><h2 id="newsT">Nowe serie w ofercie Leroy Merlin</h2></div>
+              <a class="link" href="podstrony.html#/katalog">Cały katalog <svg class="i i-arrow-right" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13.5 6.5L19 12l-5.5 5.5"></path></svg></a></div>
+            <div class="hnews hnews-bs"><a class="hcat hnew hnew-bs in" href="podstrony.html#/katalog?seria=Frigo&amp;kolor=bia%C5%82y%20kamie%C5%84">
+                <img src="assets/img/frigo-ws-a.jpg" alt="" decoding="async" style="object-position:30% 88%">
+                <span class="hnew-tag hnew-tag-bs">Bestseller</span>
+                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+                <span class="hcat-txt"><b>Frigo · biały kamień</b><span>Brodzik zintegrowany Sensea · 20 indeksów</span></span>
+              </a><a class="hcat hnew  hnew-s in" href="podstrony.html#/katalog?seria=Balans&amp;kolor=kaszmirowy%20kamie%C5%84">
+                <img src="assets/img/balans-cas.jpg" alt="" decoding="async" style="object-position:30% 75%">
+                <span class="hnew-tag">Nowość</span>
+                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+                <span class="hcat-txt"><b>Balans · kaszmirowy kamień</b><span>Brodzik kompozytowy · 2 indeksy</span></span>
+              </a><a class="hcat hnew  hnew-s in" href="podstrony.html#/katalog?seria=Consist">
+                <img src="assets/img/consist.jpg" alt="" decoding="async" style="object-position:50% 60%">
+                <span class="hnew-tag">Nowość</span>
+                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+                <span class="hcat-txt"><b>Consist</b><span>Brodzik zintegrowany · 2 indeksy</span></span>
+              </a><a class="hcat hnew hnew-bs in" href="podstrony.html#/katalog?seria=Balans&amp;kolor=bia%C5%82y%20kamie%C5%84">
+                <img src="assets/img/balans-ws-a.jpg" alt="" decoding="async" style="object-position:50% 70%">
+                <span class="hnew-tag hnew-tag-bs">Bestseller</span>
+                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+                <span class="hcat-txt"><b>Balans · biały kamień</b><span>Brodzik kompozytowy Schedpol · 15 indeksów</span></span>
+              </a><a class="hcat hnew  hnew-s in" href="podstrony.html#/katalog?seria=Unity">
+                <img src="assets/img/unity-aranzacja-graphite.jpg" alt="" decoding="async" style="object-position:50% 55%">
+                <span class="hnew-tag">Nowość</span>
+                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+                <span class="hcat-txt"><b>Unity</b><span>Odpływ liniowy pod winyl · 20 indeksów</span></span>
+              </a><a class="hcat hnew  hnew-s in" href="podstrony.html#/katalog?seria=Najazd">
+                <img src="assets/img/najazd-a.jpg" alt="" decoding="async" style="object-position:50% 60%">
+                <span class="hnew-tag">Nowość</span>
+                <span class="hcat-go"><svg class="i i-arrow-up-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+                <span class="hcat-txt"><b>Najazd do brodzików</b><span>Najazd do brodzików · 2 indeksy</span></span>
+              </a></div>
+          </section><section class="home-block" aria-labelledby="catT">
+        <div class="home-h home-h-row"><div><span class="home-k">Oferta w Leroy Merlin</span><h2 id="catT">Kategorie</h2></div>
+          <a class="link" href="podstrony.html#/katalog">Cały katalog <svg class="i i-arrow-right" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13.5 6.5L19 12l-5.5 5.5"></path></svg></a></div>
+        <div class="hcats hcats-v2"><a class="hcat is-scene hcat-0  in" style="--d:0ms" href="podstrony.html#/katalog?cat=brodzik">
+            <img src="assets/img/integral-ws.jpg" alt="" decoding="async" style="object-position:50% 50%;--z:1.5;--tx:-10.0%;--ty:-16.7%">
+            <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+            <span class="hcat-txt"><b>Brodziki</b><span>317 indeksów</span><span class="cat-meta"><span class="cm-cols"><i style="background:#EDEDEA" title="biały kamień"></i><i style="background:#2A2A2B" title="czarny kamień"></i><i style="background:#E9E0D2" title="kaszmirowy kamień"></i><i style="background:#575D5E" title="szary kamień"></i><i style="background:#F7F7F5" title="biały gładki"></i><i style="background:#B0B3AF" title="cementowy kamień"></i><em>+1</em></span><span class="cm-shp"><svg viewBox="0 0 20 20" aria-label="kwadratowy"><title>kwadratowy</title><rect x="3" y="3" width="14" height="14"></rect></svg><svg viewBox="0 0 20 20" aria-label="prostokątny"><title>prostokątny</title><rect x="1" y="5" width="18" height="10"></rect></svg><svg viewBox="0 0 20 20" aria-label="półokrągły"><title>półokrągły</title><path d="M3 3h14v14H3A14 14 0 0 1 3 3z" transform="matrix(-1 0 0 1 20 0)"></path></svg><svg viewBox="0 0 20 20" aria-label="pięciokątny"><title>pięciokątny</title><path d="M3 3h14v14H9L3 11z"></path></svg></span><span class="cm-cad">DWG · 3D</span></span></span>
+          </a><a class="hcat is-scene hcat-1  in" style="--d:40ms" href="podstrony.html#/katalog?cat=wanna">
+            <img src="assets/img/torres-b.jpg" alt="" decoding="async" style="object-position:50% 62%">
+            <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+            <span class="hcat-txt"><b>Wanny</b><span>8 indeksów</span><span class="cat-meta"><span class="cm-cols"><i style="background:#F4F4F2" title="biały mat"></i><i style="background:#1B1B1C" title="czarny mat"></i></span><span class="cm-cad">DWG · 3D</span></span></span>
+          </a><a class="hcat is-scene hcat-2  in" style="--d:80ms" href="podstrony.html#/katalog?cat=odp%C5%82yw%20liniowy">
+            <img src="assets/img/odplyw-black.jpg" alt="" decoding="async" style="object-position:50% 100%;--z:1.8;--tx:-16.0%;--ty:-20.0%">
+            <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+            <span class="hcat-txt"><b>Odpływy liniowe</b><span>36 indeksów</span><span class="cat-meta"><span class="cm-cols"><i style="background:#C9CCCF" title="stal"></i><i style="background:#1B1B1C" title="czarny"></i><i style="background:#C9A24B" title="złoty"></i><i style="background:#B8734F" title="miedziany"></i><i style="background:#4B4D52" title="grafitowy"></i></span><span class="cm-cad">DWG · 3D</span></span></span>
+          </a><a class="hcat is-scene hcat-3  in" style="--d:120ms" href="podstrony.html#/katalog?cat=panel%20%C5%9Bcienny">
+            <img src="assets/img/wc-po.jpg" alt="" decoding="async" style="object-position:50% 50%;--z:1.8;--tx:14.0%;--ty:-2.0%">
+            <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+            <span class="hcat-txt"><b>Panele ścienne</b><span>8 indeksów</span><span class="cat-meta"><span class="cm-cols"><i style="background:#F7F7F5" title="biały gładki"></i><i style="background:#2A2A2B" title="czarny kamień"></i><i style="background:#EDEDEA" title="biały kamień"></i><i style="background:#575D5E" title="szary kamień"></i></span></span></span>
+          </a><a class="hcat is-scene hcat-4  in" style="--d:160ms" href="podstrony.html#/katalog?cat=no%C5%9Bnik">
+            <img src="assets/img/nosnik.jpg" alt="" decoding="async" style="object-position:50% 50%;--z:1.6;--tx:8.0%;--ty:-16.0%">
+            <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+            <span class="hcat-txt"><b>Nośniki</b><span>4 indeksy</span></span>
+          </a><a class="hcat is-scene hcat-5  in" style="--d:200ms" href="podstrony.html#/katalog?cat=obudowa">
+            <img src="assets/img/obudowa-pol.jpg" alt="" decoding="async" style="object-position:50% 68%">
+            <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+            <span class="hcat-txt"><b>Obudowy wanien</b><span>4 indeksy</span><span class="cat-meta"><span class="cm-shp"><svg viewBox="0 0 20 20" aria-label="prostokątny"><title>prostokątny</title><rect x="1" y="5" width="18" height="10"></rect></svg><svg viewBox="0 0 20 20" aria-label="półokrągły"><title>półokrągły</title><path d="M3 3h14v14H3A14 14 0 0 1 3 3z" transform="matrix(-1 0 0 1 20 0)"></path></svg></span></span></span>
+          </a><a class="hcat is-col hcat-6  in" style="--d:240ms" href="podstrony.html#/katalog?cat=akcesoria">
+            <span class="hcat-col n4"><span><img src="assets/img/p-maskownica-zlota.webp" alt="" decoding="async"><small>maskownica</small></span><span><img src="assets/img/pk-packshot-panel-do-brodzika-dante-2500x25-08d42a.webp" alt="" decoding="async"><small>panel do brodzika</small></span><span><img src="assets/img/p-nogi.webp" alt="" decoding="async"><small>nogi do brodzika</small></span><span><img src="assets/img/p-najazd.webp" alt="" decoding="async"><small>najazd</small></span></span>
+            <span class="hcat-go"><svg class="i i-arrow-up-right" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M9 7h8v8"></path></svg></span>
+            <span class="hcat-txt"><b>Akcesoria</b><span>14 indeksów</span><span class="cat-meta"><span class="cm-cad">DWG · 3D</span></span></span>
+          </a></div>
+      </section></div></div>
+
+<section class="mb-sup" id="sek-kontakt"><div class="mb-wrap">
+  <div class="mb-sup-top">
+    <div><div class="mb-eyebrow">Wsparcie techniczne</div><h2 class="mb-h">Brakuje pliku albo wymiaru?</h2></div>
+    <div><p>Biuro Obsługi Klienta Schedpol odpowiada na pytania o montaż, dobór produktu i materiały do projektu. Zadzwoń do działu obsługującego Twój region.</p><span class="mb-hrs">pon.–pt. 8:00–16:00</span></div>
+  </div>
+  <div class="mb-sup-grid">
+    <div class="mb-map"><svg viewBox="0 0 132.8 124.3" role="img" aria-label="Regiony Biura Obsługi Klienta"><path data-r="1" d="M 5.1 53.2 L 0.0 42.3 L 4.9 32.2 L 2.6 18.7 L 26.3 12.9 L 35.6 7.3 L 36.0 27.6 L 43.5 30.2 L 61.4 26.1 L 73.9 35.2 L 66.3 53.5 L 57.6 66.6 L 52.0 80.9 L 44.4 78.5 L 44.6 80.7 L 39.3 91.8 L 35.2 94.7 L 35.0 96.4 L 36.4 99.3 L 29.9 100.7 L 26.3 90.2 L 11.3 82.7 L 7.0 85.0 L 9.0 76.6 L 8.3 74.3 L 5.0 63.1 L 5.1 53.2"/><path data-r="2" d="M 44.8 1.7 L 36.0 6.9 L 36.0 27.6 L 43.5 30.2 L 61.4 26.1 L 73.9 35.2 L 66.3 53.5 L 75.3 55.0 L 86.2 64.4 L 83.6 77.3 L 100.7 83.1 L 103.8 88.2 L 112.7 92.1 L 112.9 96.4 L 122.4 95.9 L 126.0 97.8 L 132.8 89.9 L 124.4 57.8 L 119.2 54.5 L 118.2 53.5 L 127.3 44.2 L 120.1 15.5 L 111.7 9.8 L 89.6 10.7 L 71.0 9.3 L 61.8 11.1 L 56.3 6.4 L 56.0 2.7 L 61.3 6.7 L 66.8 5.8 L 56.5 -0.0 L 44.8 1.7"/><path data-r="3" d="M 100.7 83.1 L 83.6 77.3 L 86.2 64.4 L 75.3 55.0 L 66.3 53.5 L 57.6 66.6 L 52.0 80.9 L 44.4 78.5 L 44.6 80.7 L 39.3 91.8 L 35.2 94.7 L 35.2 96.6 L 36.4 99.3 L 42.0 98.2 L 58.0 109.1 L 64.6 118.1 L 73.2 118.9 L 76.5 120.7 L 79.1 122.1 L 90.1 117.6 L 99.6 116.2 L 116.9 124.3 L 113.7 112.4 L 126.0 97.8 L 122.4 95.9 L 112.9 96.4 L 112.7 92.1 L 103.8 88.2 L 100.7 83.1"/><text x="29.7" y="64.3" data-r="1">1</text><text x="84.5" y="44.0" data-r="2">2</text><text x="77.6" y="97.3" data-r="3">3</text></svg></div>
+    <div class="mb-bks"><a class="mb-bk" data-r="1" href="tel:+48691947536"><span class="mb-bk-n">01</span><span class="mb-bk-t"><b>BOK 1 · Zachód</b><small>Polska zachodnia</small></span><span class="mb-bk-c"><b>691 947 536</b><small>bok1@schedpol.pl</small></span><span class="mb-bk-go">→</span></a><a class="mb-bk" data-r="2" href="tel:+48603509837"><span class="mb-bk-n">02</span><span class="mb-bk-t"><b>BOK 2 · Wschód</b><small>Polska wschodnia i północna</small></span><span class="mb-bk-c"><b>603 509 837</b><small>bok2@schedpol.pl</small></span><span class="mb-bk-go">→</span></a><a class="mb-bk" data-r="3" href="tel:+48601424132"><span class="mb-bk-n">03</span><span class="mb-bk-t"><b>BOK 3 · Południe</b><small>Polska południowa</small></span><span class="mb-bk-c"><b>601 424 132</b><small>bok3@schedpol.pl</small></span><span class="mb-bk-go">→</span></a>
+      <div class="mb-tech">
+        <div class="mb-tech-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+        <div class="mb-tech-t"><small>Doradca techniczny — klient indywidualny i inwestycje</small><b>Maciej Naskręt</b></div>
+        <div class="mb-tech-c"><a class="mb-pill mb-p" href="tel:+48502356267">502 356 267 <b>→</b></a><a class="mb-tech-m" href="mailto:doradcatechniczny@schedpol.pl">doradcatechniczny@schedpol.pl</a></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="mb-wrap"><img src="assets/logo-white.svg" alt="Schedpol"><span>SCHEDPOL Sp. z o.o. · ul. Przemysłowa 2, 64-400 Bielsko (Międzychód)</span></div></footer>
+<script>
+(function(){var map=document.querySelector('.mb-map');if(!map)return;
+document.querySelectorAll('.mb-bk').forEach(function(r){
+ r.addEventListener('mouseenter',function(){map.classList.add('is-hov');map.querySelectorAll('path').forEach(function(p){p.classList.toggle('on',p.getAttribute('data-r')===r.getAttribute('data-r'));});});
+ r.addEventListener('mouseleave',function(){map.classList.remove('is-hov');});});})();
+</script>
+<script>/* paralaksa hero (26.11) */(function(){var h=document.querySelector(".mb-hero"),b=h&&h.querySelector(".mb-hero-bg");if(!b||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))return;var q=0;function f(){q=0;var y=window.pageYOffset||0,hh=h.offsetHeight;if(y>hh*1.2)return;b.style.transform="translate3d(0,"+Math.round(y*0.35)+"px,0)";}addEventListener("scroll",function(){if(!q){q=1;requestAnimationFrame(f);}},{passive:true});f();})();</script>
+</body>
 </html>

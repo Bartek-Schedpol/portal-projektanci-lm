@@ -3,7 +3,7 @@ window.SP = {"meta":{"generated":"2026-11-13","products":371,"series":23,"source
 
 /* ---- pomocnicze (wspólne dla makiet) ---- */
 (function (SP) {
-  SP.base = SP.base || '../assets/img/';
+  SP.base = SP.base || ((window.SP_UP != null ? window.SP_UP : '../') + 'assets/img/');
   SP.src = function (k) { var i = SP.img[k]; return i ? SP.base + i.f : ''; };
   SP.isCutout = function (k) { var i = SP.img[k]; return !!(i && i.tb); };
   SP.dims = function (p) {            // "80 × 100 × 3,5 cm"

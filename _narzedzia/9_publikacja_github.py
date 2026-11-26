@@ -80,6 +80,36 @@ Znaki Sensea i Leroy Merlin należą do ich właścicieli i zostały użyte wył
 """
 
 
+LANG_DETECT = """<script>/* pierwsze wejście: język przeglądarki (pl → ta strona, ro → ro/, pozostałe → en/); zapamiętany wybór ma pierwszeństwo */
+(function(){try{if(localStorage.getItem('sp-lang'))return;}catch(e){return;}var l=(navigator.language||'pl').toLowerCase();
+if(l.indexOf('pl')===0)return;location.replace((l.indexOf('ro')===0?'ro':'en')+'/index.html'+location.hash);})();</script>"""
+
+STUB = """<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="robots" content="noindex">
+<title>Strefa projektanta Schedpol</title>
+<script>location.replace('../%s'+location.search+location.hash);</script>
+<noscript><meta http-equiv="refresh" content="0; url=../%s"></noscript></head>
+<body><p><a href="../%s">Strefa projektanta Schedpol</a></p></body></html>
+"""
+
+
+def root_pl():
+    """26.11.2026: wersja PL w katalogu głównym (adres bez „v2/”) — kopia v2/*.html z poprawionymi ścieżkami;
+    v2/*.html w repozytorium = przekierowania (stare linki działają), v2/hero.jpg zostaje (używają go też en/, ro/)."""
+    for f in ("index.html", "podstrony.html"):
+        t = io.open(os.path.join(SRC, "v2", f), encoding="utf-8").read()
+        t = t.replace("../assets/", "assets/").replace("../a-biblioteka/", "a-biblioteka/")
+        t = t.replace("url(hero.jpg)", "url(v2/hero.jpg)").replace('src="hero.jpg"', 'src="v2/hero.jpg"')
+        t = t.replace('<script src="assets/data.js', '<script>window.SP_UP = "";</script>\n<script src="assets/data.js', 1)
+        if f == "index.html":
+            t = t.replace("</title>", "</title>\n" + LANG_DETECT, 1)
+        io.open(os.path.join(DST, f), "w", encoding="utf-8", newline="").write(t)
+        io.open(os.path.join(DST, "v2", f), "w", encoding="utf-8", newline="\n").write(STUB % (f, f, f))
+    a = os.path.join(DST, "a-biblioteka", "index.html")
+    t = io.open(a, encoding="utf-8").read().replace("../v2/podstrony.html", "../podstrony.html").replace("../v2/index.html", "../index.html")
+    io.open(a, "w", encoding="utf-8", newline="").write(t)
+
+
 def ign(d, names):
     return [n for n in names if n in SKIP or n.endswith(SKIP)]
 
@@ -102,7 +132,7 @@ def main():
         if "SPP_SOLO" not in s:                         # odnośnik może mieć ?v=… — bez trybu SOLO nie publikujemy
             sys.exit("BŁĄD: nie znaleziono odnośnika do proto.js — tryb SOLO nie został włączony")
     io.open(a, "w", encoding="utf-8", newline="").write(s)
-    io.open(os.path.join(DST, "index.html"), "w", encoding="utf-8", newline="\n").write(INDEX)
+    root_pl()                                           # 26.11.2026: PL w katalogu głównym (bez v2/ w adresie)
     io.open(os.path.join(DST, "README.md"), "w", encoding="utf-8", newline="\n").write(README)
     io.open(os.path.join(DST, ".nojekyll"), "w").write("")
     io.open(os.path.join(DST, ".gitignore"), "w", encoding="utf-8").write("__pycache__/\n*.tmp\nThumbs.db\n")
