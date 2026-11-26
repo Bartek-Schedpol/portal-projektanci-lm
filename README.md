@@ -4,7 +4,7 @@ Klikalna makieta portalu dla projektantów sieci Leroy Merlin (koncepcja A „Bi
 wyszukiwarka po numerze referencyjnym LM, katalog z filtrami, karta produktu z plikami do pobrania,
 Centrum plików z paczkami serii, teczka plików oraz karty produktów PDF (A4) dla 371 indeksów.
 
-**Podgląd:** https://bartek-schedpol.github.io/portal-lm-projektanci/
+**Podgląd:** https://bartek-schedpol.github.io/portal-projektanci-lm/
 
 > Makieta poglądowa — nie jest działającym serwisem. Działa pobieranie kart produktów PDF, kart gwarancyjnych i instrukcji montażu; pozostałe pliki są symulowane.
 > Ceny i dostępność produktów: w systemie sklepu Leroy Merlin. Zdjęcia aranżacyjne są wizualizacjami poglądowymi.
