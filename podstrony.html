@@ -140,16 +140,20 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 /* 26.11: nagłówek podstron jak na Starcie — linki po prawej, lupa w kółku, język, biały przycisk „Centrum plików” (z licznikiem listy Pliki) */
 .mbx .nav-in{max-width:1240px;height:78px;padding:0 32px;gap:36px}
 .mbx .brand-logo{height:30px;width:auto}
-.mbx .nav-links{margin-left:auto;gap:28px}
+.mbx .nav-links{margin-left:auto;gap:30px}
 .mbx .nav-links a{padding:10px 0 6px;font-size:16.5px;font-weight:500;color:#fff;opacity:.86;background:transparent!important;border-radius:0;height:auto;line-height:1.4}
 .mbx .nav-links a:hover{opacity:1}
 .mbx .nav-links a.is-on{opacity:1;box-shadow:none;border-bottom:2px solid var(--brand)}
-.mbx .nav-tools{gap:12px}
+.mbx .nav-tools{gap:36px;margin-left:0}
 .mbx .nav-search{width:40px;height:40px;padding:0;justify-content:center;border-radius:50%;background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35);color:#fff}
 .mbx .nav-search span,.mbx .nav-search kbd{display:none}
 .mbx .nav-teczka{height:auto;padding:11px 20px;font-weight:600;font-size:14px;gap:8px;text-decoration:none}
 .mbx .nav-teczka .count{min-width:20px;height:20px;font-size:11px}
 .mbx .nav-teczka .count.is-zero{display:none}
+.mbx .nav,.mbx .nav.is-scrolled{height:auto;transition:background-color .25s}   /* 27.11: jak Start — wysokość 78 px, odstępy 36 px, nad zdjęciem banera przezroczyste, ciemne dopiero po przewinięciu */
+.mbx:has(#mbb:not([hidden])) .nav:not(.is-scrolled){background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:rgba(255,255,255,.14)}
+.mbx:has(#mbb:not([hidden])) #mbb{margin-top:-79px}.mbx:has(#mbb:not([hidden])) .mbb-in{padding-top:133px}
+@media (max-width:900px){.mbx:has(#mbb:not([hidden])) #mbb{margin-top:-65px}.mbx:has(#mbb:not([hidden])) .mbb-in{padding-top:105px}}
 @media (max-width:900px){.mbx .nav-in{height:64px;padding:0 8px 0 14px;gap:8px}.mbx .nav-links{margin-left:0}.mbx .nav-links a{padding:12px 0;border-bottom:0}.mbx .nav-tools{gap:8px;margin-left:auto}.mbx .brand-logo{height:20px!important}.mbx .nav-search{width:36px;height:36px}.mbx .nav-teczka{padding:8px 12px;font-size:12.5px;white-space:nowrap}.mbx .nav-teczka span{display:inline}}
 </style>
 <script>
