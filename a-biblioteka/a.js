@@ -361,6 +361,9 @@
   }
 
   /* ---------- komponenty ---------- */
+  /* 27.11: stała kolejność kolorów w całym portalu — od najjaśniejszego do najciemniejszego (luminancja wzorca barwy), przy remisie alfabetycznie */
+  function lum(hx) { const m = /^#?([0-9a-f]{6})$/i.exec(hx || ''); if (!m) return -1; const n = parseInt(m[1], 16); return 0.2126 * (n >> 16 & 255) + 0.7152 * (n >> 8 & 255) + 0.0722 * (n & 255); }
+  function byLight(ha, hb, na, nb) { return (lum(hb) - lum(ha)) || String(na || '').localeCompare(String(nb || ''), 'pl'); }
   function dot(hx, cls) { return hx ? '<span class="dot' + (cls ? ' ' + cls : '') + '" style="--c:' + esc(hx) + '"></span>' : ''; }
   function pimg(key, alt) {
     const i = SP.img[key];
@@ -818,6 +821,7 @@
     const v = CAT_V[c.id] || {};
     const seen = {}, cols = [];
     ps.forEach(function (p) { if (p.hx && !seen[p.hx]) { seen[p.hx] = 1; cols.push([p.hx, p.c || '']); } });
+    cols.sort(function (a, b) { return byLight(a[0], b[0], a[1], b[1]); });
     const shp = SHAPE_SVG.filter(function (s) { return ps.some(function (p) { return s[0].test(p.shape || ''); }); });
     const nCad = ps.filter(function (p) { return cadFor(p); }).length;
     const meta = [];
@@ -977,7 +981,7 @@
   const COLORS = (function () {
     const m = {};
     SP.products.forEach(function (p) { if (p.c) { m[p.c] = m[p.c] || { v: p.c, l: p.c, hx: p.hx, n: 0 }; m[p.c].n++; } });
-    return Object.keys(m).map(function (k) { return m[k]; }).sort(function (a, b) { return a.l.localeCompare(b.l, 'pl'); });   // alfabetycznie
+    return Object.keys(m).map(function (k) { return m[k]; }).sort(function (a, b) { return byLight(a.hx, b.hx, a.l, b.l); });   // 27.11: od najjaśniejszego do najciemniejszego
   })();
   /* rozmiar: długość × szerokość (większy wymiar pierwszy), np. „100 × 80 cm”; odpływy — sama długość */
   function sizeKey(p) {
@@ -1292,7 +1296,7 @@
     if (!k || !p.c) return [];
     return SP.products.filter(function (x) {
       return x.ref !== p.ref && x.fam === p.fam && serieBase(x.s) === serieBase(p.s) && x.c && x.c !== p.c && sizeKey(x) === k && (x.shape || '') === (p.shape || '');
-    }).sort(function (a, b) { return a.c.localeCompare(b.c, 'pl'); });
+    }).sort(function (a, b) { return byLight(a.hx, b.hx, a.c, b.c); });
   }
   /* inne produkty o tych samych wymiarach boków (inne serie / kolory), ta sama kategoria */
   function sameSize(p, excl) {
@@ -1400,7 +1404,7 @@
           <h1 class="pd-title" id="pdT">${esc(titleOf(p))}</h1>
           ${pdVar ? '<p class="pd-var">' + pdVar + '</p>' : ''}
           <div class="pd-ref">${refChip(p, true)}<span>Numer referencyjny Leroy Merlin</span></div>
-          ${cvar.length ? '<div class="pd-colors"><div class="pd-colors-h">' + ic('drop', 16) + '<b>Dostępne kolory w tym wymiarze</b><span>' + (cvar.length + 1) + ' ' + plural(cvar.length + 1, 'wariant', 'warianty', 'wariantów') + '</span></div><div class="pd-colors-l">' + [p].concat(cvar).map(function (x) {
+          ${cvar.length ? '<div class="pd-colors"><div class="pd-colors-h">' + ic('drop', 16) + '<b>Dostępne kolory w tym wymiarze</b><span>' + (cvar.length + 1) + ' ' + plural(cvar.length + 1, 'wariant', 'warianty', 'wariantów') + '</span></div><div class="pd-colors-l">' + [p].concat(cvar).sort(function (a, b) { return byLight(a.hx, b.hx, a.c, b.c); }).map(function (x) {
             const on = x.ref === p.ref;
             return '<a class="cvar' + (on ? ' is-on' : '') + '" href="' + H('produkt', { ref: x.ref }) + '"' + (on ? ' aria-current="true"' : '') + ' title="' + esc(cap(x.c)) + ' · LM ' + esc(x.ref) + '"><span class="cvar-img">' + pimg(x.im, '') + '</span><span class="cvar-n">' + dot(x.hx) + esc(cap(x.c)) + '</span><small class="mono">LM ' + esc(x.ref) + '</small>' + (on ? '<span class="cvar-tag">Oglądasz</span>' : '') + '</a>';
           }).join('') + '</div></div>' : ''}
@@ -1413,7 +1417,7 @@
           <p class="pd-note">${ic('info', 16)} Cena i dostępność: w systemie sklepu Leroy Merlin.</p>
           </div>
           ${pdSizes(p)}
-          ${vvar.length ? '<div class="pd-colors"><div class="pd-colors-h">' + ic('layers', 16) + '<b>Dostępne wersje</b><span>' + (vvar.length + 1) + ' ' + plural(vvar.length + 1, 'wersja', 'wersje', 'wersji') + '</span></div><div class="pd-colors-l">' + [p].concat(vvar).map(function (x) {
+          ${vvar.length ? '<div class="pd-colors"><div class="pd-colors-h">' + ic('layers', 16) + '<b>Dostępne wersje</b><span>' + (vvar.length + 1) + ' ' + plural(vvar.length + 1, 'wersja', 'wersje', 'wersji') + '</span></div><div class="pd-colors-l">' + [p].concat(vvar).sort(function (a, b) { return String(a.ver).localeCompare(String(b.ver), 'pl') || String(a.ref).localeCompare(String(b.ref)); }).map(function (x) {
             const on = x.ref === p.ref;
             return '<a class="cvar' + (on ? ' is-on' : '') + '" href="' + H('produkt', { ref: x.ref }) + '"' + (on ? ' aria-current="true"' : '') + ' title="' + esc(cap(x.ver)) + ' · LM ' + esc(x.ref) + '"><span class="cvar-img">' + pimg(x.im, '') + '</span><span class="cvar-n">' + esc(cap(x.ver)) + '</span><small class="mono">LM ' + esc(x.ref) + '</small>' + (on ? '<span class="cvar-tag">Oglądasz</span>' : '') + '</a>';
           }).join('') + '</div></div>' : ''}
