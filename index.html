@@ -117,6 +117,9 @@ if(l.indexOf('pl')===0)return;location.replace((l.indexOf('ro')===0?'ro':'en')+'
 .mb-inp input{border:0;outline:0;font:inherit;color:var(--ink);flex:1;min-width:0;background:transparent}
 .mbx .mb-nav ul a{color:inherit}
 .mbx footer .mb-wrap{gap:24px;flex-wrap:wrap}
+.mb-burger{display:none;position:relative;flex:none;width:40px;height:40px;padding:0;border:1px solid rgba(255,255,255,.35);border-radius:50%;background:transparent;cursor:pointer}.mb-burger span{position:absolute;left:12px;right:12px;height:1.5px;background:#fff;border-radius:2px;transition:transform .4s cubic-bezier(.32,.72,0,1)}.mb-burger span:nth-child(1){top:15px}.mb-burger span:nth-child(2){top:22px}.mb-burger.is-open span:nth-child(1){transform:translateY(3.5px) rotate(45deg)}.mb-burger.is-open span:nth-child(2){transform:translateY(-3.5px) rotate(-45deg)}   /* 27.11: przycisk Menu na telefonie (Start) */
+@media (max-width:900px){.mb-burger{display:block}.mb-nav ul#mbMenu.is-open{display:grid;position:absolute;left:16px;right:16px;top:calc(100% + 8px);z-index:5;gap:2px;margin:0;padding:8px;border-radius:18px;background:#fff;color:var(--ink);box-shadow:0 18px 40px rgba(0,0,0,.22)}.mb-nav ul#mbMenu.is-open li{opacity:1;border:0;padding:0}.mb-nav ul#mbMenu.is-open a{display:flex;align-items:center;height:44px;padding:0 14px;border-radius:12px;font-size:15px}.mb-nav ul#mbMenu.is-open li.mb-on a{font-weight:600;color:var(--brand)}.mb-nav ul#mbMenu.is-open a:hover{background:#f3f3f1}}
+.mb-nav .mb-ic,.mb-nav .mb-cta{flex:none}@media (max-width:480px){.mb-nav .mb-ic{display:none}.mb-nav .mb-wrap{gap:10px}}   /* 27.11: na telefonie lupa ustępuje miejsca Menu (wyszukiwarka jest w karcie pod banerem) */
 @media (max-width:900px){
  .mb-wrap{padding:0 16px}
  .mb-nav ul{display:none}.mb-nav .mb-cta{white-space:nowrap;padding:9px 14px;font-size:13px}.mb-nav img{height:24px}.mb-nav .mb-wrap{gap:14px}.mb-nav .mb-cta{margin-left:auto}
@@ -148,9 +151,10 @@ if(l.indexOf('pl')===0)return;location.replace((l.indexOf('ro')===0?'ro':'en')+'
 <section class="mb-hero"><div class="mb-hero-bg" aria-hidden="true"></div>
   <nav class="mb-nav"><div class="mb-wrap">
     <img src="assets/logo-white.svg" alt="Schedpol">
-    <ul><li class="mb-on"><a href="index.html">Start</a></li><li><a href="podstrony.html#/katalog">Katalog</a></li><li><a href="podstrony.html#/pliki">Pliki</a></li><li><a href="podstrony.html#/akademia">Akademia</a></li><li><a href="#sek-kontakt">Kontakt</a></li></ul>
+    <ul id="mbMenu"><li class="mb-on"><a href="index.html">Start</a></li><li><a href="podstrony.html#/katalog">Katalog</a></li><li><a href="podstrony.html#/pliki">Pliki</a></li><li><a href="podstrony.html#/akademia">Akademia</a></li><li><a href="#sek-kontakt">Kontakt</a></li></ul>
     <a class="mb-ic" aria-label="Szukaj w katalogu" href="podstrony.html#/katalog"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a>
     <a class="mb-cta" href="podstrony.html#/pliki">Centrum plików</a>
+    <button class="mb-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="mbMenu"><span></span><span></span></button>
   </div></nav>
   <div class="mb-wrap mb-body">
     <div>
@@ -301,6 +305,7 @@ document.querySelectorAll('.mb-bk').forEach(function(r){
  r.addEventListener('mouseenter',function(){map.classList.add('is-hov');map.querySelectorAll('path').forEach(function(p){p.classList.toggle('on',p.getAttribute('data-r')===r.getAttribute('data-r'));});});
  r.addEventListener('mouseleave',function(){map.classList.remove('is-hov');});});})();
 </script>
+<script>/* menu na telefonie (27.11) */(function(){var b=document.querySelector(".mb-burger"),m=document.getElementById("mbMenu");if(!b||!m)return;function t(o){m.classList.toggle("is-open",o);b.classList.toggle("is-open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(e){e.stopPropagation();t(!m.classList.contains("is-open"));});m.addEventListener("click",function(e){if(e.target.closest("a"))t(false);});document.addEventListener("click",function(e){if(m.classList.contains("is-open")&&!m.contains(e.target))t(false);});document.addEventListener("keydown",function(e){if(e.key==="Escape")t(false);});})();</script>
 <script>/* paralaksa hero (26.11) */(function(){var h=document.querySelector(".mb-hero"),b=h&&h.querySelector(".mb-hero-bg");if(!b||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))return;var q=0;function f(){q=0;var y=window.pageYOffset||0,hh=h.offsetHeight;if(y>hh*1.2)return;b.style.transform="translate3d(0,"+Math.round(y*0.35)+"px,0)";}addEventListener("scroll",function(){if(!q){q=1;requestAnimationFrame(f);}},{passive:true});f();})();</script>
 </body>
 </html>
