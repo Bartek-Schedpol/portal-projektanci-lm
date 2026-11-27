@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="../assets/fonts/fonts.css">
 <link rel="stylesheet" href="../a-biblioteka/a.css">
 <style>
-:root{--brand:#943330;--brand-ink:#7A2623;--lm:#78BE20;--ink:#141414;--mut:#5C5F66;--line:#E6E6E3;--dark:#151515;--tile:#F4F3F0}
+:root{--brand:#78BE20;--brand-ink:#4E8A12;--brand-tint:#EEF6E4;--lm:#78BE20;--ink:#141414;--mut:#5C5F66;--line:#E6E6E3;--dark:#151515;--tile:#F4F3F0}
+body,body .home{--brand:#78BE20;--brand-ink:#4E8A12;--brand-tint:#EEF6E4}#sek-kontakt{--brand:#943330;--brand-ink:#7A2623;--brand-tint:#F6ECEB}   /* 27.11: Start w zieleni LM, sekcja Kontakt zostaje w czerwieni Schedpol */
 .mbx *{box-sizing:border-box}.mbx{margin:0;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased}
 .mbx a{color:inherit;text-decoration:none}.mb-wrap{max-width:1240px;margin:0 auto;padding:0 32px}
 .mb-note{position:fixed;left:16px;bottom:16px;z-index:20;background:#111;color:#fff;font-size:12px;padding:8px 12px;border-radius:8px;opacity:.85}
@@ -26,7 +27,7 @@
 .mb-nav .mb-cta{background:#fff;color:var(--ink);font-weight:600;font-size:14px;padding:11px 20px;border-radius:99px}
 .mb-nav .mb-ic{width:40px;height:40px;border:1px solid rgba(255,255,255,.35);border-radius:50%;display:grid;place-items:center}
 .mb-hero .mb-wrap.mb-body{position:relative;z-index:2;display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:end;padding-top:92px;padding-bottom:70px}
-.mb-eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#E9B9B6;display:flex;align-items:center;gap:10px}
+.mb-eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#B9DD8E;display:flex;align-items:center;gap:10px}
 .mb-eyebrow:before{content:"";width:28px;height:2px;background:var(--brand)}
 .mb-hero h1{font-size:58px;line-height:1.06;letter-spacing:-.02em;font-weight:700;margin:18px 0 20px;max-width:640px}
 .mb-hero p.mb-lead{font-size:17px;line-height:1.6;color:#E4E4E4;max-width:540px;margin:0 0 32px}
@@ -47,7 +48,7 @@
 .mb-count{position:absolute;z-index:2;left:32px;bottom:26px;font-size:12px;color:#BDBDBD;letter-spacing:.12em}
 /* sekcja 2 */
 .mb-s2{padding:110px 0}.mb-s2 .mb-wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:72px;align-items:start}
-.mb-s2 .mb-eyebrow{color:var(--brand)}.mbx h2.mb-h{font-size:40px;line-height:1.15;letter-spacing:-.015em;font-weight:700;margin:16px 0 0}
+.mb-s2 .mb-eyebrow{color:var(--brand-ink)}.mbx h2.mb-h{font-size:40px;line-height:1.15;letter-spacing:-.015em;font-weight:700;margin:16px 0 0}
 .mb-s2 .mb-head{grid-column:1/-1;max-width:760px;margin-bottom:8px}
 .mb-ph{position:relative}.mb-ph img{width:100%;height:440px;object-fit:cover;border-radius:18px;display:block}
 .mb-badge{position:absolute;left:28px;bottom:-34px;display:flex;align-items:stretch;background:#fff;border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.14);overflow:hidden;max-width:340px}
@@ -63,7 +64,7 @@
 .mb-stats b{font-size:44px;font-weight:700;letter-spacing:-.02em;display:block}.mb-stats span{font-size:14px;color:var(--mut)}
 /* sekcja kategorii (ciemna) */
 .mb-s3{background:var(--dark);color:#fff;padding:100px 0}.mb-s3 .mb-top3{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:46px}
-.mb-s3 h2{color:#fff}.mb-s3 p{color:#BDBDBD;font-size:15.5px;line-height:1.7;margin:0}.mb-s3 .mb-eyebrow{color:#E9B9B6}
+.mb-s3 h2{color:#fff}.mb-s3 p{color:#BDBDBD;font-size:15.5px;line-height:1.7;margin:0}.mb-s3 .mb-eyebrow{color:#B9DD8E}
 .mb-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .mb-card{background:#fff;color:var(--ink);border-radius:16px;padding:24px;display:flex;flex-direction:column;min-height:300px;position:relative}
 .mb-card .mb-tag{position:absolute;top:18px;right:18px;font-size:11px;font-weight:700;background:var(--brand);color:#fff;border-radius:99px;padding:4px 10px}
@@ -76,7 +77,7 @@
 /* sekcja 4 */
 .mb-s4 .mb-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0}.mb-s4{padding:100px 0}
 .mb-s4 .mb-red{background:var(--brand);color:#fff;padding:56px;border-radius:18px 0 0 18px}.mb-s4 .mb-red h2{color:#fff;font-size:36px}
-.mb-s4 .mb-red p{color:#F1D6D4;line-height:1.7;margin:16px 0 28px}.mb-s4 .mb-red .mb-row{display:flex;gap:26px;flex-wrap:wrap;font-size:14px}
+.mb-s4 .mb-red p{color:#fff;line-height:1.7;margin:16px 0 28px}.mb-s4 .mb-red .mb-row{display:flex;gap:26px;flex-wrap:wrap;font-size:14px}
 .mb-s4 .mb-red .mb-row div b{display:block;font-size:18px;margin-top:4px}
 .mb-s4 .mb-pic{border-radius:0 18px 18px 0;background:url(../assets/img/odplyw-scena.jpg) center/cover}
 .mbx footer{background:#0E0E0E;color:#9C9C9C;font-size:13px;padding:30px 0}.mbx footer .mb-wrap{display:flex;justify-content:space-between;align-items:center}
@@ -84,7 +85,7 @@
 .mb-coop{padding:56px 0 0}.mb-coop .hcoop{margin:0}.mb-coop .wrap,.mb-cur .wrap{max-width:1240px;padding:0 32px}.mb-coop .hcoop-l{grid-template-columns:repeat(4,minmax(0,1fr))}
 .mb-cur{padding:40px 0 20px}.mb-bok{padding-bottom:90px}
 .mbx .mb-stats{margin-top:90px}
-.mb-coop2{padding:96px 0 0}.mb-coop2 .mb-eyebrow{color:var(--brand)}
+.mb-coop2{padding:96px 0 0}.mb-coop2 .mb-eyebrow{color:var(--brand-ink)}
 .mbx .mb-coop2 .mb-stats{margin-top:44px}
 .mb-stats b small{font-size:16px;font-weight:500;color:var(--mut);margin-left:8px;letter-spacing:0}
 .mb-lmk{display:flex;align-items:center;gap:16px}.mb-lmk img{height:40px;width:auto;display:block;background:#fff;padding:6px 10px;border-radius:8px;box-sizing:content-box}.mb-lmk span{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff;padding-left:16px;border-left:1px solid rgba(255,255,255,.35);line-height:1.3}
