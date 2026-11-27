@@ -23,6 +23,8 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
 .mbb{position:relative;color:#fff;background:#222 url(../v2/hero.jpg) center 35%/cover no-repeat}
 .mbb:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.9),rgba(10,10,10,.72) 50%,rgba(10,10,10,.4))}
 .mbb-in{position:relative;max-width:1400px;margin:0 auto;padding:54px var(--gut,32px) 50px}
+.mbb-lm{position:absolute;right:var(--gut,32px);bottom:50px;height:40px;width:auto;filter:brightness(0) invert(1);opacity:.92}   /* 27.11: znak LM (biały, monochromatyczny) na banerze podstron */
+@media (max-width:900px){.mbb-lm{position:static;display:block;height:30px;margin:0 0 16px}}
 .mbb-crumbs{font-size:13px;color:#BDBDBD;display:flex;gap:10px;margin-bottom:22px}.mbb-crumbs b{color:#fff;font-weight:500}
 .mbb-k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#E9B9B6;display:flex;align-items:center;gap:10px}.mbb-k:before{content:"";width:28px;height:2px;background:var(--brand)}
 .mbb h1{font-size:46px;line-height:1.08;letter-spacing:-.02em;font-weight:700;margin:14px 0 14px;max-width:820px;color:#fff}
@@ -253,7 +255,7 @@ body.mbx{--brand:#943330;--brand-ink:#7A2623}
   </div>
 </header>
 
-<section class="mbb" id="mbb" hidden><div class="mbb-in"><div class="mbb-crumbs"><a href="index.html">Start</a><span>/</span><b id="mbbC"></b></div><div class="mbb-k" id="mbbK"></div><h1 id="mbbT"></h1><p id="mbbS"></p></div></section>
+<section class="mbb" id="mbb" hidden><div class="mbb-in"><img class="mbb-lm" src="../assets/znaki/leroy-merlin.svg" alt="Leroy Merlin" width="86" height="52"><div class="mbb-crumbs"><a href="index.html">Start</a><span>/</span><b id="mbbC"></b></div><div class="mbb-k" id="mbbK"></div><h1 id="mbbT"></h1><p id="mbbS"></p></div></section>
 <main id="app" tabindex="-1">
   <noscript><p class="noscript">Makieta wymaga włączonej obsługi JavaScript.</p></noscript>
 </main>
